@@ -14,7 +14,8 @@
   <!-- Theme style -->
   <link rel="stylesheet" href="{{asset('css/adminlte.min.css')}}">
 </head>
-@extends('admin.app')
+
+
 <body class="hold-transition login-page">
 <div class="login-box">
   <!-- /.login-logo -->
@@ -24,7 +25,8 @@
     </div>
     <div class="card-body">
 
-      <form action="/admin" method="post">
+      <form action="#" method="POST">
+        <input type="hidden" name="_token" value="{{ csrf_token() }}">
         <div class="input-group mb-3">
           <input type="email" class="form-control" placeholder="Usuario">
           <div class="input-group-append">

@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\UserController;
+use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,10 +17,21 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    redirect('/login');
+});
+Route::get('/admin/dashboard', [AdminController::class, 'dashboard']);
+Route::get('/admin/users', [UserController::class, 'view']);
+Route::middleware(CkeckAuthAdmin::class)->group(function () {
+
+   
+
+    /*Route::get('/admin/users', [UserController::class, 'view']);
+    Route::get('/admin/users/list-users', [UserController::class], 'listUsers');
+    Route::post('/admin/users/create-user', [UserController::class], '');
+    Route::post('/admin/users/update-user/{id}', [UserController::class], '');
+    Route::post('/admin/users/resetPassword/{id}' [UserController::class], '');*/
 });
 
 Route::get('/login', [AdminController::class, 'index']);
-
-Route::post('/lucho-pingaloca', [AdminController::class, 'createUser']);
+Route::get('/admin/users', [AdminController::class, 'viewUsers']);
 
