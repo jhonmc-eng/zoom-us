@@ -16,16 +16,7 @@ class AdminController extends Controller
         return view('admin.dashboard'); 
     }
 
-    public function createUser(Request $request){
-        $new = New User();
-        $new->nombre = $request->nombre;
-        //$new->apellid 
-        $new->save();
-
-    }
-    public function viewUsers(){
-        return view('admin.users');
-    }
+   
 
 
 
