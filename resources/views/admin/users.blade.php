@@ -110,7 +110,7 @@
         </section>
         <!-- /.content -->
     </div>
-    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal fade" id="modalNewUser" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
             <div class="modal-header">
@@ -121,67 +121,207 @@
             </div>
             <div class="modal-body">
                 <form>
-                    <div class="form-group row">
-                        <label for="inputTypeUser" class="col-sm-4 col-form-label">Tipo de Usuario:</label>
-                        <div class="col-sm-8">
-                            
-                            <select name="types" id="inputTypeUser" class="form-control">
-                                <option value="1">Usuario</option>
-                                <option value="2">Administrador</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="inputDni" class="col-sm-4 col-form-label">Dni:</label>
-                        <div class="col-sm-8">
-                            <div class="input-group date" id="reservationdate" data-target-input="nearest">
-                                <input type="number" class="form-control datetimepicker-input" data-target="#reservationdate">
-                                <div class="input-group-append" data-target="#reservationdate" data-toggle="datetimepicker">
-                                    <div class="input-group-text"><i class="fas fa-search"></i></div>
+                    <div class="card">
+                        
+                        <div class="card-body">
+                            <div class="form-group row">
+                                <label for="inputTypeUser" class="col-sm-4 col-form-label">Tipo de Usuario:</label>
+                                <div class="col-sm-8">
+                                    
+                                    <select name="types" id="inputTypeUser" class="form-control">
+                                        <option value="1">Usuario</option>
+                                        <option value="2">Administrador</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="inputDni" class="col-sm-4 col-form-label">Dni:</label>
+                                <div class="col-sm-8">
+                                    <div class="input-group date" id="reservationdate" data-target-input="nearest">
+                                        <input type="number" class="form-control" placeholder="DNI">
+                                        <div class="input-group-append">
+                                            <div class="input-group-text"><i class="fas fa-search"></i></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="inputName" class="col-sm-4 col-form-label">Nombres:</label>
+                                <div class="col-sm-8">
+                                    <input type="email" class="form-control" id="inputName" placeholder="Nombres">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="inputLastNamePatern" class="col-sm-4 col-form-label">Apellido Paterno:</label>
+                                <div class="col-sm-8">
+                                    <input type="email" class="form-control" id="inputLastNamePatern" placeholder="Apellido Paterno">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="inputLastNameMatern" class="col-sm-4 col-form-label">Apellido Materno:</label>
+                                <div class="col-sm-8">
+                                    <input type="email" class="form-control" id="inputLastNameMatern" placeholder="Apellido Materno">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="inputDate" class="col-sm-4 col-form-label">Fecha de Inicio:</label>
+                                <div class="col-sm-8">
+                                    <input type="date" class="form-control" id="inputDate" placeholder="Fecha de Inicio">
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="form-group row">
-                        <label for="inputName" class="col-sm-4 col-form-label">Nombres:</label>
-                        <div class="col-sm-8">
-                            <input type="email" class="form-control" id="inputName" placeholder="Nombres">
+                    <div class="card">
+                        
+                        <div class="card-body">
+                            <div class="form-group row">
+                                <label for="inputUser" class="col-sm-4 col-form-label">Usuario:</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="inputUser" placeholder="Username">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="inputPassword" class="col-sm-4 col-form-label">Password:</label>
+                                <div class="col-sm-8">
+                                    <input type="password" class="form-control" id="inputPassword" placeholder="Password">
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="form-group row">
-                        <label for="inputLastNamePatern" class="col-sm-4 col-form-label">Apellido Paterno:</label>
-                        <div class="col-sm-8">
-                            <input type="email" class="form-control" id="inputLastNamePatern" placeholder="Apellido Paterno">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="inputLastNameMatern" class="col-sm-4 col-form-label">Apellido Materno:</label>
-                        <div class="col-sm-8">
-                            <input type="email" class="form-control" id="inputLastNameMatern" placeholder="Apellido Materno">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="inputDate" class="col-sm-4 col-form-label">Fecha de Inicio:</label>
-                        <div class="col-sm-8">
-                            <input type="date" class="form-control" id="inputDate" placeholder="Fecha de Inicio">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="inputUser" class="col-sm-4 col-form-label">Usuario:</label>
-                        <div class="col-sm-8">
-                            <input type="text" class="form-control" id="inputUser" placeholder="Username">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="inputPassword" class="col-sm-4 col-form-label">Password:</label>
-                        <div class="col-sm-8">
-                            <input type="password" class="form-control" id="inputPassword" placeholder="Password">
-                        </div>
-                    </div>
+                    
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary">Guardar</button>
+            </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="modalUpdatePassword" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Cambiar Password</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="form-group row">
+                                <label for="inputUser" class="col-sm-4 col-form-label">Usuario:</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="inputUser" placeholder="Username" readonly>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="inputPassword" class="col-sm-4 col-form-label">Password:</label>
+                                <div class="col-sm-8">
+                                    <input type="password" class="form-control" id="inputPassword" placeholder="Password">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary">Guardar</button>
+            </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="modalEditUser" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Editar Usuario</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="card">
+                        
+                        <div class="card-body">
+                            <div class="form-group row">
+                                <label for="inputTypeUser" class="col-sm-4 col-form-label">Tipo de Usuario:</label>
+                                <div class="col-sm-8">
+                                    
+                                    <select name="types" id="inputTypeUser" class="form-control">
+                                        <option value="1">Usuario</option>
+                                        <option value="2">Administrador</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="inputDni" class="col-sm-4 col-form-label">Dni:</label>
+                                <div class="col-sm-8">
+                                    <div class="input-group date" id="reservationdate" data-target-input="nearest">
+                                        <input type="number" class="form-control" placeholder="DNI">
+                                        <div class="input-group-append">
+                                            <div class="input-group-text"><i class="fas fa-search"></i></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="inputName" class="col-sm-4 col-form-label">Nombres:</label>
+                                <div class="col-sm-8">
+                                    <input type="email" class="form-control" id="inputName" placeholder="Nombres">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="inputLastNamePatern" class="col-sm-4 col-form-label">Apellido Paterno:</label>
+                                <div class="col-sm-8">
+                                    <input type="email" class="form-control" id="inputLastNamePatern" placeholder="Apellido Paterno">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="inputLastNameMatern" class="col-sm-4 col-form-label">Apellido Materno:</label>
+                                <div class="col-sm-8">
+                                    <input type="email" class="form-control" id="inputLastNameMatern" placeholder="Apellido Materno">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="inputDate" class="col-sm-4 col-form-label">Fecha de Inicio:</label>
+                                <div class="col-sm-8">
+                                    <input type="date" class="form-control" id="inputDate" placeholder="Fecha de Inicio">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        
+                        <div class="card-body">
+                            <div class="form-group row">
+                                <label for="inputUser" class="col-sm-4 col-form-label">Usuario:</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="inputUser" placeholder="Username" readonly>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="inputState" class="col-sm-4 col-form-label">Estado:</label>
+                                <div class="col-sm-8">
+                                    <select name="types" id="inputState" class="form-control">
+                                        <option value="1">Activo</option>
+                                        <option value="2">Inactivo</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
                 <button type="button" class="btn btn-primary">Guardar</button>
             </div>
             </div>
@@ -278,9 +418,9 @@
     })//.buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
 
     let buttons = `
-        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModalCenter"><i class="far fa-edit"></i> Nuevo</button>
-        <button type="button" class="btn btn-info"><i class="fas fa-user-edit"></i> Editar</button>
-        <button type="button" class="btn btn-warning"><i class="fas fa-key"></i> Password</button>
+        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modalNewUser"><i class="far fa-edit"></i> Nuevo</button>
+        <button type="button" class="btn btn-info" data-toggle="modal" data-target="#modalEditUser"><i class="fas fa-user-edit"></i> Editar</button>
+        <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#modalUpdatePassword"><i class="fas fa-key"></i> Password</button>
         <div class="btn-group" role="group">
             <button id="btnGroupDrop1" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <i class="fas fa-print"></i> Reporte
@@ -294,7 +434,7 @@
         </div>
     `
     $('#datable_wrapper .col-md-6:eq(0)').append(buttons)
-
+    
   })
 </script>
 @endsection
