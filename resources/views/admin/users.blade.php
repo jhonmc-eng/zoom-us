@@ -12,7 +12,7 @@
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
-                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                <li class="breadcrumb-item"><a href="/">Inicio</a></li>
                 <li class="breadcrumb-item active">Usuarios</li>
                 </ol>
             </div>
@@ -33,68 +33,34 @@
               <div class="card-body">
                 <table id="datable" class="table table-bordered table-striped">
                   <thead>
-                  <tr>
-                    <th>Rendering engine</th>
-                    <th>Browser</th>
-                    <th>Platform(s)</th>
-                    <th>Engine version</th>
-                    <th>CSS grade</th>
-                  </tr>
+                    <tr>
+                        <th>Usuario</th>
+                        <th>Nombres</th>
+                        <th>Apellido Paterno</th>
+                        <th>Apellido Materno</th>
+                        <th>DNI</th>
+                        <th>Cargo</th>
+                        <th>Fecha de Inicio</th>
+                        <th>Estado</th>
+                        <th>Nivel</th>
+                    </tr>
                   </thead>
                   <tbody>
-                  <tr>
-                    <td>Trident</td>
-                    <td>Internet
-                      Explorer 4.0
-                    </td>
-                    <td>Win 95+</td>
-                    <td> 4</td>
-                    <td>X</td>
-                  </tr>
-                  <tr>
-                    <td>Trident</td>
-                    <td>Internet
-                      Explorer 5.0
-                    </td>
-                    <td>Win 95+</td>
-                    <td>5</td>
-                    <td>C</td>
-                  </tr>
-                  <tr>
-                    <td>Trident</td>
-                    <td>Internet
-                      Explorer 5.5
-                    </td>
-                    <td>Win 95+</td>
-                    <td>5.5</td>
-                    <td>A</td>
-                  </tr>
-                  <tr>
-                    <td>Trident</td>
-                    <td>Internet
-                      Explorer 6
-                    </td>
-                    <td>Win 98+</td>
-                    <td>6</td>
-                    <td>A</td>
-                  </tr>
-                  <tr>
-                    <td>Trident</td>
-                    <td>Internet Explorer 7</td>
-                    <td>Win XP SP2+</td>
-                    <td>7</td>
-                    <td>A</td>
-                  </tr>
+                  
                   
                   </tbody>
                   <tfoot>
-                  <tr>
-                    <th>Rendering engine</th>
-                    <th>Browser</th>
-                    <th>Platform(s)</th>
-                    <th>Engine version</th>
-                    <th>CSS grade</th>
-                  </tr>
+                    <tr>
+                        <th>Usuario</th>
+                        <th>Nombres</th>
+                        <th>Apellido Paterno</th>
+                        <th>Apellido Materno</th>
+                        <th>DNI</th>
+                        <th>Cargo</th>
+                        <th>Fecha de Inicio</th>
+                        <th>Estado</th>
+                        <th>Nivel</th>
+                    </tr>
                   </tfoot>
                 </table>
               </div>
@@ -113,217 +79,249 @@
     <div class="modal fade" id="modalNewUser" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Nuevo Usuario</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form>
-                    <div class="card">
-                        
-                        <div class="card-body">
-                            <div class="form-group row">
-                                <label for="inputTypeUser" class="col-sm-4 col-form-label">Tipo de Usuario:</label>
-                                <div class="col-sm-8">
-                                    
-                                    <select name="types" id="inputTypeUser" class="form-control">
-                                        <option value="1">Usuario</option>
-                                        <option value="2">Administrador</option>
-                                    </select>
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Nuevo Usuario</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form id="formRegisterUser" class="needs-validation" novalidate>
+                    @csrf
+                    <div class="modal-body">
+                    
+                        <div class="card">
+                            
+                            <div class="card-body">
+                                <div class="form-group row">
+                                    <label for="inputTypeUser" class="col-sm-4 col-form-label">Tipo de Usuario:</label>
+                                    <div class="col-sm-8">
+                                        
+                                        <select name="inputTypeUser" id="inputTypeUser" class="form-control" required>
+                                            <option value="USUARIO">Usuario</option>
+                                            <option value="ADMINISTRADOR">Administrador</option>
+                                        </select>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="form-group row">
-                                <label for="inputDni" class="col-sm-4 col-form-label">Dni:</label>
-                                <div class="col-sm-8">
-                                    <div class="input-group date" id="reservationdate" data-target-input="nearest">
-                                        <input type="number" class="form-control" placeholder="DNI">
-                                        <div class="input-group-append">
-                                            <div class="input-group-text"><i class="fas fa-search"></i></div>
+                                <div class="form-group row">
+                                    <label for="inputDni" class="col-sm-4 col-form-label">Dni:</label>
+                                    <div class="col-sm-8">
+                                        <div class="input-group date" id="reservationdate" data-target-input="nearest">
+                                            <input type="number" name="inputDni" id="inputDni"class="form-control" placeholder="DNI" required>
+                                            
+                                            <div class="input-group-append">
+                                                <div class="input-group-text"><i class="fas fa-search"></i></div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="form-group row">
-                                <label for="inputName" class="col-sm-4 col-form-label">Nombres:</label>
-                                <div class="col-sm-8">
-                                    <input type="email" class="form-control" id="inputName" placeholder="Nombres">
+                                <div class="form-group row">
+                                    <label for="inputName" class="col-sm-4 col-form-label">Nombres:</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" name="inputName" class="form-control" id="inputName" placeholder="Nombres" required>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="form-group row">
-                                <label for="inputLastNamePatern" class="col-sm-4 col-form-label">Apellido Paterno:</label>
-                                <div class="col-sm-8">
-                                    <input type="email" class="form-control" id="inputLastNamePatern" placeholder="Apellido Paterno">
+                                <div class="form-group row">
+                                    <label for="inputLastNamePatern" class="col-sm-4 col-form-label">Apellido Paterno:</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" name="inputLastNamePatern" class="form-control" id="inputLastNamePatern" placeholder="Apellido Paterno" required>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="form-group row">
-                                <label for="inputLastNameMatern" class="col-sm-4 col-form-label">Apellido Materno:</label>
-                                <div class="col-sm-8">
-                                    <input type="email" class="form-control" id="inputLastNameMatern" placeholder="Apellido Materno">
+                                <div class="form-group row">
+                                    <label for="inputLastNameMatern" class="col-sm-4 col-form-label">Apellido Materno:</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" name="inputLastNameMatern" class="form-control" id="inputLastNameMatern" placeholder="Apellido Materno" required>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="form-group row">
-                                <label for="inputDate" class="col-sm-4 col-form-label">Fecha de Inicio:</label>
-                                <div class="col-sm-8">
-                                    <input type="date" class="form-control" id="inputDate" placeholder="Fecha de Inicio">
+                                <div class="form-group row">
+                                    <label for="inputDate" class="col-sm-4 col-form-label">Fecha de Inicio:</label>
+                                    <div class="col-sm-8">
+                                        <input type="date" name="inputDate" class="form-control" id="inputDate" placeholder="Fecha de Inicio" required>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="card">
+                        <div class="card">
+                            
+                            <div class="card-body">
+                                <div class="form-group row">
+                                    <label for="inputUser" class="col-sm-4 col-form-label">Usuario:</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" name="inputUser" class="form-control" id="inputUser" placeholder="Username" required>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="inputPassword" class="col-sm-4 col-form-label">Password:</label>
+                                    <div class="col-sm-8">
+                                        <input type="password" name="inputPassword" class="form-control" id="inputPassword" placeholder="Password" required>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         
-                        <div class="card-body">
-                            <div class="form-group row">
-                                <label for="inputUser" class="col-sm-4 col-form-label">Usuario:</label>
-                                <div class="col-sm-8">
-                                    <input type="text" class="form-control" id="inputUser" placeholder="Username">
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label for="inputPassword" class="col-sm-4 col-form-label">Password:</label>
-                                <div class="col-sm-8">
-                                    <input type="password" class="form-control" id="inputPassword" placeholder="Password">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                     
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                        <input type="submit" class="btn btn-primary" value="Guardar">
+                    </div>
                 </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                <button type="button" class="btn btn-primary">Guardar</button>
-            </div>
             </div>
         </div>
     </div>
+
     <div class="modal fade" id="modalUpdatePassword" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Cambiar Password</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form>
-                    
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="form-group row">
-                                <label for="inputUser" class="col-sm-4 col-form-label">Usuario:</label>
-                                <div class="col-sm-8">
-                                    <input type="text" class="form-control" id="inputUser" placeholder="Username" readonly>
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Cambiar Password</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form id="formUpdatePassword" class="needs-validation" novalidate>
+                    <div class="modal-body">
+
+                        <div class="card">
+                            
+                            <div class="card-body">
+                                <div class="form-group row">
+                                    <label for="inputUser" class="col-sm-4 col-form-label">Usuario:</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" id="inputUser" placeholder="Username" readonly required>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="form-group row">
-                                <label for="inputPassword" class="col-sm-4 col-form-label">Password:</label>
-                                <div class="col-sm-8">
-                                    <input type="password" class="form-control" id="inputPassword" placeholder="Password">
+                                <div class="form-group row">
+                                    <label for="inputPassword" class="col-sm-4 col-form-label">Password:</label>
+                                    <div class="col-sm-8">
+                                        <input type="password" class="form-control" id="inputPassword" placeholder="Password" required>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                        
                     
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                        <input type="submit" class="btn btn-primary" value="Guardar">
+                    </div>
                 </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                <button type="button" class="btn btn-primary">Guardar</button>
-            </div>
             </div>
         </div>
     </div>
+
     <div class="modal fade" id="modalEditUser" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Editar Usuario</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form>
-                    <div class="card">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Editar Usuario</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form id="formUpdateUser" class="needs-validation" novalidate >
+                    @csrf
+                    <div class="modal-body">
                         
-                        <div class="card-body">
-                            <div class="form-group row">
-                                <label for="inputTypeUser" class="col-sm-4 col-form-label">Tipo de Usuario:</label>
-                                <div class="col-sm-8">
-                                    
-                                    <select name="types" id="inputTypeUser" class="form-control">
-                                        <option value="1">Usuario</option>
-                                        <option value="2">Administrador</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label for="inputDni" class="col-sm-4 col-form-label">Dni:</label>
-                                <div class="col-sm-8">
-                                    <div class="input-group date" id="reservationdate" data-target-input="nearest">
-                                        <input type="number" class="form-control" placeholder="DNI">
-                                        <div class="input-group-append">
-                                            <div class="input-group-text"><i class="fas fa-search"></i></div>
+                            <div class="card">
+                                
+                                <div class="card-body">
+                                    <div class="form-group row">
+                                        <label for="inputUpdateTypeUser" class="col-sm-4 col-form-label">Tipo de Usuario:</label>
+                                        <div class="col-sm-8">
+                                            
+                                            <select name="inputUpdateType" id="inputUpdateTypeUser" class="form-control" required>
+                                                <option value="USUARIO">USUARIO</option>
+                                                <option value="ADMINISTRADOR">ADMINISTRADOR</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="inputUpdateDni" class="col-sm-4 col-form-label">Dni:</label>
+                                        <div class="col-sm-8">
+                                            <div class="input-group date" id="reservationdate" data-target-input="nearest">
+                                                <input type="number" class="form-control" name="inputUpdateDni" placeholder="DNI" required>
+                                                <div class="input-group-append">
+                                                    <div class="input-group-text"><i class="fas fa-search"></i></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="inputUpdateName" class="col-sm-4 col-form-label">Nombres:</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" class="form-control" name="inputUpdateNames" id="inputUpdateName" placeholder="Nombres" required>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="inputUpdateLastNamePatern" class="col-sm-4 col-form-label">Apellido Paterno:</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" class="form-control" name="inputUpdateLastnamePatern" id="inputUpdateLastNamePatern" placeholder="Apellido Paterno" required>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="inputUpdateLastNameMatern" class="col-sm-4 col-form-label">Apellido Materno:</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" class="form-control" name="inputUpdateLastnameMatern" id="inputUpdateLastNameMatern" placeholder="Apellido Materno" required>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="inputUpdateDate" class="col-sm-4 col-form-label">Fecha de Inicio:</label>
+                                        <div class="col-sm-8">
+                                            <input type="date" class="form-control" name="inputUpdateDate" id="inputUpdateDate" placeholder="Fecha de Inicio" required>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-group row">
-                                <label for="inputName" class="col-sm-4 col-form-label">Nombres:</label>
-                                <div class="col-sm-8">
-                                    <input type="email" class="form-control" id="inputName" placeholder="Nombres">
+                            <div class="card">
+                                
+                                <div class="card-body">
+                                    <div class="form-group row">
+                                        <label for="inputUpdateUser" class="col-sm-4 col-form-label">Usuario:</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" class="form-control" id="inputUpdateUser" name="inputUpdateUsername" placeholder="Username" readonly required>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="inputUpdateState" class="col-sm-4 col-form-label">Estado:</label>
+                                        <div class="col-sm-8">
+                                            <select name="types" id="inputUpdateState" class="form-control" required>
+                                                <option value="0">Activo</option>
+                                                <option value="1">Inactivo</option>
+                                            </select>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="form-group row">
-                                <label for="inputLastNamePatern" class="col-sm-4 col-form-label">Apellido Paterno:</label>
-                                <div class="col-sm-8">
-                                    <input type="email" class="form-control" id="inputLastNamePatern" placeholder="Apellido Paterno">
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label for="inputLastNameMatern" class="col-sm-4 col-form-label">Apellido Materno:</label>
-                                <div class="col-sm-8">
-                                    <input type="email" class="form-control" id="inputLastNameMatern" placeholder="Apellido Materno">
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label for="inputDate" class="col-sm-4 col-form-label">Fecha de Inicio:</label>
-                                <div class="col-sm-8">
-                                    <input type="date" class="form-control" id="inputDate" placeholder="Fecha de Inicio">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card">
+                            
                         
-                        <div class="card-body">
-                            <div class="form-group row">
-                                <label for="inputUser" class="col-sm-4 col-form-label">Usuario:</label>
-                                <div class="col-sm-8">
-                                    <input type="text" class="form-control" id="inputUser" placeholder="Username" readonly>
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label for="inputState" class="col-sm-4 col-form-label">Estado:</label>
-                                <div class="col-sm-8">
-                                    <select name="types" id="inputState" class="form-control">
-                                        <option value="1">Activo</option>
-                                        <option value="2">Inactivo</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
                     </div>
-                    
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                        <input type="submit" class="btn btn-primary" value="Guardar">
+                    </div>
                 </form>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                <button type="button" class="btn btn-primary">Guardar</button>
-            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalSuccess" aria-hidden="true" aria-labelledby="exampleModalToggleLabel1" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+            <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">¡Exito!</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body"> 
+
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" data-dismiss="modal" data-mdb-target="#exampleModalToggle22" data-mdb-toggle="modal" data-mdb-dismiss="modal" >
+                    OK
+                    </button>
+                </div>
             </div>
         </div>
     </div>
@@ -336,9 +334,8 @@
 <link rel="stylesheet" href="{{asset('plugins/datatables-buttons/css/buttons.bootstrap4.min.css')}}">
 <script src="{{asset('plugins/datatables/jquery.dataTables.min.js')}}"></script>
 
-
-<script src="https://cdn.datatables.net/select/1.3.3/js/dataTables.select.min.js"></script>
-<link rel="stylesheet" href="https://cdn.datatables.net/select/1.3.3/css/select.dataTables.min.css">
+<script src="{{asset('plugins/datatables-select/js/dataTables.select.min.js')}}"></script>
+<link rel="stylesheet" href="{{asset('plugins/datatables-select/css/select.dataTables.min.css')}}">
 <script src="{{asset('plugins/datatables-bs4/js/dataTables.bootstrap4.min.js')}}"></script>
 <script src="{{asset('plugins/datatables-responsive/js/dataTables.responsive.min.js')}}"></script>
 <script src="{{asset('plugins/datatables-responsive/js/responsive.bootstrap4.min.js')}}"></script>
@@ -357,90 +354,32 @@
 <!-- AdminLTE for demo purposes -->
 <script src="{{asset('js/demo.js')}}"></script>
 <!-- Page specific script -->
+<script src="{{asset('js/admin/users/index.js')}}"></script>
 <script>
-  $(function () {
-    var table = $('#datable').DataTable({
-        'lengthChange': false,
-        'pageLength': 15,
-        "language": {
-            "emptyTable":     "No hay datos disponibles",
-            "info":           "Mostrando _START_ de _END_ de un total de _TOTAL_ entradas",
-            "infoEmpty":      "Mostrando 0 de 0 de un total de 0 entradas",
-            "infoFiltered":   "(filtrado de un total de _MAX_ total entradas)",
-            "infoPostFix":    "",
-            "thousands":      ".",
-            "lengthMenu":     "Mostrar _MENU_ entradas",
-            "loadingRecords": "Cargando...",
-            "processing":     "Procesando...",
-            "search":         "Buscar:",
-            "zeroRecords":    "No se encontraron datos",
-            "paginate": {
-                "first":      "Primera",
-                "last":       "ÚLtima",
-                "next":       "Siguiente",
-                "previous":   "Anterior"
-            },
-            "aria": {
-                "sortAscending":  ": activate to sort column ascending",
-                "sortDescending": ": activate to sort column descending"
-            },
-            'select': {
-                'rows': {
-                    '_': ""
-                }
-            }
-        },
-        
-        'select': {
-            'style':    'single'
-        },
-        //'dom': 'Bfrtip',
-        'order': [[1, 'asc']],
-        'bFilter': true,
-        /*'buttons': [
-            {
-                'text': '<i class="far fa-edit"></i> Nuevo',
-                'className': 'btn btn-success'
-            },
-            {
-                'text': '<i class="fas fa-user-edit"></i> Editar',
-                'className': 'btn btn-info'
-            },
-            {
-                'text': '<i class="fas fa-key"></i> Password',
-                'className': 'btn btn-warning'
-            },
-            {
-                'text': '<i class="fas fa-print"></i> Reporte',
-                'className': 'btn btn-warning'
-            }
-        ]*/
-    })//.buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+(function () {
+  'use strict'
 
-    let buttons = `
-        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modalNewUser"><i class="far fa-edit"></i> Nuevo</button>
-        <button type="button" class="btn btn-info" data-toggle="modal" data-target="#modalEditUser"><i class="fas fa-user-edit"></i> Editar</button>
-        <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#modalUpdatePassword"><i class="fas fa-key"></i> Password</button>
-        <div class="btn-group" role="group">
-            <button id="btnGroupDrop1" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <i class="fas fa-print"></i> Reporte
-            </button>
-            <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                <button class="dropdown-item" id="reportCsv">CSV</button>
-                <button class="dropdown-item" id="reportExcel">Excel</button>
-                <button class="dropdown-item" id="reportPDF">PDF</button>
-                <button class="dropdown-item" id="reportPrint">Imprmir</button>
-            </div>
-        </div>
-    `
-    $('#datable_wrapper .col-md-6:eq(0)').append(buttons)
-    
-  })
+  // Fetch all the forms we want to apply custom Bootstrap validation styles to
+  var forms = document.querySelectorAll('.needs-validation')
+
+  // Loop over them and prevent submission
+  Array.prototype.slice.call(forms)
+    .forEach(function (form) {
+      form.addEventListener('submit', function (event) {
+        if (!form.checkValidity()) {
+          event.preventDefault()
+          event.stopPropagation()
+        }
+
+        form.classList.add('was-validated')
+      }, false)
+    })
+})()
 </script>
 @endsection
 
 <style>
-#example1 tr {
+#datable tr {
 cursor: pointer !important;
 }
 .btn-primary {

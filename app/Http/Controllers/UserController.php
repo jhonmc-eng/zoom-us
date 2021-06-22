@@ -7,21 +7,36 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-
+use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
     //
     use TraitsSysLog;
+
     public function view(){
         return view('admin.users');
     }
     public function listUsers(){
         try {
-            $data = User::all();
+            $data = User::select(
+            'id',
+            'username',
+            'names',
+            'lastnamePatern',
+            'lastnameMatern',
+            'dni',
+            'cargo',
+            'date_start',
+            'state_delete',
+            DB::raw('(CASE 
+            WHEN users.state_delete = 0 THEN "ACTIVO" 
+            WHEN users.state_delete = 1 THEN "INACTIVO"
+            END) AS state'),
+            'nivel',)->get();
             return response()->json([
                 'data' => $data
-            ]);
+            ],200);
         } catch (\Exception $e) {
             return response()->json([
                 'message' => 'Ocurrio un error',
@@ -33,15 +48,17 @@ class UserController extends Controller
     public function registerUser(Request $request){
        
         try {
-
+            //dd($request);
             $validator = Validator::make($request->all(), [
-                'name' => 'required|max:255',
-                'lastname' => 'required',
-                'email' => 'required|email|max:255',
-                'dni' => 'required',
-                'password' => 'required',
-                'cargo' => 'required',
-                'nivel' => 'required'
+                'inputName' => 'required|max:255',
+                'inputLastNamePatern' => 'required',
+                'inputLastNameMatern' => 'required',
+                'inputDni' => 'required',
+                'inputPassword' => 'required',
+                'inputUser' => 'required|max:255',
+                //'cargo' => 'required',
+                'inputDate' => 'required|date',
+                'inputTypeUser' => 'required'
             ]);
     
             if ($validator->fails()) {
@@ -50,16 +67,22 @@ class UserController extends Controller
                     'error' => $validator
                 ], 400);
             }else{
+                
                 User::insert([
-                    'name' => $request->name,
-                    'lastname' => $request->lastname,
-                    'email' => $request->email,
-                    'password' => bcrypt($request->password),
-                    'cargo' => $request->cargo,
-                    'nivel' => $request->nivel,
-                    'username' => $this->username($request->name, $request->lastname),
+                    'names' => $request->inputName,
+                    'lastNamePatern' => $request->inputLastNamePatern,
+                    'lastNameMatern' => $request->inputLastNameMatern,
+                    'dni' => $request->inputDni,
+                    'password' => bcrypt($request->inputPassword),
+                    'nivel' => $request->inputTypeUser,
+                    'username' => $request->inputUser,
+                    'date_start' => $request->inputDate,
+                    'cargo' => 'OTI',
                     'syslog' => $this->syslog_admin(1) 
+                    //'syslog' => 'asdasdasd'
+
                 ]);
+                
                 return response()->json([
                     'message' => 'Usuario Creado Exitosamente'
                 ], 200);
@@ -75,29 +98,30 @@ class UserController extends Controller
 
     public function editUser(Request $request, $id){
         try {
+            //dd($request);
             $validator = Validator::make($request->all(), [
-                'name' => 'required|max:255',
-                'lastname' => 'required',
-                'email' => 'required|email|max:255',
-                'dni' => 'required',
-                'cargo' => 'required',
-                'nivel' => 'required'
+                'inputUpdateNames' => 'required',
+                'inputUpdateType' => 'required',
+                'inputUpdateDni' => 'required',
+                'inputUpdateLastnamePatern' => 'required',
+                'inputUpdateLastnameMatern' => 'required',
+                'inputUpdateDate' => 'required',
+                'inputUpdateState' => 'required'
             ]);
             if($validator->fails()){
                 return response()->json([
-                    'message' => 'Ocurrio un error.',
+                    'message' => 'Ocurrio un error validator.',
                     'error' => $validator
                 ], 400);
             }else{
                 $user = User::where('id', $id)->first();
-                $user->name = $request->name;
-                $user->lastname = $request->lastname;
-                $user->email = $request->email;
-                $user->dni = $request->dni;
-                $user->cargo = $request->cargo;
-                $user->nivel = $request->nivel;
-                $user->state_delete = $request->state_delete;
-                $user->syslog = $user->syslog . ' | ' . $this->syslog_admin(2);
+                $user->nivel = $request->inputUpdateType;
+                $user->names = $request->inputUpdateNames;
+                $user->lastNamePatern = $request->inputUpdateLastnamePatern;
+                $user->lastNameMatern = $request->inputUpdateLastnameMatern;
+                $user->dni = $request->inputUpdateDni;
+                $user->state_delete = $request->inputUpdateState;
+                //$user->syslog = $user->syslog . ' | ' . $this->syslog_admin(2);
                 $user->save(); 
                 return response()->json([
                     'message' => 'Usuario Actualizado Exitosamente'

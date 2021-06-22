@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\UserController;
-use App\Models\User;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\CkeckAuthAdmin;
 
@@ -21,8 +20,11 @@ Route::get('/', function () {
     redirect('/login');
 });
 
-Route::get('/login', [AdminController::class, 'index'])->name('login.admin');
-Route::get('/admin/users',[UserController::class, 'view']);
+Route::get('/login', 'UserController@index')->name('login.admin');
+Route::get('/admin/users','UserController@view');
+Route::get('/admin/users/list-users','UserController@listUsers');
+Route::post('/admin/users/create-user','UserController@registerUser');
+Route::post('/admin/users/update-user/{id}','UserController@editUser');
 /*Route::group(['prefix' => 'admin', 'middleware' => 'auth_admin', 'as' => 'admin.', 'namespace' => 'admin'], function(){
     
     Route::group(['prefix' => 'users'], function(){
