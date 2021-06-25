@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class LoginController extends Controller
 {
@@ -10,39 +11,33 @@ class LoginController extends Controller
     public function loginAdmin(Request $request){
         try {
             //code...
-            $validator = Validator::make($request->all(), [
+            $request->validate([
                 'username' => 'required|max:255',
                 'password' => 'required'
             ]);
-            if($validator->fails()){
-                return response()->json([
-                    'message' => 'Ocurrio un error',
-                    'error' => $validator
-                ], 400);
-            }else{
-                $errors = new \stdClass();
+            
+                //$errors = new \stdClass();
                 $user = User::where('username', $request->username)->first();
+                //dd($request->username, $request->password, $user);
                 if(isset($user)) {
                     if (Hash::check($request->password, $user->password)) {
-                        session(['user' => $user]);
-                        return response()->json([
-                            'message' => 'Logeado exitosamente' 
-                        ], 200);
+                        session(['admin' => $user]);
+                        return redirect('/admin/users');
                     } else {
-                        $errors->password = 'La contraseña es invalida';
+                        //$errors->password = 'La contraseña es invalida';
                         return response()->json([
                             'message' => 'Ocurrio un error',
-                            'error' => $errors
+                            'error' => 'La contraseña es invalida'
                         ], 500);
                     }
                 } else {
-                    $errors->email = 'El email no esta registrado';
+                    //$errors->email = 'El email no esta registrado';
                     return response()->json([
                         'message' => 'Ocurrio un error',
-                        'error' => $errors
+                        'error' => 'El email no esta registrado'
                     ], 500);
                 }
-            }
+            
         } catch (\Exception $e) {
             return response()->json([
                 'message' => 'Ocurrio un error.',

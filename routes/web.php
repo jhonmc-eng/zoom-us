@@ -20,22 +20,33 @@ Route::get('/', function () {
     redirect('/login');
 });
 
-Route::get('/login', 'UserController@index')->name('login.admin');
-Route::get('/admin/users','UserController@view');
+Route::get('/login', 'AdminController@index')->name('login.admin');
+/*Route::get('/admin/users','UserController@view');
 Route::get('/admin/users/list-users','UserController@listUsers');
 Route::post('/admin/users/create-user','UserController@registerUser');
 Route::post('/admin/users/update-user/{id}','UserController@editUser');
-/*Route::group(['prefix' => 'admin', 'middleware' => 'auth_admin', 'as' => 'admin.', 'namespace' => 'admin'], function(){
+Route::post('/admin/users/resetPassword', 'UserController@resetPassword');
+Route::get('/admin/users/get-data-dni/{dni}', 'UserController@getApiDni');*/
+Route::post('/login-verification', 'LoginController@loginAdmin');
+
+Route::group(['prefix' => 'admin', 'middleware' => 'auth_admin', 'as' => 'admin.'], function(){
+   
+    Route::get('/logout','LoginController@logoutAdmin');
     
     Route::group(['prefix' => 'users'], function(){
-        Route::get('/', [UserController::class, 'view']);
-        Route::get('/list-users', [UserController::class], 'listUsers');
-        Route::post('/create-user', [UserController::class], 'registerUser');
-        Route::post('/update-user/{id}', [UserController::class], 'editUser');
-        Route::post('/resetPassword/{id}' [UserController::class], 'resetPassword');
+        Route::get('/', 'UserController@view');
+        Route::get('/list-users', 'UserController@listUsers');
+        Route::post('/create-user', 'UserController@registerUser');
+        Route::post('/update-user/{id}', 'UserController@editUser');
+        Route::post('/resetPassword', 'UserController@resetPassword');
+        Route::get('/get-data-dni/{dni}', 'UserController@getApiDni');
     });
     
-});*/
+    Route::group(['prefix' => 'jobs'], function(){
+        Route::get('/', 'ConvocatoriaController@view');
+        Route::get('/list-jobs', 'ConvocatoriaController@listJobs');
+    });
+});
 
 
 

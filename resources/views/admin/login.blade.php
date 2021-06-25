@@ -25,10 +25,10 @@
     </div>
     <div class="card-body">
 
-      <form action="#" method="POST">
+      <form action="/login-verification" method="POST">
         <input type="hidden" name="_token" value="{{ csrf_token() }}">
         <div class="input-group mb-3">
-          <input type="email" class="form-control" placeholder="Usuario">
+          <input type="text" name="username" class="form-control" placeholder="Usuario">
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-user"></span>
@@ -36,7 +36,7 @@
           </div>
         </div>
         <div class="input-group mb-3">
-          <input type="password" class="form-control" placeholder="Contraseña">
+          <input type="password" name="password" class="form-control" placeholder="Contraseña">
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-lock"></span>

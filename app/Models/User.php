@@ -29,7 +29,8 @@ class User extends Authenticatable
         'date_start',
         'nivel',
         'state_delete',
-        'syslog'
+        'syslog',
+        'password'
     ];
 
     /**
@@ -38,7 +39,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password',
+        //'password',
         'remember_token',
     ];
 
