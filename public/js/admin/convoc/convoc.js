@@ -26,32 +26,50 @@ $(document).ready(function(){
                     let button
                     switch(data.name){
                         case "ABIERTA":
-                            button = `<button type="button" class="btn btn-success" disabled data-toggle="modal">ABIERTA</button>`
+                            button = `<button type="button" class="btn btn-success">ABIERTA</button>`
                             break;
                         case 'CERRADA':
-                            button = `<button type="button" class="btn btn-success" disabled data-toggle="modal"><i class="far fa-edit">ABIERTA</i></button>`
+                            button = `<button type="button" class="btn btn-danger">CERRADA</button>`
                             
                             break;
                         case 'EN PROCESO':
-                            button = `<button type="button" class="btn btn-success" disabled data-toggle="modal"><i class="far fa-edit">ABIERTA</i></button>`
+                            button = `<button type="button" class="btn btn-primary">EN PROCESO</button>`
                             break;
-                        case 'CONCLUIDA':
-                            button = `<button type="button" class="btn btn-success" disabled data-toggle="modal"><i class="far fa-edit">ABIERTA</i></button>`
+                        case 'CANCELADA':
+                            button = `<button type="button" class="btn btn-info">CANCELADA</button>`
                             break;
                         default:
-                            button = `<button type="button" class="btn btn-success" disabled data-toggle="modal"><i class="far fa-edit">ABIERTA</i></button>`
+                            button = `<button type="button" class="btn btn-secundary">${data.name}</button>`
 
                             break;
                     }
                     return button;
-                }
+                } 
             },
             { data: "date_publication"},
             { data: "date_postulation"},
-            { data: "bases"},
-            { data: "schedule" },
-            { data: "profile"},
-            { data: "state_delete"}
+            { 
+                data: "bases",
+                render: function (data) {
+                    return `<a target="_blank" href="${data}" type="button" class="btn btn-info">BASES</a>`
+                }
+            },
+            { 
+                data: "schedule",
+                render: function (data) {
+                    return `<a target="_blank" href="${data}" type="button" class="btn btn-info">ESQUEMA</a>`                }
+            },
+            { 
+                data: "profile",
+                render: function (data) {
+                    return `<a target="_blank" href="${data}" type="button" class="btn btn-info">PERFIL</a>`                }
+            },
+            { 
+                data: "state_delete",
+                render: function (data) {
+                    return data ? `INACTIVO`:`ACTIVO`
+                }
+            }
         ],
         lengthChange: false,
         pageLength: 10,
