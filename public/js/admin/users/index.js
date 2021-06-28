@@ -64,7 +64,7 @@ $(function () {
     let buttons = `
         <button type="button" class="btn btn-success" id="button-register" data-toggle="modal"><i class="far fa-edit"></i> Nuevo</button>
         <button type="button" class="btn btn-info" id="button-edit" data-toggle="modal"><i class="fas fa-user-edit"></i> Editar</button>
-        <button type="button" class="btn btn-warning" id="button-password" data-toggle="modal"><i class="fas fa-key"></i> Password</button>
+        <button type="button" class="btn btn-primary" id="button-password" data-toggle="modal"><i class="fas fa-key"></i> Password</button>
         <div class="btn-group" role="group">
             <button id="btnGroupDrop1" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <i class="fas fa-print"></i> Reporte
@@ -109,8 +109,8 @@ $(function () {
         e.stopPropagation()
         $('#formRegisterUser').trigger('reset')
         $('#modalNewUser').modal('show')
-        let data = table.row({select:true}).data()
-        console.log(data)
+        /*let data = table.row({select:true}).data()
+        console.log(data)*/
         //$("#formEditUser input['name']").val(data.names)
         
     });

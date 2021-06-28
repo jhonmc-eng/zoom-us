@@ -28,6 +28,7 @@ Route::post('/admin/users/update-user/{id}','UserController@editUser');
 Route::post('/admin/users/resetPassword', 'UserController@resetPassword');
 Route::get('/admin/users/get-data-dni/{dni}', 'UserController@getApiDni');*/
 Route::post('/login-verification', 'LoginController@loginAdmin');
+Route::get('/create-directory', 'UserController@createDirectory');
 
 Route::group(['prefix' => 'admin', 'middleware' => 'auth_admin', 'as' => 'admin.'], function(){
    
@@ -45,6 +46,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth_admin', 'as' => 'admin.
     Route::group(['prefix' => 'jobs'], function(){
         Route::get('/', 'ConvocatoriaController@view');
         Route::get('/list-jobs', 'ConvocatoriaController@listJobs');
+        Route::post('/register-job', 'ConvocatoriaController@registerJob');
     });
 });
 

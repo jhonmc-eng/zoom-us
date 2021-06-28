@@ -56,4 +56,6 @@ trait SysLog {
             dd($e);
         }
     }
+
+    
 }

@@ -37,33 +37,11 @@
                         <th>Proceso</th>
                         <th>Fecha de publicacion</th>
                         <th>Fecha de postulacion</th>
-                        <th>Bases</th>
-                        <th>Cronograma</th>
-                        <th>Perfil</th>
                         <th>Estado</th>
                     </tr>
                   </thead>
                   <tbody>
-                        <tr>
-                            <td>058</td>
-                            <td>CAS</td>
-                            <td>CONCURSO CAS N°058-2021 GOB.REG.TACNA DE LA SUB GERENCIA DE PLANEAMIENTO Y ACONDICIONAMIENTO TERRITORIAL</th>
-                            <td>CONCLUIDO</td>
-                            <td>24/04/2021</td>
-                            <td>24/04/2021</td>
-                            <td>      
-                                <div class="col-md-12"> 
-                                    <button type="button" class="btn btn-block bg-gradient-danger"><i class="fas fa-key"></i></button>
-                                </div>
-                            </td>
-                            <td>        
-                                <button type="button" class="btn btn-warning" id="button-password" data-toggle="modal"><i class="fas fa-key"></i></button>
-                            </td>
-                            <td>        
-                                <button type="button" class="btn btn-warning" id="button-password" data-toggle="modal"><i class="fas fa-key"></i></button>
-                            </td>
-                            <td>ACTIVO</td>
-
+                        
                         </tr>
                   
                   </tbody>
@@ -75,9 +53,6 @@
                         <th>Proceso</th>
                         <th>Fecha de publicacion</th>
                         <th>Fecha de postulacion</th>
-                        <th>Bases</th>
-                        <th>Cronograma</th>
-                        <th>Perfil</th>
                         <th>Estado</th>
                     </tr>
                   </tfoot>
@@ -93,237 +68,128 @@
         </div>
         <!-- /.container-fluid -->
         </section>
+        
+
+<!-- Modal -->
+
         <!-- /.content -->
     </div>
     
-    <div class="modal fade" id="modalNewUser" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal fade" id="modalJob" tabindex="-1" role="dialog" aria-labelledby="modalNewJob" aria-hidden="true">
+        <form id="formJob" class="needs-validation" enctype="multipart/form-data" novalidate>
+        @csrf
+        <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">Nuevo Usuario</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <form id="formRegisterUser" class="needs-validation" novalidate>
-                    @csrf
-                    <div class="modal-body">
-                    
-                        <div class="card">
-                            
-                            <div class="card-body">
-                                <div class="form-group row">
-                                    <label for="inputTypeUser" class="col-sm-4 col-form-label">Tipo de Usuario:</label>
-                                    <div class="col-sm-8">
-                                        
-                                        <select name="inputTypeUser" id="inputTypeUser" class="form-control" required>
-                                            <option value="USUARIO">USUARIO</option>
-                                            <option value="ADMINISTRADOR">ADMINISTRADOR</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label for="inputDni" class="col-sm-4 col-form-label">Dni:</label>
-                                    <div class="col-sm-8">
-                                        <div class="input-group date" id="reservationdate" data-target-input="nearest">
-                                            <input type="number" name="inputDni" id="inputDni"class="form-control dni" placeholder="DNI" required>
-                                            
-                                            <div class="input-group-append">
-                                                <div class="input-group-text"><i class="fas fa-search"></i></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group row names">
-                                    <label for="inputName" class="col-sm-4 col-form-label">Nombres:</label>
-                                    <div class="col-sm-8">
-                                        <input type="text" name="inputName" class="form-control" id="inputName" placeholder="Nombres" required>
-                                    </div>
-                                </div>
-                                <div class="form-group row lastnamePatern">
-                                    <label for="inputLastNamePatern" class="col-sm-4 col-form-label">Apellido Paterno:</label>
-                                    <div class="col-sm-8">
-                                        <input type="text" name="inputLastNamePatern" class="form-control" id="inputLastNamePatern" placeholder="Apellido Paterno" required>
-                                    </div>
-                                </div>
-                                <div class="form-group row lastnameMatern">
-                                    <label for="inputLastNameMatern" class="col-sm-4 col-form-label">Apellido Materno:</label>
-                                    <div class="col-sm-8">
-                                        <input type="text" name="inputLastNameMatern" class="form-control" id="inputLastNameMatern" placeholder="Apellido Materno" required>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label for="inputDate" class="col-sm-4 col-form-label">Fecha de Inicio:</label>
-                                    <div class="col-sm-8">
-                                        <input type="date" name="inputDate" class="form-control" id="inputDate" placeholder="Fecha de Inicio" required>
-                                    </div>
-                                </div>
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalScrollableTitle">Publicar Convocatoria</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="form-group row">
+                            <label for="inputName" class="col-sm-12 col-form-label">Titulo de la convocatoria</label>
+                            <div class="col-sm-12">
+                                <input type="text" name="inputName" class="form-control" placeholder="Titulo" required>
                             </div>
                         </div>
-                        <div class="card">
+                        
+                        <div class="form-group row">
+                            <label for="inputDatePublication" class="col-sm-6 col-form-label">Fecha de publicación</label>
+                            <label for="inputDatePostulation" class="col-sm-6 col-form-label">Fecha de postulación</label>
+                              
+                            <div class="col-sm-6">
+                                <input type="date" name="inputDatePublication" class="form-control" required>
+                            </div>                     
+                            <div class="col-sm-6">
+                                <input type="date" name="inputDatePostulation" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="inputModality" class="col-sm-4 col-form-label">Modalidad</label>
+                            <label for="inputState" class="col-sm-4 col-form-label">Estado</label>
+                            <label for="inputNumber" class="col-sm-4 col-form-label">Número de convocatoria</label>
+                            <div class="col-sm-4">
+                                <select name="inputModality" class="form-control" required>
+                                    @foreach($modalitys as $item)
+                                        <option value="{{$item->id}}">{{$item->name}}</option>
+                                    @endforeach
+                                    
+                                </select>      
+                            </div>   
+                            <div class="col-sm-4">
+                                <select name="inputState" class="form-control" required>
+                                    @foreach($states as $item)
+                                        <option value="{{$item->id}}">{{$item->name}}</option>
+                                    @endforeach
+                                </select>      
+                            </div>                     
+                            <div class="col-sm-4">
+                                <input type="number" name="inputNumber" class="form-control" placeholder="Número" required>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="inputBaseFile" class="col-sm-4 col-form-label">Bases</label>
+                            <label for="inputScheduleFile" class="col-sm-4 col-form-label">Cronograma</label>
+                            <label for="inputProfileFile" class="col-sm-4 col-form-label">Perfil</label>
                             
-                            <div class="card-body">
-                                <div class="form-group row username">
-                                    <label for="inputUser" class="col-sm-4 col-form-label">Usuario:</label>
-                                    <div class="col-sm-8">
-                                        <input type="text" name="inputUser" class="form-control" id="inputUser" placeholder="Username" required>
-                                    </div>
+                            <div class="col-sm-4">
+                                <div class="custom-file">
+                                    <input type="file" name="inputBaseFile" accept="application/pdf" class="form-control custom-file-input" required>
+                                    <label class="custom-file-label" for="inputBaseFile">Escoge un archivo</label>
                                 </div>
-                                <div class="form-group row">
-                                    <label for="inputPassword" class="col-sm-4 col-form-label">Password:</label>
-                                    <div class="col-sm-8">
-                                        <input type="password" name="inputPassword" class="form-control" id="inputPassword" placeholder="Password" required>
-                                    </div>
+                            </div>    
+                            <div class="col-sm-4">
+                                <div class="custom-file">
+                                    <input type="file" name="inputScheduleFile" accept="application/pdf" class="form-control custom-file-input" required>
+                                    <label class="custom-file-label" for="inputScheduleFile">Escoge un archivo</label>
+                                </div>
+                            </div>                     
+                            <div class="col-sm-4">
+                                <div class="custom-file">
+                                    <input type="file" name="inputProfileFile" accept="application/pdf" class="form-control custom-file-input" required>
+                                    <label class="custom-file-label" for="inputProfileFile">Escoge un archivo</label>
                                 </div>
                             </div>
                         </div>
                         
-                    
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                        <input type="submit" class="btn btn-primary" value="Guardar">
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
+                        <div class="form-group row">
+                            <label for="inputDescription" class="col-sm-12 col-form-label">Descripcion de Convocatoria</label>
+                            <div class="col-sm-12">
+                                <textarea class="summernote form-control" name="inputDescription" form="formJob" required>
 
-    <div class="modal fade" id="modalUpdatePassword" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">Cambiar Password</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <form id="formUpdatePassword" class="needs-validation" novalidate>
-                    @csrf
-                    <div class="modal-body">
-
-                        <div class="card">
-                            
-                            <div class="card-body">
-                                <div class="form-group row">
-                                    <label for="inputUserUpdatePassword" class="col-sm-4 col-form-label">Usuario:</label>
-                                    <div class="col-sm-8">
-                                        <input type="text" class="form-control" name="inputUserUpdatePassword" id="inputUserUpdatePassword" placeholder="Username" readonly required>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label for="inputPasswordUpdatePassword" class="col-sm-4 col-form-label">Password:</label>
-                                    <div class="col-sm-8">
-                                        <input type="password" class="form-control" name="inputPasswordUpdatePassword" id="inputPasswordUpdatePassword" placeholder="Password" required>
-                                    </div>
-                                </div>
+                                </textarea>
                             </div>
                         </div>
-                        
-                    
+                        <div class="form-group row">
+                            <label for="inputFunction" class="col-sm-12 col-form-label">Funciones y responsabilidades</label>
+                            <div class="col-sm-12">
+                                <textarea class="summernote form-control" name="inputFunction" form="formJob" required>
+
+                                </textarea>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="inputProfile" class="col-sm-12 col-form-label">Perfil de Convocatoria</label>
+                            <div class="col-sm-12">
+                                <textarea class="summernote form-control" name="inputProfile" form="formJob" required>
+
+                                </textarea>
+                            </div>
+                        </div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                        <input type="submit" class="btn btn-primary" value="Guardar">
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-    
-    <div class="modal fade" id="modalEditUser" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">Editar Usuario</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                    </button>
                 </div>
-                <form id="formUpdateUser" class="needs-validation" novalidate >
-                    @csrf
-                    <div class="modal-body">
-                        
-                            <div class="card">
-                                
-                                <div class="card-body">
-                                    <div class="form-group row">
-                                        <label for="inputUpdateTypeUser" class="col-sm-4 col-form-label">Tipo de Usuario:</label>
-                                        <div class="col-sm-8">
-                                            
-                                            <select name="inputUpdateType" id="inputUpdateTypeUser" class="form-control" required>
-                                                <option value="USUARIO">USUARIO</option>
-                                                <option value="ADMINISTRADOR">ADMINISTRADOR</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label for="inputUpdateDni" class="col-sm-4 col-form-label">Dni:</label>
-                                        <div class="col-sm-8">
-                                            <div class="input-group date" id="reservationdate" data-target-input="nearest">
-                                                <input type="number" class="form-control dni" name="inputUpdateDni" placeholder="DNI" required>
-                                                <div class="input-group-append">
-                                                    <div class="input-group-text"><i class="fas fa-search"></i></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row names">
-                                        <label for="inputUpdateName" class="col-sm-4 col-form-label">Nombres:</label>
-                                        <div class="col-sm-8">
-                                            <input type="text" class="form-control" name="inputUpdateNames" id="inputUpdateName" placeholder="Nombres" required>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row lastnamePatern">
-                                        <label for="inputUpdateLastNamePatern" class="col-sm-4 col-form-label">Apellido Paterno:</label>
-                                        <div class="col-sm-8">
-                                            <input type="text" class="form-control" name="inputUpdateLastnamePatern" id="inputUpdateLastNamePatern" placeholder="Apellido Paterno" required>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row lastnameMatern">
-                                        <label for="inputUpdateLastNameMatern" class="col-sm-4 col-form-label">Apellido Materno:</label>
-                                        <div class="col-sm-8">
-                                            <input type="text" class="form-control" name="inputUpdateLastnameMatern" id="inputUpdateLastNameMatern" placeholder="Apellido Materno" required>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label for="inputUpdateDate" class="col-sm-4 col-form-label">Fecha de Inicio:</label>
-                                        <div class="col-sm-8">
-                                            <input type="date" class="form-control" name="inputUpdateDate" id="inputUpdateDate" placeholder="Fecha de Inicio" required>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card">
-                                
-                                <div class="card-body">
-                                    <div class="form-group row">
-                                        <label for="inputUpdateUser" class="col-sm-4 col-form-label">Usuario:</label>
-                                        <div class="col-sm-8">
-                                            <input type="text" class="form-control" id="inputUpdateUser" name="inputUpdateUsername" placeholder="Username" readonly required>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label for="inputUpdateState" class="col-sm-4 col-form-label">Estado:</label>
-                                        <div class="col-sm-8">
-                                            <select name="inputUpdateState" id="inputUpdateState" class="form-control" required>
-                                                <option value="0">Activo</option>
-                                                <option value="1">Inactivo</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                        
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                        <input type="submit" class="btn btn-primary" value="Guardar">
-                    </div>
-                </form>
+                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                <input type="submit" class="btn btn-success" value="Guardar">
+            </div>
             </div>
         </div>
+        </form>
     </div>
 
     <div class="modal fade" id="modalSuccess" aria-hidden="true" data-backdrop="static" data-keyboard="false" aria-labelledby="exampleModalToggleLabel1" tabindex="-1">
@@ -356,6 +222,9 @@
 <link rel="stylesheet" href="{{asset('plugins/datatables-buttons/css/buttons.bootstrap4.min.css')}}">
 <script src="{{asset('plugins/datatables/jquery.dataTables.min.js')}}"></script>
 
+<link rel="stylesheet" href="{{asset('plugins/summernote/summernote-bs4.min.css')}}">
+<script src="{{asset('plugins/summernote/summernote-bs4.min.js')}}"></script>
+
 <script src="{{asset('plugins/datatables-select/js/dataTables.select.min.js')}}"></script>
 <link rel="stylesheet" href="{{asset('plugins/datatables-select/css/select.dataTables.min.css')}}">
 <script src="{{asset('plugins/datatables-bs4/js/dataTables.bootstrap4.min.js')}}"></script>
@@ -375,17 +244,76 @@
 <script src="{{asset('js/adminlte.min.js')}}"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="{{asset('js/demo.js')}}"></script>
-
+<script src="{{asset('plugins/bs-custom-file-input/bs-custom-file-input.min.js')}}"></script>
 <script src="{{asset('js/admin/convoc/convoc.js')}}"></script>
 <!-- Page specific script -->
+<script>
+  $(function () {
+    // Summernote
+    bsCustomFileInput.init();
+    var forms = document.querySelectorAll('.needs-validation')
+
+  // Loop over them and prevent submission
+    Array.prototype.slice.call(forms)
+    .forEach(function (form) {
+      form.addEventListener('submit', function (event) {
+        if (!form.checkValidity()) {
+          event.preventDefault()
+          event.stopPropagation()
+        }
+
+        form.classList.add('was-validated')
+      }, false)
+    })
+
+    $('.summernote').summernote({
+        toolbar: [
+            // [groupName, [list of button]]
+            ['style', ['bold', 'italic', 'underline', 'clear']],
+            ['font', ['strikethrough', 'superscript', 'subscript']],
+            ['fontsize', ['fontsize']],
+            ['color', ['color']],
+            ['para', ['ul', 'ol', 'paragraph']],
+            ['height', ['height']]
+        ],
+        placeholder: 'Escribe algo aqui...',
+        tabsize: 2,
+        height: 150,                 // set editor height
+        minHeight: null,             // set minimum height of editor
+        maxHeight: null,             // set maximum height of editor
+        focus: true 
+    })
+  })
+  
+</script>
 <style>
-#datable td, th
-{
-    text-align: center; 
-    vertical-align: middle;
-}
-#datable thead th {
-    vertical-align: middle;
-}
+    #datable td, th{
+        text-align: center; 
+        vertical-align: middle;
+    }
+    #datable thead th {
+        vertical-align: middle;
+    }
+    #datable tr {
+    cursor: pointer !important;
+    }
+    .btn-primary {
+        color: #fff;
+        background-color: #007bff !important;
+        border-color: #007bff !important;
+        box-shadow: none !important;
+    }
+    .fa-search{
+        cursor: pointer !important;
+    }
+    .modal-dialog .overlay {
+        
+        background-color: rgba(0,0,0,0) !important;
+        color: #666f76;
+        
+    }
+    .custom-file-label::after {
+        content: "Examinar";
+    }
 </style>
 @endsection

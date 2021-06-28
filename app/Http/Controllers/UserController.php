@@ -8,6 +8,8 @@ use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Crypt;
 
 class UserController extends Controller
 {
@@ -205,6 +207,30 @@ class UserController extends Controller
             }
         }
     }  
+
+    public function createDirectory(Request $request){
+        /*$path = public_path().'/files/jobs/convocatoria';
+        File::makeDirectory($path, $mode = 0777, true, true);*/
+        //$data = User::where('username', 'mendoza')->firstOrFail();
+        /*if(User::where('username', 'asd')->exists()){
+            return response()->json([
+                'data' => 'existe'
+            ]);
+        }else{
+            return response()->json([
+                'data' => 'no existe'
+            ]);
+        }*/
+        //$data = Crypt::decryptString('eyJpdiI6IkxCYUlBS3AvZDFEZ0g3NXZwS2V3cWc9PSIsInZhbHVlIjoianpUM3lINzZwcnlvaVJWVzh2b3FHR0VWUmhob3EvRWQ2TGNBQ3A5eWxtYz0iLCJtYWMiOiJhNDc1OGI5Njk1OGQ3Y2E5Y2U5N2NkYTFhMGMwNmU5OTU0MzQ4NmE0YWJhN2MyMTQ5ZGVmYTk4ZTU1OTc4NWZmIn0=');
+        $data = base64_decode($request->file);
+        /*$decodeData = str_replace('/','', $data);
+        return response()->json([
+            'data' => $data,
+            'decpde' => $decodeData
+        ]);*/
+        return response()->file(public_path().$data);
+        
+    }
     
     public function getApiDni($dni){
         $ch = curl_init ();

@@ -28,7 +28,7 @@ class Jobs extends Migration
             $table->text('description');
             $table->text('functions');
             $table->text('requirements');
-            $table->boolean('state_delete');
+            $table->boolean('state_delete')->default(0);
             $table->text('syslog');
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));

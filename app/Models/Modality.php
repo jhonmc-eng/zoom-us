@@ -17,6 +17,7 @@ class Modality extends Model
         'id',
         'name',
         'description',
+        'directory',
         'state_delete',
         'syslog'
     ];
