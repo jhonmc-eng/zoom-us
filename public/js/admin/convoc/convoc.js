@@ -32,8 +32,8 @@ $(document).ready(function(){
                             button = `<button type="button" class="btn btn-danger">CERRADA</button>`
                             
                             break;
-                        case 'EN PROCESO':
-                            button = `<button type="button" class="btn btn-primary">EN PROCESO</button>`
+                        case 'PROCESO':
+                            button = `<button type="button" class="btn btn-primary">PROCESO</button>`
                             break;
                         case 'CANCELADA':
                             button = `<button type="button" class="btn btn-info">CANCELADA</button>`
@@ -132,9 +132,11 @@ $(document).ready(function(){
         e.preventDefault()
         e.stopPropagation()
         var form = $(this)
+        
         //console.log($("#formJob input[name=inputBaseFile]")[0].files[0])
         //form[0].trigger('reset')
         if (form[0].checkValidity()) {
+            $('#modal-loading').modal('show')
             var data = new FormData();
             var form_data = $(this).serializeArray();
             $.each(form_data, function (key, input) {
@@ -150,6 +152,7 @@ $(document).ready(function(){
                 processData: false,
                 contentType: false,
                 success: function(data){
+                    $('#modal-loading').modal('hide')
                     $('#modalJob').modal('hide')
                     $('#modalSuccess .modal-body').empty().append(data.message)
                     $('#modalSuccess').modal('show')
@@ -158,7 +161,8 @@ $(document).ready(function(){
                     table.ajax.reload();
                 },
                 error:function(e){
-                    errorDniOrUsername(e)
+                    $('#modal-loading').modal('hide')
+                    error(e)
                 }
             });
         }
@@ -168,23 +172,28 @@ $(document).ready(function(){
         e.preventDefault()
         e.stopPropagation()
         $('#formJob').trigger('reset')
+        $('#formJob .txtarea_description').summernote('reset')
+        $('#formJob .txt_function').summernote('reset');
+        $('#formJob .txtarea_profile').summernote('reset');
         $('#modalJob').modal('show')
-        
     });
-    /*$('#button-edit').on('click', function(e){
+    
+    $('#button-edit').on('click', function(e){
         e.preventDefault()
         e.stopPropagation()
         let data = table.row({selected:true}).data();
         if(data !== undefined){
-            $('#formUpdateUser input[name="inputUpdateNames"]').val(data.names)
-            $('#formUpdateUser select[name="inputUpdateType"]').val(data.nivel)
-            $('#formUpdateUser input[name="inputUpdateDni"]').val(data.dni)
-            $('#formUpdateUser input[name="inputUpdateLastnamePatern"]').val(data.lastnamePatern)
-            $('#formUpdateUser input[name="inputUpdateLastnameMatern"]').val(data.lastnameMatern)
-            $('#formUpdateUser input[name="inputUpdateDate"]').val(data.date_start)
-            $('#formUpdateUser input[name="inputUpdateUsername"]').val(data.username)
-            $('#formUpdateUser input[name="inputUpdateState"]').val(data.state_delete)
-            $('#modalEditUser').modal('show')
+            console.log(data)
+            /$('#formEditJob input[name="inputName"]').val(data.title)
+            $('#formEditJob input[name="inputDatePublication"]').val(data.date_publication)
+            $('#formEditJob input[name="inputDatePostulation"]').val(data.date_postulation)
+            $('#formEditJob select[name="inputModality"]').val(data.modality_id)
+            $('#formEditJob select[name="inputState"]').val(data.state_job_id)
+            $('#formEditJob input[name="inputNumber"]').val(data.number_jobs)
+            $('#formEditJob .txtarea_description').summernote("code", data.description);
+            $('#formEditJob .txt_function').summernote("code", data.functions);
+            $('#formEditJob .txtarea_profile').summernote("code", data.requirements);
+            $('#modalEditJob').modal('show')
         }else{
             errorSelect()
         }
@@ -192,21 +201,32 @@ $(document).ready(function(){
 
     })
 
-    $('#formUpdateUser').on('submit', function(e){
+    $('#formEditJob').on('submit', function(e){
         e.preventDefault()
         e.stopPropagation()
         let data = table.row({selected:true}).data();
-        console.log(data)
         if(data !== undefined){
             let form = $(this)
             if (form[0].checkValidity()) {
+                $('#modal-loading').modal('show')
+                var data_ = new FormData();
+                var form_data = $(this).serializeArray();
+                $.each(form_data, function (key, input) {
+                    data_.append(input.name, input.value)
+                });
+                data_.append('inputBaseFile',$("#formEditJob input[name=inputBaseFile]")[0].files[0])
+                data_.append('inputScheduleFile',$("#formEditJob input[name=inputScheduleFile]")[0].files[0])
+                data_.append('inputProfileFile',$("#formEditJob input[name=inputProfileFile]")[0].files[0])
+                
                 $.ajax({
-                    url : `/admin/users/update-user/${data.id}`,
+                    url : `/admin/jobs/update-job/${data.id}`,
                     type : 'POST',
-                    data : form.serialize(),
-                    success: function(data){
-                        $('#modalEditUser').modal('hide')
-                        $('#modalSuccess .moda-header').empty().append('¡Exito!')
+                    data : data_,
+                    processData: false,
+                    contentType: false,
+                    success: async function(data){
+                        $('#modal-loading').modal('hide')
+                        $('#modalEditJob').modal('hide')
                         $('#modalSuccess .modal-body').empty().append(data.message)
                         $('#modalSuccess').modal('show')
                         form[0].reset()
@@ -214,7 +234,8 @@ $(document).ready(function(){
                         table.ajax.reload();
                     },
                     error:function(e){
-                        errorDniOrUsername(e)
+                        $('#modal-loading').modal('hide')
+                        error(e)
                     }
                 });
             }
@@ -223,7 +244,16 @@ $(document).ready(function(){
         }
         
     })  
-    $('#button-password').on('click', function(e){
+
+    $('.validation-pdf').on('change', function(e){
+        e.preventDefault()
+        e.stopPropagation()
+        let file = $(this)[0].files[0]
+        let size = file.size
+        let type = file.type
+        console.log(file,size,type)
+    })
+    /*$('#button-password').on('click', function(e){
         e.preventDefault()
         e.stopPropagation()
         $('#formUpdatePassword').trigger('reset')
@@ -263,41 +293,17 @@ $(document).ready(function(){
         }else{
             errorSelect()
         }
-    })
-    $('.fa-search').on('click', function(e){
-        e.preventDefault()
-        e.stopPropagation()
-        $('#modal-loading').modal('show')
-        let parent = $(this).parent().parent().parent();
-        let dni = parent.find('input').val()
-        $.ajax({
-            url : `/admin/users/get-data-dni/${dni}`,
-            type : 'GET',
-            success: function(data){
-                $('#modal-loading').modal('hide')
-                parent.parents('form').find('.names input').val(data.data.nombres)
-                parent.parents('form').find('.lastnamePatern input').val(data.data.apellido_paterno)
-                parent.parents('form').find('.lastnameMatern input').val(data.data.apellido_materno)
-                parent.parents('form').find('.username input').val(data.username)
-            },
-            error: function(e){
-                $('#modal-loading').modal('hide')
-                $('#modalSuccess .modal-header').empty().append('Error')
-                $('#modalSuccess .modal-body').empty().append(e.responseJSON.error)
-                $('#modalSuccess').modal('show')
-            }
-        })
-        console.log(dni)
-    })
+    })*/
+    
     function errorSelect(){
         $('#modalSuccess .modal-header').empty().append('Error')
         $('#modalSuccess .modal-body').empty().append('¡Debe seleccionar un registro!')
         $('#modalSuccess').modal('show')
     }
     
-    function errorDniOrUsername(e){
+    function error(e){
         $('#modalSuccess .modal-header').empty().append('Error')
         $('#modalSuccess .modal-body').empty().append(e.responseJSON.message)
         $('#modalSuccess').modal('show')
-    }*/
+    }
 })

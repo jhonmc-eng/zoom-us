@@ -47,6 +47,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth_admin', 'as' => 'admin.
         Route::get('/', 'ConvocatoriaController@view');
         Route::get('/list-jobs', 'ConvocatoriaController@listJobs');
         Route::post('/register-job', 'ConvocatoriaController@registerJob');
+        Route::post('/update-job/{id}', 'ConvocatoriaController@editJob');
     });
 });
 

@@ -137,19 +137,19 @@
                             
                             <div class="col-sm-4">
                                 <div class="custom-file">
-                                    <input type="file" name="inputBaseFile" accept="application/pdf" class="form-control custom-file-input" required>
+                                    <input type="file" name="inputBaseFile" accept="application/pdf" class="form-control custom-file-input validation-pdf" required>
                                     <label class="custom-file-label" for="inputBaseFile">Escoge un archivo</label>
                                 </div>
                             </div>    
                             <div class="col-sm-4">
                                 <div class="custom-file">
-                                    <input type="file" name="inputScheduleFile" accept="application/pdf" class="form-control custom-file-input" required>
+                                    <input type="file" name="inputScheduleFile" accept="application/pdf" class="form-control custom-file-input validation-pdf" required>
                                     <label class="custom-file-label" for="inputScheduleFile">Escoge un archivo</label>
                                 </div>
                             </div>                     
                             <div class="col-sm-4">
                                 <div class="custom-file">
-                                    <input type="file" name="inputProfileFile" accept="application/pdf" class="form-control custom-file-input" required>
+                                    <input type="file" name="inputProfileFile" accept="application/pdf" class="form-control custom-file-input validation-pdf" required>
                                     <label class="custom-file-label" for="inputProfileFile">Escoge un archivo</label>
                                 </div>
                             </div>
@@ -158,7 +158,7 @@
                         <div class="form-group row">
                             <label for="inputDescription" class="col-sm-12 col-form-label">Descripcion de Convocatoria</label>
                             <div class="col-sm-12">
-                                <textarea class="summernote form-control" name="inputDescription" form="formJob" required>
+                                <textarea class="summernote form-control txtarea_description" name="inputDescription" form="formJob" required>
 
                                 </textarea>
                             </div>
@@ -166,7 +166,7 @@
                         <div class="form-group row">
                             <label for="inputFunction" class="col-sm-12 col-form-label">Funciones y responsabilidades</label>
                             <div class="col-sm-12">
-                                <textarea class="summernote form-control" name="inputFunction" form="formJob" required>
+                                <textarea class="summernote form-control txt_function"  name="inputFunction" form="formJob" required>
 
                                 </textarea>
                             </div>
@@ -174,7 +174,123 @@
                         <div class="form-group row">
                             <label for="inputProfile" class="col-sm-12 col-form-label">Perfil de Convocatoria</label>
                             <div class="col-sm-12">
-                                <textarea class="summernote form-control" name="inputProfile" form="formJob" required>
+                                <textarea class="summernote form-control txtarea_profile" name="inputProfile" form="formJob" required>
+
+                                </textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                <input type="submit" class="btn btn-success" value="Guardar">
+            </div>
+            </div>
+        </div>
+        </form>
+    </div>
+    <div class="modal fade" id="modalEditJob" tabindex="-1" role="dialog" aria-labelledby="modalNewJob" aria-hidden="true">
+        <form id="formEditJob" class="needs-validation" enctype="multipart/form-data" novalidate>
+        @csrf
+        <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalScrollableTitle">Editar Convocatoria</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="form-group row">
+                            <label for="inputName" class="col-sm-12 col-form-label">Titulo de la convocatoria</label>
+                            <div class="col-sm-12">
+                                <input type="text" name="inputName" class="form-control" placeholder="Titulo" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group row">
+                            <label for="inputDatePublication" class="col-sm-6 col-form-label">Fecha de publicación</label>
+                            <label for="inputDatePostulation" class="col-sm-6 col-form-label">Fecha de postulación</label>
+                              
+                            <div class="col-sm-6">
+                                <input type="date" name="inputDatePublication" class="form-control" required>
+                            </div>                     
+                            <div class="col-sm-6">
+                                <input type="date" name="inputDatePostulation" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="inputModality" class="col-sm-4 col-form-label">Modalidad</label>
+                            <label for="inputState" class="col-sm-4 col-form-label">Estado</label>
+                            <label for="inputNumber" class="col-sm-4 col-form-label">Número de convocatoria</label>
+                            <div class="col-sm-4">
+                                <select name="inputModality" class="form-control" required>
+                                    @foreach($modalitys as $item)
+                                        <option value="{{$item->id}}">{{$item->name}}</option>
+                                    @endforeach
+                                    
+                                </select>      
+                            </div>   
+                            <div class="col-sm-4">
+                                <select name="inputState" class="form-control" required>
+                                    @foreach($states as $item)
+                                        <option value="{{$item->id}}">{{$item->name}}</option>
+                                    @endforeach
+                                </select>      
+                            </div>                     
+                            <div class="col-sm-4">
+                                <input type="number" name="inputNumber" class="form-control" placeholder="Número" required>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="inputBaseFile" class="col-sm-4 col-form-label">Bases</label>
+                            <label for="inputScheduleFile" class="col-sm-4 col-form-label">Cronograma</label>
+                            <label for="inputProfileFile" class="col-sm-4 col-form-label">Perfil</label>
+                            
+                            <div class="col-sm-4">
+                                <div class="custom-file">
+                                    <input type="file" name="inputBaseFile" accept="application/pdf" class="form-control custom-file-input validation-pdf">
+                                    <label class="custom-file-label" for="inputBaseFile">Escoge un archivo</label>
+                                </div>
+                            </div>    
+                            <div class="col-sm-4">
+                                <div class="custom-file">
+                                    <input type="file" name="inputScheduleFile" accept="application/pdf" class="form-control custom-file-input validation-pdf">
+                                    <label class="custom-file-label" for="inputScheduleFile">Escoge un archivo</label>
+                                </div>
+                            </div>                     
+                            <div class="col-sm-4">
+                                <div class="custom-file">
+                                    <input type="file" name="inputProfileFile" accept="application/pdf" class="form-control custom-file-input validation-pdf">
+                                    <label class="custom-file-label" for="inputProfileFile">Escoge un archivo</label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group row">
+                            <label for="inputDescription" class="col-sm-12 col-form-label">Descripcion de Convocatoria</label>
+                            <div class="col-sm-12">
+                                <textarea class="summernote form-control txtarea_description" name="inputDescription" >
+
+                                </textarea>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="inputFunction" class="col-sm-12 col-form-label">Funciones y responsabilidades</label>
+                            <div class="col-sm-12">
+                                <textarea class="summernote form-control txt_function"  name="inputFunction" >
+
+                                </textarea>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="inputProfile" class="col-sm-12 col-form-label">Perfil de Convocatoria</label>
+                            <div class="col-sm-12">
+                                <textarea class="summernote form-control txtarea_profile" name="inputProfile" >
 
                                 </textarea>
                             </div>
@@ -213,6 +329,17 @@
         </div>
     </div>
     <div class="modal fade w-100 h-100" id="modal-loading" data-backdrop="false" >
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content" style="height: 100px !important;">
+            <div class="overlay">
+                <i class="fas fa-2x fa-sync fa-spin"></i>
+            </div>
+            
+          </div>
+          <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
 @endsection
 
 @section('after-scripts')

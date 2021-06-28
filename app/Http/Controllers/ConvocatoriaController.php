@@ -45,13 +45,14 @@ class ConvocatoriaController extends Controller
             'inputNumber' => 'required',
             'inputDatePublication' => 'required',
             'inputDatePostulation' => 'required',
-            'inputBaseFile' => 'required|file|max:10000000',
+            'inputBaseFile' => 'required|file|max:10485760',
             'inputScheduleFile' => 'required|file|max:10485760',
             'inputProfileFile' => 'required|file|max:10485760',
             'inputDescription' => 'required',
             'inputFunction' => 'required',
             'inputProfile' => 'required'
         ]);
+        //dd($request);
         if($request->file('inputBaseFile')->getClientOriginalExtension() != "pdf"){
             return response()->json([
                 'success' => false,
@@ -79,9 +80,6 @@ class ConvocatoriaController extends Controller
                 'extension' => $request->file('inputProfileFile')->getClientOriginalExtension()
             ], 400);
         }
-        //$this->verifyPDF($request);
-        /*$this->verifyPDF($request->file('inputScheduleFile'));
-        $this->verifyPDF($request->file('inputProfileFile'));*/
         try {
             
             $job = New Job();
@@ -123,8 +121,81 @@ class ConvocatoriaController extends Controller
         }
     }
 
-    public function editJob(Request $request){
+    public function editJob(Request $request, $id){
+        $request->validate([
+            'inputName' => 'required',
+            'inputModality' => 'required',
+            'inputState' => 'required',
+            'inputNumber' => 'required',
+            'inputDatePublication' => 'required',
+            'inputDatePostulation' => 'required',
+            'inputBaseFile' => 'nullable|max:10485760',
+            'inputScheduleFile' => 'nullable|max:10485760',
+            'inputProfileFile' => 'nullable|max:10485760',
+            'inputDescription' => 'required',
+            'inputFunction' => 'required',
+            'inputProfile' => 'required'
+        ]);
+        try {
+            $job = Job::where('id', $id)->first();
+            $job->title = $request->inputName;
+            $job->modality_id = $request->inputModality;
+            $job->state_job_id = $request->inputState;
+            $job->number_jobs = $request->inputNumber;
+            $job->date_publication = $request->inputDatePublication;
+            $job->date_postulation = $request->inputDatePostulation;
+            if($request->hasFile('inputBaseFile')) {
+                if($request->file('inputBaseFile')->getClientOriginalExtension() != "pdf"){
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Ocurrio un error',
+                        'error' => 'El archivo no es un PDF',
+                        'type' => 'crogrnama',
+                        'extension' => $request->file('inputScheduleFile')->getClientOriginalExtension()
+                    ], 400);
+                }
+                $job->bases = $this->uploadArchive($request->file('inputBaseFile'), $job->id, "base");
+            }
+            if($request->hasFile('inputScheduleFile')) {
+                if($request->file('inputScheduleFile')->getClientOriginalExtension() != "pdf"){
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Ocurrio un error',
+                        'error' => 'El archivo no es un PDF',
+                        'type' => 'crogrnama',
+                        'extension' => $request->file('inputScheduleFile')->getClientOriginalExtension()
+                    ], 400);
+                }
+                $job->schedule = $this->uploadArchive($request->file('inputScheduleFile'), $job->id, "schedule");
+            }
+            if($request->hasFile('inputProfileFile')) {
+                if($request->file('inputProfileFile')->getClientOriginalExtension() != "pdf"){
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Ocurrio un error',
+                        'error' => 'El archivo no es un PDF',
+                        'type' => 'crogrnama',
+                        'extension' => $request->file('inputProfileFile')->getClientOriginalExtension()
+                    ], 400);
+                }
+                $job->profile = $this->uploadArchive($request->file('inputProfileFile'), $job->id, 'profile');
+            }
 
+            $job->description = $request->inputDescription;
+            $job->functions = $request->inputFunction;
+            $job->requirements = $request->inputProfile;
+            $job->syslog = $job->syslog . ' | ' . $this->syslog_admin(2, $request);
+            $job->save();
+            return response()->json([
+                'success' => TRUE,
+                'message' => 'Convocatoria actualizada exitosamente'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Ocurrio un error',
+                'error' => $e->getMessage()
+            ],500);
+        }
     }
 
     public function viewCandidates(Request $request){
@@ -140,6 +211,7 @@ class ConvocatoriaController extends Controller
     }
 
     public function uploadArchive($request, $id, $type){
+        
         $file = $request;
         $name = $type.'_'.time().'.'.$file->extension();
         $file->move(public_path().'/files/jobs/job_'.$id, $name);
