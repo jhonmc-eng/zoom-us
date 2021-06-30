@@ -113,7 +113,7 @@ $(document).ready(function(){
     let buttons = `
         <button type="button" class="btn btn-success" id="button-register" data-toggle="modal"><i class="fas fa-briefcase"></i> Nuevo</button>
         <button type="button" class="btn btn-info" id="button-edit" data-toggle="modal"><i class="fas fa-edit"></i> Editar</button>
-        <button type="button" class="btn btn-primary" id="button-check" data-toggle="modal"><i class="fas fa-check-square"></i> Upload</button>
+        <button type="button" class="btn btn-primary" id="button-view" data-toggle="modal"><i class="far fa-eye"></i> Ver</button>
         <div class="btn-group" role="group">
             <button id="btnGroupDrop1" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <i class="fas fa-print"></i> Reporte
@@ -208,7 +208,7 @@ $(document).ready(function(){
         if(data !== undefined){
             let form = $(this)
             if (form[0].checkValidity()) {
-                $('#modal-loading').modal('show')
+                //$('#modal-loading').modal('show')
                 var data_ = new FormData();
                 var form_data = $(this).serializeArray();
                 $.each(form_data, function (key, input) {
@@ -224,14 +224,15 @@ $(document).ready(function(){
                     data : data_,
                     processData: false,
                     contentType: false,
-                    success: async function(data){
-                        $('#modal-loading').modal('hide')
+                    success: function(data){
                         $('#modalEditJob').modal('hide')
                         $('#modalSuccess .modal-body').empty().append(data.message)
                         $('#modalSuccess').modal('show')
                         form[0].reset()
                         form[0].classList.remove('was-validated')
                         table.ajax.reload();
+                        
+                        //$('#modal-loading').modal('hide')
                     },
                     error:function(e){
                         $('#modal-loading').modal('hide')
@@ -242,31 +243,44 @@ $(document).ready(function(){
         }else{
             errorSelect()
         }
+
+        
         
     })  
 
     $('.validation-pdf').on('change', function(e){
+        //Toasts.reset()
+        //toastr.error('Lorem ipsum dolor sit amet, consetetur sadipscing elitr.')
         e.preventDefault()
         e.stopPropagation()
         let file = $(this)[0].files[0]
         let size = file.size
         let type = file.type
         console.log(file,size,type)
-        //if(type != "application/pdf" || size <= 1e+7)
+        if(type != "application/pdf"){
+            $(this).val('')
+            toastr.error('El tipo de archivo que quiere subir, no esta permitido',{
+                "closeButton": true,
+              })
+        }
+        if(size >= 10000000){
+            $(this).val('')
+            toastr.error('El tamaño de archivo que quiere subir, no esta permitido',{
+                "closeButton": true,
+              })
+        }
     })
-    /*$('#button-password').on('click', function(e){
+    $('#button-view').on('click', function(e){
         e.preventDefault()
         e.stopPropagation()
-        $('#formUpdatePassword').trigger('reset')
         let data = table.row({selected:true}).data()
         if(data !== undefined){
-            $('#formUpdatePassword input[name="inputUserUpdatePassword"]').empty().val(data.username)
-            $('#modalUpdatePassword').modal('show')
+            $(location).attr('href',`/admin/jobs/view-job?job_id=${data.token}`)   
         }else{
             errorSelect()
         }
         
-    })
+    })/*
     $('#formUpdatePassword').on('submit', function(e){
         e.preventDefault()
         e.stopPropagation()
