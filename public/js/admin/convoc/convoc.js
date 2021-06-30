@@ -252,6 +252,7 @@ $(document).ready(function(){
         let size = file.size
         let type = file.type
         console.log(file,size,type)
+        //if(type != "application/pdf" || size <= 1e+7)
     })
     /*$('#button-password').on('click', function(e){
         e.preventDefault()
