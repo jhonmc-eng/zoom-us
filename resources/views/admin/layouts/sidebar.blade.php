@@ -1,4 +1,4 @@
-<aside class="main-sidebar sidebar-dark-primary elevation-4">
+<aside class="main-sidebar sidebar-dark-primary elevation-4" style="position:fixed !important;/*background-color: #c12323fa;*/">
     <!-- Brand Logo -->
     <a href="../index3.html" class="brand-link">
       <img src="{{ asset('img/logotipo_region_tacna.png') }}" alt="Gobierno Regional de Tacna" class="brand-image img-circle elevation-3" style="opacity: .8">
@@ -43,7 +43,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="#" class="nav-link">
+            <a href="/admin/jobs" class="nav-link">
               <i class="nav-icon fas fa-briefcase"></i>
               <p>
                 Convocatorias

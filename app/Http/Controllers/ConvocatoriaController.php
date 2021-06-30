@@ -7,11 +7,16 @@ use App\Http\Traits\SysLog as TraitsSysLog;
 use App\Models\Job;
 use App\Models\Modality;
 use App\Models\StateJob;
+use Illuminate\Support\Facades\Crypt;
+//use Carbon\Carbon;
+
 class ConvocatoriaController extends Controller
 {
     //
     use TraitsSysLog;
+    
     public function view(){
+        //dd(Carbon::now()->toDateTimeString());
         try {
             $modalitys = Modality::where('state_delete', 0)->get();
             $states = StateJob::where('state_delete', 0)->get();
@@ -21,12 +26,14 @@ class ConvocatoriaController extends Controller
                 'error' => $e->getMessage()
             ],500);
         }
-        return view('admin.convocatorias.convocatorias')->with(compact('modalitys', 'states'));
+        return view('admin.jobs.jobs')->with(compact('modalitys', 'states'));
     }
 
     public function listJobs(){
         try {
-            $data = Job::with(['modality', 'stateJob'])->orderBy('id', 'DESC')->get();
+            $data = Job::with(['modality', 'stateJob'])->where('state_delete', 0)->orderBy('id', 'DESC')->get()->each(function($item){
+                $item->token = Crypt::encrypt($item->id);
+            });
             return response()->json([
                 'success' => true,
                 'data' => $data
@@ -154,6 +161,7 @@ class ConvocatoriaController extends Controller
                         'extension' => $request->file('inputScheduleFile')->getClientOriginalExtension()
                     ], 400);
                 }
+                File::delete(public_path().$job->bases);
                 $job->bases = $this->uploadArchive($request->file('inputBaseFile'), $job->id, "base");
             }
             if($request->hasFile('inputScheduleFile')) {
@@ -166,9 +174,11 @@ class ConvocatoriaController extends Controller
                         'extension' => $request->file('inputScheduleFile')->getClientOriginalExtension()
                     ], 400);
                 }
+                File::delete(public_path().$job->schedule);
                 $job->schedule = $this->uploadArchive($request->file('inputScheduleFile'), $job->id, "schedule");
             }
             if($request->hasFile('inputProfileFile')) {
+                
                 if($request->file('inputProfileFile')->getClientOriginalExtension() != "pdf"){
                     return response()->json([
                         'success' => false,
@@ -178,6 +188,7 @@ class ConvocatoriaController extends Controller
                         'extension' => $request->file('inputProfileFile')->getClientOriginalExtension()
                     ], 400);
                 }
+                File::delete(public_path().$job->profile);
                 $job->profile = $this->uploadArchive($request->file('inputProfileFile'), $job->id, 'profile');
             }
 
@@ -202,18 +213,41 @@ class ConvocatoriaController extends Controller
 
     }
 
-    public function viewJob($job_id){
-        
+    public function viewJob(Request $request){
+        $job = Job::with(['modality','stateJob','results'])->where('id', Crypt::decrypt($request->job_id))->first()->toArray();
+        dd($job['results']);
+
+        return response()->json($job);
+        $job->bases = Crypt::encrypt($job->bases);
+        $job->schedule = Crypt::encrypt($job->schedule);
+        $job->profile = Crypt::encrypt($job->profile);
+        //dd($job);
+        return view('admin.jobs.viewJob')->with(compact('job'));
     }
 
     public function viewUploadDocuments($job_id){
 
     }
 
+    public function viewBase(Request $request){
+        $url = Crypt::decrypt($request->job_base);
+        return response()->file(public_path().$url);
+    }
+
+    public function viewSchedule(Request $request){
+        $url = Crypt::decrypt($request->job_schedule);
+        return response()->file(public_path().$url);
+    }
+
+    public function viewProfile(Request $request){
+        $url = Crypt::decrypt($request->job_profile);
+        return response()->file(public_path().$url);
+    }
+
     public function uploadArchive($request, $id, $type){
         
         $file = $request;
-        $name = $type.'_'.time().'.'.$file->extension();
+        $name = $type.'_'.time().'.'.$file->getClientOriginalExtension();
         $file->move(public_path().'/files/jobs/job_'.$id, $name);
         return '/files/jobs/job_'.$id.'/'.$name;
         

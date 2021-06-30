@@ -38,5 +38,9 @@ class Job extends Model
     public function stateJob(){
         return $this->hasOne('App\Models\StateJob', 'id', 'state_job_id');
     }
+
+    public function results(){
+        return $this->hasMany('App\Models\JobResult', 'job_id', 'id');
+    }
 }
 

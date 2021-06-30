@@ -35,6 +35,6 @@ class StatesJob extends Migration
     public function down()
     {
         //
-        //Schema::dropIfExists('states_jobs');
+        Schema::dropIfExists('states_jobs');
     }
 }
