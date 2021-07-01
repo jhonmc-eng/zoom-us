@@ -15,6 +15,7 @@ class TypeResult extends Model
         'id',
         'name',
         'description',
+        'multiple',
         'state_delete',
     ];
 

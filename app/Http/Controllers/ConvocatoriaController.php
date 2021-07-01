@@ -8,7 +8,8 @@ use App\Models\Job;
 use App\Models\Modality;
 use App\Models\StateJob;
 use Illuminate\Support\Facades\Crypt;
-//use Carbon\Carbon;
+use App\Models\JobResult;
+use App\Models\TypeResult;
 
 class ConvocatoriaController extends Controller
 {
@@ -209,24 +210,72 @@ class ConvocatoriaController extends Controller
         }
     }
 
-    public function viewCandidates(Request $request){
-
+    public function viewCandidates(Request $request, $id){
+        
     }
 
     public function viewJob(Request $request){
-        $job = Job::with(['modality','stateJob','results'])->where('id', Crypt::decrypt($request->job_id))->first()->toArray();
-        dd($job['results']);
-
-        return response()->json($job);
+        $id = Crypt::decrypt($request->job_id);
+        $job = Job::with(['modality','stateJob','results'])->where('id', $id)->first();
         $job->bases = Crypt::encrypt($job->bases);
         $job->schedule = Crypt::encrypt($job->schedule);
         $job->profile = Crypt::encrypt($job->profile);
-        //dd($job);
-        return view('admin.jobs.viewJob')->with(compact('job'));
+
+        $types = TypeResult::where('state_delete', 0)->where('multiple', 0)->orderBy('id', 'ASC')->get();
+        $job_result = JobResult::with(['typeResult'])->where('state_delete', 0)->where('job_id', $id)->orderBy('type_result_id', 'ASC')->get();
+        $format = [];
+        foreach($types as $case){
+            $data = JobResult::with(['typeResult'])->where([
+                                        ['state_delete','=',0],
+                                        ['job_id', '=', $id],
+                                        ['type_result_id', '=', $case->id]
+                                    ])->first();
+            if($data){
+                $data->token = Crypt::encrypt($data->path);
+                $case->file = $data;
+                
+            }
+        }
+        //dd($job, $types, $job_result);
+        return view('admin.jobs.viewJob')->with(compact('job', 'types', 'job_result'));
     }
 
-    public function viewUploadDocuments($job_id){
+    public function uploadDocuments(Request $request, $job_id){
+        $id = Crypt::decrypt($job_id);
+        $request->validate([
+            'type_document' => 'required',
+            'file_document' => 'required|file|max:10485760',
+            'date_publication' => 'required|date',
+        ]); 
 
+        try {
+            if($request->file('file_document')->getClientOriginalExtension() != 'pdf'){
+                return response() ->json([
+                    'success' => false,
+                    'message' => 'Ocurrio un error',
+                    'error' => 'El archivo no es un PDF'
+                ]);
+            }   
+            $job_result = New JobResult();
+            $job_result->type_result_id = $request->type_document;
+            $job_result->job_id = $id;
+            $job_result->date_publication = $request->date_publication;
+            $job_result->path = 'path';
+            $job_result->syslog = $this->syslog_admin(1, $request);
+            $job_result->save();
+            $job_result->path = $this->uploadDocument($request->file('file_document'), $id, $request->type_document);
+            $job_result->save();
+            return response()->json([
+                'success' => true,
+                'message' => 'Archivo subido correctamente'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Ocurrio un error',
+                'error' => $e->getMessage()
+            ]);
+        }
     }
 
     public function viewBase(Request $request){
@@ -244,19 +293,33 @@ class ConvocatoriaController extends Controller
         return response()->file(public_path().$url);
     }
 
+    public function viewResult(Request $request){
+        $url = Crypt::decrypt($request->result);
+        //dd($url);
+        return response()->file(public_path().$url);
+    }
+
     public function uploadArchive($request, $id, $type){
-        
         $file = $request;
         $name = $type.'_'.time().'.'.$file->getClientOriginalExtension();
         $file->move(public_path().'/files/jobs/job_'.$id, $name);
         return '/files/jobs/job_'.$id.'/'.$name;
         
     }
+
+    public function uploadDocument($request, $id, $type){
+        $file = $request;
+        $name = $type.'_'.time().'.'.$file->getClientOriginalExtension();
+        $file->move(public_path().'/files/jobs/job_'.$id.'/results', $name);
+        return '/files/jobs/job_'.$id.'/results/'.$name;
+    }
     public function createDirectory($id){
         $path = public_path().'/files/jobs/job_'.$id;
         $candidates = public_path().'/files/jobs/job_'.$id.'/candidates';
+        $results = public_path().'/files/jobs/job_'.$id.'/results';
         File::makeDirectory($path, $mode = 0777, true, true);
         File::makeDirectory($candidates, $mode = 0777, true, true);
+        File::makeDirectory($results, $mode = 0777, true);
     }
 
 }

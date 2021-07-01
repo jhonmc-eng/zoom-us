@@ -102,7 +102,7 @@ $(function () {
                 }
             });
         }
-        
+    
     });
     $('#button-register').on('click', function (e) {
         e.preventDefault()

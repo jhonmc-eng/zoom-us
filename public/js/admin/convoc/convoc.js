@@ -225,7 +225,7 @@ $(document).ready(function(){
                     processData: false,
                     contentType: false,
                     success: function(data){
-                        $('#modalEditJob').modal('hide')
+                        $('#formEditJob').modal('hide')
                         $('#modalSuccess .modal-body').empty().append(data.message)
                         $('#modalSuccess').modal('show')
                         form[0].reset()

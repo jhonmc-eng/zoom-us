@@ -128,13 +128,13 @@
                                 <div class="col-sm-3 invoice-col">
                                     <address>
                                         <strong>Cronograma</strong><br>
-                                        <a target="_blank" href="/admin/jobs/view-schedule?job_schedule={{$job->schedule}}" type="button" class="btn btn-success">Cronograma</a><br>
+                                        <a target="_blank" href="/admin/jobs/view-schedule?job_schedule={{$job->schedule}}" type="button" class="btn btn-success">CRONOGRAMA</a><br>
                                     </address>
                                 </div>
                                 <!-- /.col -->
                                 <div class="col-sm-3 invoice-col">
                                     <b>Perfil</b><br>
-                                    <a target="_blank" href="/admin/jobs/view-profile?job_profile={{$job->profile}}" type="button" class="btn btn-success">Perfil</a><br>
+                                    <a target="_blank" href="/admin/jobs/view-profile?job_profile={{$job->profile}}" type="button" class="btn btn-success">PERFIL</a><br>
                                 </div>
 
                                 <div class="col-sm-3 invoice-col">
@@ -157,48 +157,27 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr>
-                                                    <td>Evaluación de Requisitos</td>
-                                                    <td>24/04/2021</td>
-                                                    <td>-------</td>
-                                                    <td>-------</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Evaluación Curricular</td>
-                                                    <td>-------</td>
-                                                    <td>-------</td>
-                                                    <td>-------</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Evaluación Psicológica</td>
-                                                    <td>-------</td>
-                                                    <td>-------</td>
-                                                    <td>-------</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Evaluación de Conocimientos</td>
-                                                    <td>-------</td>
-                                                    <td>-------</td>
-                                                    <td>-------</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Evaluación de Prueba de Campo</td>
-                                                    <td>-------</td>
-                                                    <td>-------</td>
-                                                    <td>-------</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Entrevista personal</td>
-                                                    <td>-------</td>
-                                                    <td>-------</td>
-                                                    <td>-------</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Resultado Final</td>
-                                                    <td>-------</td>
-                                                    <td>-------</td>
-                                                    <td>-------</td>
-                                                </tr>
+                                                @foreach($types as $item)
+                                                    <tr>
+                                                        <td>{{$item->name}}</td>
+                                                        @if(isset($item->file))
+                                                            <td>{{$item->file->date_publication}}</td>
+                                                            <td>                                    
+                                                                <a target="_blank" href="/admin/jobs/view-result?result={{$item->file->token}}" type="button" class="btn btn-info"><i class="fas fa-download"></i></a><br>
+                                                            </td>
+                                                            <td>
+                                                                <button type="button" data-id="{{$item->file->id}}" class="btn btn-warning"><i class="fas fa-edit"></i></button>
+                                                                <button type="button" data-id="{{$item->file->id}}" class="btn btn-danger"><i class="fas fa-trash-alt"></i></button>
+                                                            </td>
+                                                        @else
+                                                            <td>-------</td>
+                                                            <td>-------</td>
+                                                            <td>-------</td>
+                                                        @endif
+                                                        
+                                                    </tr>
+                                                @endforeach
+                                                
                                             </tbody>
                                         </table>
                                     </div>
@@ -211,10 +190,10 @@
                             <!-- /.row -->
 
                             <!-- this row will not appear when printing -->
-                            <div class="row no-print">
+                            <div class="row no-print" style="margin-top: 10px;">
                                 <div class="col-12">
                                 
-                                    <button type="button" class="btn btn-primary float-right" style="margin-right: 5px;">
+                                    <button type="button" class="btn btn-primary float-right" id="uploadDocument" style="margin-right: 5px;">
                                         <i class="fas fa-upload"></i> Subir Documentos
                                     </button>
                                 </div>
@@ -226,15 +205,127 @@
             </div><!-- /.container-fluid -->
         </section>
         
+    </div>
+    <div class="modal fade" id="modalDocumentNew" tabindex="-1" role="dialog" aria-labelledby="modalDocumentNew" data-backdrop="static" data-keyboard="false" aria-hidden="true">
+        
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalScrollableTitle">Publicar Documento</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="formDocumentNew" class="needs-validation" enctype="multipart/form-data" novalidate>
+            @csrf
+                <div class="modal-body">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="form-group row">
+                                <label for="type_document" class="col-sm-12 col-form-label">Tipo de Documento</label>
+                                <div class="col-sm-12">
+                                    <select name="type_document" id="type_document" class="form-control" required>
+                                        @foreach($types as $item)
+                                            <option value="{{$item->id}}">{{$item->name}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="date_publication" class="col-sm-12 col-form-label">Fecha de publicación</label>
+                                <div class="col-sm-12">
+                                    <input type="date" name="date_publication" class="form-control"  required>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="file_document" class="col-sm-12 col-form-label">Archivo</label>
+                                <div class="col-sm-12">
+                                    <div class="custom-file">
+                                        <input type="file" name="file_document" accept="application/pdf" class="form-control custom-file-input validation-pdf" required>
+                                        <label class="custom-file-label" for="file_document">Escoge un archivo</label>
+                                    </div>
+                                </div>  
+                            </div>
+                            
+                        </div>
+                    </div>
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <input type="submit" class="btn btn-success" value="Guardar">
+                </div>
+                </div>
+            </form>
+        </div>
+        
+    </div>
 
-<!-- Modal -->
+    <div class="modal fade" id="modalSuccess" aria-hidden="true" data-backdrop="static" data-keyboard="false" aria-labelledby="exampleModalToggleLabel1" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+            <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">¡Exito!</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body"> 
 
-        <!-- /.content -->
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" data-dismiss="modal" data-mdb-target="#exampleModalToggle22" data-mdb-toggle="modal" data-mdb-dismiss="modal" >
+                    OK
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade w-100 h-100" id="modal-loading" data-backdrop="false" >
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content" style="height: 100px !important;">
+            <div class="overlay">
+                <i class="fas fa-2x fa-sync fa-spin"></i>
+            </div>
+            
+          </div>
+          <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
     </div>
 @endsection
 
 @section('after-scripts')
+<script src="{{asset('js/adminlte.min.js')}}"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="{{asset('js/demo.js')}}"></script>
+<script src="{{asset('plugins/bs-custom-file-input/bs-custom-file-input.min.js')}}"></script>
+<script src="{{asset('plugins/toastr/toastr.min.js')}}"></script>
+<link rel="stylesheet" href="{{asset('plugins/toastr/toastr.min.css')}}">
+<!-- Page specific script -->
+<script src="{{asset('js/admin/convoc/view-job.js')}}"></script>
+<script>
+  $(function () {
+    // Summernote
+    bsCustomFileInput.init();
+    var forms = document.querySelectorAll('.needs-validation')
 
+  // Loop over them and prevent submission
+    Array.prototype.slice.call(forms)
+    .forEach(function (form) {
+      form.addEventListener('submit', function (event) {
+        if (!form.checkValidity()) {
+          event.preventDefault()
+          event.stopPropagation()
+        }
+
+        form.classList.add('was-validated')
+      }, false)
+    })
+
+  })
+  
+</script>
 <style>
     #datable thead th {
         vertical-align: middle;
