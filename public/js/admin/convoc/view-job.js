@@ -27,13 +27,13 @@ $(document).ready(function(){
                 processData: false,
                 contentType: false,
                 success: function(data){
-                    $('#modal-loading').modal('hide')
+                    /*$('#modal-loading').modal('hide')
                     $('#modalDocumentNew').modal('hide')
                     $('#modalSuccess .modal-body').empty().append(data.message)
                     $('#modalSuccess').modal('show')
                     form[0].reset()
-                    form[0].classList.remove('was-validated')
-                    table.ajax.reload();
+                    form[0].classList.remove('was-validated')*/
+                    location.reload()
                 },
                 error:function(e){
                     $('#modal-loading').modal('hide')
@@ -41,6 +41,68 @@ $(document).ready(function(){
                 }
             });
         }
+    })
+
+    $('.edit-document').on('click', function(e){
+        e.preventDefault()
+        e.stopPropagation() 
+        
+        
+    })
+
+    $('.delete-document').on('click', function(e){
+        e.preventDefault()
+        e.stopPropagation()
+        let id = $(this).attr('data-id')
+        Swal.fire({
+            title: '¿Desea eliminar este archivo?',
+            text: "El archivo se eliminara permanentemente",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Si, eliminar',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                
+                $('#modal-loading').modal('show')
+                $.ajax({
+                    url : `/admin/jobs/delete-document/${id}`,
+                    type : 'POST',
+                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                    success:function(data){
+                        if(data.Success){
+                            //$('#modal-loading').modal('hide')
+                            location.reload();
+                        }else{
+                            $('#modal-loading').modal('hide')
+                            $('#modalSuccess .modal-header').empty().append('Error')
+                            $('#modalSuccess .modal-body').empty().append(data.message)
+                            $('#modalSuccess').modal('show')
+                        }
+                    },
+                    error: function(e){
+                        error(e)
+                    }
+                })
+            }
+        })
+        /*$('#modalDeleteDocument .btn-confirmed').on('click', function(e){
+            $.ajax({
+                url : '/admin/jobs/',
+                type : 'POST',
+                success:function(data){
+                    if(data.success){
+                        console.log('data totalmente subida')
+                    }else{
+                        console.log('data totalmente subida onooooo')
+                    }
+                }
+            })
+        })*/
+        
+
     })
 
     function error(e){

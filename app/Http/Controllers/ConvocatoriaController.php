@@ -10,6 +10,7 @@ use App\Models\StateJob;
 use Illuminate\Support\Facades\Crypt;
 use App\Models\JobResult;
 use App\Models\TypeResult;
+use Illuminate\Contracts\Encryption\DecryptException;
 
 class ConvocatoriaController extends Controller
 {
@@ -41,7 +42,9 @@ class ConvocatoriaController extends Controller
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
-
+                'success' => false,
+                'message' => 'Ocurrio un error',
+                'error' => $e->getMessage()
             ]);
         }
     }
@@ -215,33 +218,35 @@ class ConvocatoriaController extends Controller
     }
 
     public function viewJob(Request $request){
-        $id = Crypt::decrypt($request->job_id);
-        $job = Job::with(['modality','stateJob','results'])->where('id', $id)->first();
-        $job->bases = Crypt::encrypt($job->bases);
-        $job->schedule = Crypt::encrypt($job->schedule);
-        $job->profile = Crypt::encrypt($job->profile);
-
-        $types = TypeResult::where('state_delete', 0)->where('multiple', 0)->orderBy('id', 'ASC')->get();
-        $job_result = JobResult::with(['typeResult'])->where('state_delete', 0)->where('job_id', $id)->orderBy('type_result_id', 'ASC')->get();
-        $format = [];
-        foreach($types as $case){
-            $data = JobResult::with(['typeResult'])->where([
-                                        ['state_delete','=',0],
-                                        ['job_id', '=', $id],
-                                        ['type_result_id', '=', $case->id]
-                                    ])->first();
-            if($data){
-                $data->token = Crypt::encrypt($data->path);
-                $case->file = $data;
-                
+        try {
+            $id = Crypt::decrypt($request->job_id);
+            $job = Job::with(['modality','stateJob','results'])->where('id', $id)->first();
+            $type_select = TypeResult::where('state_delete', 0)->orderBy('id', 'ASC')->get();
+            $types = TypeResult::where('state_delete', 0)->where('multiple', 0)->orderBy('id', 'ASC')->get();
+            //dd($types);
+            foreach($types as $case){
+                $data = JobResult::with(['typeResult'])->where([
+                                            ['state_delete','=',0],
+                                            ['job_id', '=', $id],
+                                            ['type_result_id', '=', $case->id]
+                                        ])->first();
+                if($data){
+                    $data->token = $data->path;
+                    $case->file = $data;
+                }
             }
+            foreach($type_select as $item){
+
+            }
+            return view('admin.jobs.viewJob')->with(compact('job', 'types','type_select'));
+        } catch (\Exception $e) {
+            abort(404);
         }
-        //dd($job, $types, $job_result);
-        return view('admin.jobs.viewJob')->with(compact('job', 'types', 'job_result'));
+        
     }
 
     public function uploadDocuments(Request $request, $job_id){
-        $id = Crypt::decrypt($job_id);
+        
         $request->validate([
             'type_document' => 'required',
             'file_document' => 'required|file|max:10485760',
@@ -249,6 +254,7 @@ class ConvocatoriaController extends Controller
         ]); 
 
         try {
+            $id = Crypt::decrypt($job_id);
             if($request->file('file_document')->getClientOriginalExtension() != 'pdf'){
                 return response() ->json([
                     'success' => false,
@@ -278,6 +284,67 @@ class ConvocatoriaController extends Controller
         }
     }
 
+    public function changeDocument(Request $request, $result_id){
+        
+        $request->validate([
+            'type_document' => 'required',
+            'file_document' => 'nullable|file|max:10485760',
+            'date_publication' => 'nullable|date'
+        ]); 
+        
+        try {
+            $id = Crypt::decrypt($result_id);
+            $result = JobResult::where([
+                ['id', '=', $id]
+            ])->first();
+            if($request->hasFile('file_document')){
+                if($request->file('file_document')->getClientOriginalExtension() != "pdf"){
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Ocurrio un error',
+                        'error' => 'El archivo no es un PDF',
+                        'type' => 'crogrnama',
+                        'extension' => $request->file('inputScheduleFile')->getClientOriginalExtension()
+                    ], 400);
+                }
+                File::delete(public_path().$result->path);
+                $result->path = $this->uploadArchive($request->file('inputScheduleFile'), $result->job_id, $request->type_document);
+            }
+            $result->type_document = $request->type_result_id;
+            $result->date_publication = $request->date_publication;
+            $result->save();
+            return response()->json([
+                'success' => true,
+                'message' => 'Documento cambiado correctamente'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Ocurrio un error',
+                'error' => $e->getMessage()
+            ]);
+        }    
+    }
+
+    public function deleteDocument($id){
+        try {
+            $id = Crypt::decrypt($id);
+            $data = JobResult::where('id', $id)->first();
+            $data->state_delete = 1;
+            $data->save();
+            File::delete(public_path().$data->path);
+            return response()->json([
+                'Success' => true,
+                'message' => 'Documento Eliminado Correctamente'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Ocurrio un error',
+                'error' => $e->getMessage()
+            ]);
+        } 
+    }
     public function viewBase(Request $request){
         $url = Crypt::decrypt($request->job_base);
         return response()->file(public_path().$url);

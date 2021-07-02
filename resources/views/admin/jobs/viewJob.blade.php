@@ -1,6 +1,7 @@
 @extends('admin.app')
 
 @section('content')
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
     <div class="content-wrapper">
         <!-- Content Header (Page header) -->
         <section class="content-header">
@@ -121,20 +122,20 @@
                                 <div class="col-sm-3 invoice-col">
                                     <address>
                                         <strong>Bases</strong><br>
-                                        <a target="_blank" href="/admin/jobs/view-base?job_base={{$job->bases}}" type="button" class="btn btn-success">BASES</a><br>
+                                        <a target="_blank" href="/admin/jobs/view-base?job_base={{\Crypt::encrypt($job->bases)}}" type="button" class="btn btn-success">BASES</a><br>
                                     </address>
                                 </div>
                                 <!-- /.col -->
                                 <div class="col-sm-3 invoice-col">
                                     <address>
                                         <strong>Cronograma</strong><br>
-                                        <a target="_blank" href="/admin/jobs/view-schedule?job_schedule={{$job->schedule}}" type="button" class="btn btn-success">CRONOGRAMA</a><br>
+                                        <a target="_blank" href="/admin/jobs/view-schedule?job_schedule={{\Crypt::encrypt($job->schedule)}}" type="button" class="btn btn-success">CRONOGRAMA</a><br>
                                     </address>
                                 </div>
                                 <!-- /.col -->
                                 <div class="col-sm-3 invoice-col">
                                     <b>Perfil</b><br>
-                                    <a target="_blank" href="/admin/jobs/view-profile?job_profile={{$job->profile}}" type="button" class="btn btn-success">PERFIL</a><br>
+                                    <a target="_blank" href="/admin/jobs/view-profile?job_profile={{\Crypt::encrypt($job->profile)}}" type="button" class="btn btn-success">PERFIL</a><br>
                                 </div>
 
                                 <div class="col-sm-3 invoice-col">
@@ -163,11 +164,11 @@
                                                         @if(isset($item->file))
                                                             <td>{{$item->file->date_publication}}</td>
                                                             <td>                                    
-                                                                <a target="_blank" href="/admin/jobs/view-result?result={{$item->file->token}}" type="button" class="btn btn-info"><i class="fas fa-download"></i></a><br>
+                                                                <a target="_blank" href="/admin/jobs/view-result?result={{\Crypt::encrypt($item->file->token)}}" type="button" class="btn btn-info"><i class="fas fa-download"></i></a><br>
                                                             </td>
                                                             <td>
-                                                                <button type="button" data-id="{{$item->file->id}}" class="btn btn-warning"><i class="fas fa-edit"></i></button>
-                                                                <button type="button" data-id="{{$item->file->id}}" class="btn btn-danger"><i class="fas fa-trash-alt"></i></button>
+                                                                <button type="button" data-id="{{\Crypt::encrypt($item->file->id)}}" class="btn btn-warning"><i class="fas fa-edit"></i></button>
+                                                                <button type="button" data-id="{{\Crypt::encrypt($item->file->id)}}" class="btn btn-danger delete-document"><i class="fas fa-trash-alt"></i></button>
                                                             </td>
                                                         @else
                                                             <td>-------</td>
@@ -296,6 +297,7 @@
 @endsection
 
 @section('after-scripts')
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="{{asset('js/adminlte.min.js')}}"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="{{asset('js/demo.js')}}"></script>

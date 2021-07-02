@@ -54,6 +54,10 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth_admin', 'as' => 'admin.
         Route::get('/view-profile', 'ConvocatoriaController@viewProfile');
         Route::get('/view-result', 'ConvocatoriaController@viewResult');
         Route::post('/upload-result/{id}', 'ConvocatoriaController@uploadDocuments');
+        Route::post('/change-document/{id}', 'ConvocatoriaController@changeDocument');
+        Route::post('/delete-document/{id}', 'ConvocatoriaController@deleteDocument');
+
+        
     });
 });
 
