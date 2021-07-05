@@ -27,7 +27,7 @@ class LoginController extends Controller
                         //$errors->password = 'La contraseña es invalida';
                         return response()->json([
                             'message' => 'Ocurrio un error',
-                            'error' => 'La contraseña es invalida'
+                            'error' => 'La contrasena es invalida'
                         ], 500);
                     }
                 } else {

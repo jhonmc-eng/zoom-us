@@ -210,14 +210,14 @@ $(function () {
     $('.fa-search').on('click', function(e){
         e.preventDefault()
         e.stopPropagation()
-        //$('#modal-loading').modal('show')
+        $('#modal-loading').modal('show')
         let parent = $(this).parent().parent().parent();
         let dni = parent.find('input').val()
         $.ajax({
             url : `/admin/users/get-data-dni/${dni}`,
             type : 'GET',
             success: function(data){
-                //$('#modal-loading').modal('hide')
+                $('#modal-loading').modal('hide')
                 parent.parents('form').find('.names input').val(data.data.nombres)
                 parent.parents('form').find('.lastnamePatern input').val(data.data.apellido_paterno)
                 parent.parents('form').find('.lastnameMatern input').val(data.data.apellido_materno)

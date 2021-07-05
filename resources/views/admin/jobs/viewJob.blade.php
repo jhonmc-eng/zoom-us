@@ -146,6 +146,15 @@
                             </div>
                             <!-- Table row -->
                             <div class="row" style="margin-top: 30px;">
+                                <div class="col-md-12">
+                                    @foreach($types as $item)
+                                        @if($item->multiple == 1)
+                                            @foreach($item->file as $buttons)
+                                                <a target="_blank" href="/admin/jobs/view-result?result={{\Crypt::encrypt($buttons->path)}}" type="button" class="btn btn-block btn-warning">{{strtoupper($buttons->typeResult->name)}}</a>
+                                            @endforeach
+                                        @endif
+                                    @endforeach
+                                </div>
                                 <div class="col-md-12 table-responsive">
                                     <div class="col-md-12">
                                         <table id="datable" class="table table-striped">
@@ -160,22 +169,24 @@
                                             <tbody>
                                                 @foreach($types as $item)
                                                     <tr>
-                                                        <td>{{$item->name}}</td>
-                                                        @if(isset($item->file))
-                                                            <td>{{$item->file->date_publication}}</td>
-                                                            <td>                                    
-                                                                <a target="_blank" href="/admin/jobs/view-result?result={{\Crypt::encrypt($item->file->token)}}" type="button" class="btn btn-info"><i class="fas fa-download"></i></a><br>
-                                                            </td>
-                                                            <td>
-                                                                <button type="button" data-id="{{\Crypt::encrypt($item->file->id)}}" class="btn btn-warning"><i class="fas fa-edit"></i></button>
-                                                                <button type="button" data-id="{{\Crypt::encrypt($item->file->id)}}" class="btn btn-danger delete-document"><i class="fas fa-trash-alt"></i></button>
-                                                            </td>
-                                                        @else
-                                                            <td>-------</td>
-                                                            <td>-------</td>
-                                                            <td>-------</td>
-                                                        @endif
+                                                        @if($item->multiple == 0)
+                                                            <td>{{$item->name}}</td>
                                                         
+                                                            @if(isset($item->file))
+                                                                <td>{{$item->file->date_publication}}</td>
+                                                                <td>                                    
+                                                                    <a target="_blank" href="/admin/jobs/view-result?result={{\Crypt::encrypt($item->file->token)}}" type="button" class="btn btn-info"><i class="fas fa-download"></i></a><br>
+                                                                </td>
+                                                                <td>
+                                                                    <button type="button" data-id="{{\Crypt::encrypt($item->file->id)}}" class="btn btn-warning"><i class="fas fa-edit"></i></button>
+                                                                    <button type="button" data-id="{{\Crypt::encrypt($item->file->id)}}" class="btn btn-danger delete-document"><i class="fas fa-trash-alt"></i></button>
+                                                                </td>
+                                                            @else
+                                                                <td>-------</td>
+                                                                <td>-------</td>
+                                                                <td>-------</td>
+                                                            @endif
+                                                        @endif
                                                     </tr>
                                                 @endforeach
                                                 
@@ -227,7 +238,16 @@
                                 <div class="col-sm-12">
                                     <select name="type_document" id="type_document" class="form-control" required>
                                         @foreach($types as $item)
-                                            <option value="{{$item->id}}">{{$item->name}}</option>
+                                            
+                                            @if($item->multiple == 0)
+                                                @if(!isset($item->file))
+                                                    <option value="{{$item->id}}">{{$item->name}}</option>
+                                                @endif
+                                            @else
+                                                <option value="{{$item->id}}">{{$item->name}}</option>
+                                            @endif
+                                            
+                                           
                                         @endforeach
                                     </select>
                                 </div>
