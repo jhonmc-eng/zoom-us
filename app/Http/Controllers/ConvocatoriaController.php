@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Crypt;
 use App\Models\JobResult;
 use App\Models\TypeResult;
 use Illuminate\Contracts\Encryption\DecryptException;
-use Illuminate\Support\Facades\DB;
+
 class ConvocatoriaController extends Controller
 {
     //
@@ -220,42 +220,27 @@ class ConvocatoriaController extends Controller
     public function viewJob(Request $request){
         try {
             $id = Crypt::decrypt($request->job_id);
-            $job = Job::with(['modality','stateJob','results'])->where('id', $id)->where('state_delete', 0)->first();
+            $job = Job::with(['modality','stateJob','results'])->where('id', $id)->first();
             $type_select = TypeResult::where('state_delete', 0)->orderBy('id', 'ASC')->get();
-            $types = TypeResult::where('state_delete', 0)->orderBy('id', 'ASC')->get();
+            $types = TypeResult::where('state_delete', 0)->where('multiple', 0)->orderBy('id', 'ASC')->get();
             //dd($types);
             foreach($types as $case){
-                if($case->multiple == 0){
-                    $data = JobResult::with(['typeResult'])->where([
-                        ['state_delete','=',0],
-                        ['job_id', '=', $id],
-                        ['type_result_id', '=', $case->id]
-                    ])->first();
-                    if($data){
-                        $data->token = $data->path;
-                        $case->file = $data;
-                    }
-                }else{
-                    $data = JobResult::with(['typeResult'])->where([
-                        ['state_delete','=',0],
-                        ['job_id', '=', $id],
-                        ['type_result_id', '=', $case->id]
-                    ])->get();
-                    if($data){
-                        $case->file = $data;
-                    }
+                $data = JobResult::with(['typeResult'])->where([
+                                            ['state_delete','=',0],
+                                            ['job_id', '=', $id],
+                                            ['type_result_id', '=', $case->id]
+                                        ])->first();
+                if($data){
+                    $data->token = $data->path;
+                    $case->file = $data;
                 }
+            }
+            foreach($type_select as $item){
                 
             }
-            /*dd($type_select, $types);
-            foreach($type_select as $item){
-                foreach($types as $module){
-                    if($module->id )
-                }
-            }*/
             return view('admin.jobs.viewJob')->with(compact('job', 'types','type_select'));
         } catch (\Exception $e) {
-            report($e);
+            abort(404);
         }
         
     }
@@ -304,7 +289,7 @@ class ConvocatoriaController extends Controller
         $request->validate([
             'type_document' => 'required',
             'file_document' => 'nullable|file|max:10485760',
-            'date_publication' => 'required|date'
+            'date_publication' => 'nullable|date'
         ]); 
         
         try {
