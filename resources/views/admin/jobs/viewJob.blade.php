@@ -142,19 +142,21 @@
                                     <b>Candidatos</b><br>
                                     15 candidatos<br>
                                 </div>
-                                <!-- /.col -->
-                            </div>
-                            <!-- Table row -->
-                            <div class="row" style="margin-top: 30px;">
-                                <div class="col-md-12">
+                                <div class="col-sm-3 invoice-col">
+                                    <b>Fe de Erratas y Comunicados</b><br>
                                     @foreach($types as $item)
                                         @if($item->multiple == 1)
                                             @foreach($item->file as $buttons)
-                                                <a target="_blank" href="/admin/jobs/view-result?result={{\Crypt::encrypt($buttons->path)}}" type="button" class="btn btn-block btn-warning">{{strtoupper($buttons->typeResult->name)}}</a>
+                                                <a target="_blank" href="/admin/jobs/view-result?result={{\Crypt::encrypt($buttons->path)}}" type="button" class="btn btn-info">{{strtoupper($buttons->typeResult->name)}}</a>
                                             @endforeach
                                         @endif
                                     @endforeach
                                 </div>
+                                <!-- /.col -->
+                            </div>
+                            <!-- Table row -->
+                            <div class="row margin-top-30" >
+                                
                                 <div class="col-md-12 table-responsive">
                                     <div class="col-md-12">
                                         <table id="datable" class="table table-striped">
@@ -178,7 +180,7 @@
                                                                     <a target="_blank" href="/admin/jobs/view-result?result={{\Crypt::encrypt($item->file->token)}}" type="button" class="btn btn-info"><i class="fas fa-download"></i></a><br>
                                                                 </td>
                                                                 <td>
-                                                                    <button type="button" data-id="{{\Crypt::encrypt($item->file->id)}}" class="btn btn-warning"><i class="fas fa-edit"></i></button>
+                                                                    <button type="button" data-id="{{\Crypt::encrypt($item->file->id)}}" data-type="{{$item->file->type_result_id}}" data-publication="{{$item->file->date_publication}}" class="btn btn-warning edit-document"><i class="fas fa-edit"></i></button>
                                                                     <button type="button" data-id="{{\Crypt::encrypt($item->file->id)}}" class="btn btn-danger delete-document"><i class="fas fa-trash-alt"></i></button>
                                                                 </td>
                                                             @else
@@ -282,6 +284,61 @@
         
     </div>
 
+    <div class="modal fade" id="modalDocumentEdit" tabindex="-1" role="dialog" aria-labelledby="modalDocumentEdit" data-backdrop="static" data-keyboard="false" aria-hidden="true">
+        
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalScrollableTitle">Editar Documento</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="formDocumentEdit" class="needs-validation" enctype="multipart/form-data" novalidate>
+            @csrf
+                <div class="modal-body">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="form-group row">
+                                <label for="type_document" class="col-sm-12 col-form-label">Tipo de Documento</label>
+                                <div class="col-sm-12">
+                                    <select name="type_document" id="type_document" class="form-control" required>
+                                        @foreach($types as $item)
+                                            <option value="{{$item->id}}">{{$item->name}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="date_publication" class="col-sm-12 col-form-label">Fecha de publicación</label>
+                                <div class="col-sm-12">
+                                    <input type="date" name="date_publication" class="form-control"  required>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="file_document" class="col-sm-12 col-form-label">Archivo</label>
+                                <div class="col-sm-12">
+                                    <div class="custom-file">
+                                        <input type="file" name="file_document" accept="application/pdf" class="form-control custom-file-input validation-pdf">
+                                        <label class="custom-file-label" for="file_document">Escoge un archivo</label>
+                                    </div>
+                                </div>  
+                            </div>
+                            
+                        </div>
+                    </div>
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <input type="submit" class="btn btn-success" value="Guardar">
+                </div>
+                </div>
+            </form>
+        </div>
+        
+    </div>
+
     <div class="modal fade" id="modalSuccess" aria-hidden="true" data-backdrop="static" data-keyboard="false" aria-labelledby="exampleModalToggleLabel1" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
@@ -356,6 +413,10 @@
     #datable tbody td {
         vertical-align: middle;
         text-align: center; 
+    }
+
+    .margin-top-30{
+        margin-top: 30px !important;
     }
     
 </style>

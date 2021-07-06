@@ -46,7 +46,21 @@ $(document).ready(function(){
     $('.edit-document').on('click', function(e){
         e.preventDefault()
         e.stopPropagation() 
+        let id = $(this).attr('data-id')
+        let type = $(this).attr('data-type')
+        let date = $(this).attr('data-publication')
         
+        let url = `#formDocumentEdit > option[value='${type}']`
+        $(url).attr("selected",true);
+        $('#formDocumentEdit input[name="date_publication"]').val(date)
+        $('#modalDocumentEdit').modal('show')
+
+        $('#formDocumentEdit').on('submit', function(e){
+            e.preventDefault()
+            e.stopPropagation()
+            console.log(id, type, date)
+            
+        })
         
     })
 

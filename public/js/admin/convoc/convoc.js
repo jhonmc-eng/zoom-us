@@ -208,7 +208,7 @@ $(document).ready(function(){
         if(data !== undefined){
             let form = $(this)
             if (form[0].checkValidity()) {
-                //$('#modal-loading').modal('show')
+                $('#modal-loading').modal('show')
                 var data_ = new FormData();
                 var form_data = $(this).serializeArray();
                 $.each(form_data, function (key, input) {
@@ -225,7 +225,8 @@ $(document).ready(function(){
                     processData: false,
                     contentType: false,
                     success: function(data){
-                        $('#formEditJob').modal('hide')
+                        $('#modal-loading').modal('hide')
+                        $('#modalEditJob').modal('hide')
                         $('#modalSuccess .modal-body').empty().append(data.message)
                         $('#modalSuccess').modal('show')
                         form[0].reset()

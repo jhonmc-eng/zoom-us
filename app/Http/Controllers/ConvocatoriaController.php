@@ -220,27 +220,35 @@ class ConvocatoriaController extends Controller
     public function viewJob(Request $request){
         try {
             $id = Crypt::decrypt($request->job_id);
-            $job = Job::with(['modality','stateJob','results'])->where('id', $id)->first();
+            $job = Job::with(['modality','stateJob','results'])->where('id', $id)->where('state_delete', 0)->first();
             $type_select = TypeResult::where('state_delete', 0)->orderBy('id', 'ASC')->get();
-            $types = TypeResult::where('state_delete', 0)->where('multiple', 0)->orderBy('id', 'ASC')->get();
+            $types = TypeResult::where('state_delete', 0)->orderBy('id', 'ASC')->get();
             //dd($types);
             foreach($types as $case){
-                $data = JobResult::with(['typeResult'])->where([
-                                            ['state_delete','=',0],
-                                            ['job_id', '=', $id],
-                                            ['type_result_id', '=', $case->id]
-                                        ])->first();
-                if($data){
-                    $data->token = $data->path;
-                    $case->file = $data;
+                if($case->multiple == 0){
+                    $data = JobResult::with(['typeResult'])->where([
+                        ['state_delete','=',0],
+                        ['job_id', '=', $id],
+                        ['type_result_id', '=', $case->id]
+                    ])->first();
+                    if($data){
+                        $data->token = $data->path;
+                    }
+                }else{
+                    $data = JobResult::with(['typeResult'])->where([
+                        ['state_delete','=',0],
+                        ['job_id', '=', $id],
+                        ['type_result_id', '=', $case->id]
+                    ])->get();
+                    if($data){
+                        $case->file = $data;
+                    }
                 }
             }
-            foreach($type_select as $item){
-                
-            }
+            //dd($types);
             return view('admin.jobs.viewJob')->with(compact('job', 'types','type_select'));
         } catch (\Exception $e) {
-            abort(404);
+            report($e);
         }
         
     }
