@@ -232,6 +232,7 @@ class ConvocatoriaController extends Controller
                         ['type_result_id', '=', $case->id]
                     ])->first();
                     if($data){
+                        //$data->token = $data->path;
                         $case->file = $data;
                     }
                 }else{
@@ -263,26 +264,34 @@ class ConvocatoriaController extends Controller
 
         try {
             $id = Crypt::decrypt($job_id);
-            if($request->file('file_document')->getClientOriginalExtension() != 'pdf'){
-                return response() ->json([
-                    'success' => false,
-                    'message' => 'Ocurrio un error',
-                    'error' => 'El archivo no es un PDF'
+            if(!JobResult::where([['type_result_id','=', $request->type_document],['job_id', '=', $id]])->first()){
+                if($request->file('file_document')->getClientOriginalExtension() != 'pdf'){
+                    return response() ->json([
+                        'success' => false,
+                        'message' => 'Ocurrio un error',
+                        'error' => 'El archivo no es un PDF'
+                    ]);
+                }   
+                $job_result = New JobResult();
+                $job_result->type_result_id = $request->type_document;
+                $job_result->job_id = $id;
+                $job_result->date_publication = $request->date_publication;
+                $job_result->path = 'path';
+                $job_result->syslog = $this->syslog_admin(1, $request);
+                $job_result->save();
+                $job_result->path = $this->uploadDocument($request->file('file_document'), $id, $request->type_document);
+                $job_result->save();
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Archivo subido correctamente'
                 ]);
-            }   
-            $job_result = New JobResult();
-            $job_result->type_result_id = $request->type_document;
-            $job_result->job_id = $id;
-            $job_result->date_publication = $request->date_publication;
-            $job_result->path = 'path';
-            $job_result->syslog = $this->syslog_admin(1, $request);
-            $job_result->save();
-            $job_result->path = $this->uploadDocument($request->file('file_document'), $id, $request->type_document);
-            $job_result->save();
-            return response()->json([
-                'success' => true,
-                'message' => 'Archivo subido correctamente'
-            ]);
+            }else{
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Existe un documento ya existente'
+                ]);
+            }
+            
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
@@ -296,8 +305,8 @@ class ConvocatoriaController extends Controller
         
         $request->validate([
             'type_document' => 'required',
-            'file_document' => 'nullable|file|max:10485760',
-            'date_publication' => 'required|date'
+            'file_document' => 'nullable|max:10485760',
+            'date_publication' => 'nullable|date'
         ]); 
         
         try {
@@ -305,26 +314,28 @@ class ConvocatoriaController extends Controller
             $result = JobResult::where([
                 ['id', '=', $id]
             ])->first();
-            if($request->hasFile('file_document')){
-                if($request->file('file_document')->getClientOriginalExtension() != "pdf"){
-                    return response()->json([
-                        'success' => false,
-                        'message' => 'Ocurrio un error',
-                        'error' => 'El archivo no es un PDF',
-                        'type' => 'crogrnama',
-                        'extension' => $request->file('inputScheduleFile')->getClientOriginalExtension()
-                    ], 400);
+                if($request->hasFile('file_document')){
+                    if($request->file('file_document')->getClientOriginalExtension() != "pdf"){
+                        return response()->json([
+                            'success' => false,
+                            'message' => 'Ocurrio un error',
+                            'error' => 'El archivo no es un PDF',
+                            'type' => 'crogrnama',
+                            'extension' => $request->file('file_document')->getClientOriginalExtension()
+                        ], 400);
+                    }
+                    File::delete(public_path().$result->path);
+                    $result->path = $this->uploadDocument($request->file('file_document'), $result->job_id, $request->type_document);
                 }
-                File::delete(public_path().$result->path);
-                $result->path = $this->uploadArchive($request->file('inputScheduleFile'), $result->job_id, $request->type_document);
-            }
-            $result->type_document = $request->type_result_id;
-            $result->date_publication = $request->date_publication;
-            $result->save();
-            return response()->json([
-                'success' => true,
-                'message' => 'Documento cambiado correctamente'
-            ]);
+                $result->type_result_id = $request->type_document;
+                $result->date_publication = $request->date_publication;
+                $result->syslog = $result->syslog . ' | ' . $this->syslog_admin(2, $request);
+                $result->save();
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Documento cambiado correctamente'
+                ]);
+             
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
@@ -334,10 +345,11 @@ class ConvocatoriaController extends Controller
         }    
     }
 
-    public function deleteDocument($id){
+    public function deleteDocument(Request $request, $id){
         try {
             $id = Crypt::decrypt($id);
             $data = JobResult::where('id', $id)->first();
+            $data->syslog = $data->syslog . ' | ' . $this->syslog_admin(3, $request);
             $data->state_delete = 1;
             $data->save();
             File::delete(public_path().$data->path);
@@ -370,7 +382,6 @@ class ConvocatoriaController extends Controller
 
     public function viewResult(Request $request){
         $url = Crypt::decrypt($request->result);
-        //dd($url);
         return response()->file(public_path().$url);
     }
 

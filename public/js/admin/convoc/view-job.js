@@ -19,6 +19,7 @@ $(document).ready(function(){
                 data_.append(input.name, input.value)
             });
             data_.append('file_document',$("#formDocumentNew input[name=file_document]")[0].files[0])
+            
             var params = new window.URLSearchParams(window.location.search);
             $.ajax({
                 url : `/admin/jobs/upload-result/${params.get('job_id')}`,
@@ -49,8 +50,9 @@ $(document).ready(function(){
         let id = $(this).attr('data-id')
         let type = $(this).attr('data-type')
         let date = $(this).attr('data-publication')
-        console.log(type)
-        $(`#formDocumentEdit select[name='type_document']`).val(type)
+        let text = $(this).attr('data-name')
+        
+        $('#formDocumentEdit input[name="type_document_text"]').val(text)
         $('#formDocumentEdit input[name="date_publication"]').val(date)
         $('#modalDocumentEdit').modal('show')
 
@@ -66,7 +68,7 @@ $(document).ready(function(){
                     data_.append(input.name, input.value)
                 });
                 data_.append('file_document',$("#formDocumentEdit input[name=file_document]")[0].files[0])
-                //var params = new window.URLSearchParams(window.location.search);
+                data_.append('type_document', type)
                 $.ajax({
                     url : `/admin/jobs/change-document/${id}`,
                     type : 'POST',
@@ -74,13 +76,23 @@ $(document).ready(function(){
                     processData: false,
                     contentType: false,
                     success: function(data){
+                        if(data.success){
+                            location.reload()
+                        }else{
+                            $('#modal-loading').modal('hide')
+                            $('#modalDocumentNew').modal('hide')
+                            $('#modalSuccess .modal-body').empty().append(data.message)
+                            $('#modalSuccess').modal('show')
+                            form[0].reset()
+                            form[0].classList.remove('was-validated')
+                        }
                         /*$('#modal-loading').modal('hide')
                         $('#modalDocumentNew').modal('hide')
                         $('#modalSuccess .modal-body').empty().append(data.message)
                         $('#modalSuccess').modal('show')
                         form[0].reset()
                         form[0].classList.remove('was-validated')*/
-                        location.reload()
+                        //location.reload()
                     },
                     error:function(e){
                         $('#modal-loading').modal('hide')

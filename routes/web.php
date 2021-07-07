@@ -59,6 +59,13 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth_admin', 'as' => 'admin.
 
         
     });
+    Route::group(['prefix' => 'modalitys'], function(){
+        Route::get('/', 'ModalitysController@viewModalitys');
+        Route::post('/register-modality','ModalitysController@createModality');
+        Route::get('/list-modalitys','ModalitysController@listModalitys');
+        Route::post('/update-modality/{id}','ModalitysController@updateModality');
+        Route::post('/delete-modality/{id}','ModalitysController@deleteModality');
+    });
 });
 
 

@@ -181,7 +181,7 @@
                                                                     <a target="_blank" href="/admin/jobs/view-result?result={{\Crypt::encrypt($item->file->token)}}" type="button" class="btn btn-info"><i class="fas fa-download"></i></a><br>
                                                                 </td>
                                                                 <td>
-                                                                    <button type="button" data-id="{{\Crypt::encrypt($item->file->id)}}" data-type="{{$item->file->type_result_id}}" data-publication="{{$item->file->date_publication}}" class="btn btn-warning edit-document"><i class="fas fa-edit"></i></button>
+                                                                    <button type="button" data-id="{{\Crypt::encrypt($item->file->id)}}" data-type="{{$item->file->type_result_id}}" data-publication="{{$item->file->date_publication}}" data-name="{{$item->name}}" class="btn btn-warning edit-document"><i class="fas fa-edit"></i></button>
                                                                     <button type="button" data-id="{{\Crypt::encrypt($item->file->id)}}" class="btn btn-danger delete-document"><i class="fas fa-trash-alt"></i></button>
                                                                 </td>
                                                             @else
@@ -302,11 +302,7 @@
                             <div class="form-group row">
                                 <label for="type_document" class="col-sm-12 col-form-label">Tipo de Documento</label>
                                 <div class="col-sm-12">
-                                    <select name="type_document" class="form-control" disabled required>
-                                        @foreach($types as $item)
-                                            <option value="{{$item->id}}">{{$item->name}}</option>
-                                        @endforeach
-                                    </select>
+                                    <input type="text" name="type_document_text" class="form-control" value="" disabled>
                                 </div>
                             </div>
                             <div class="form-group row">

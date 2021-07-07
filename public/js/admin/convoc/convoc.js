@@ -26,21 +26,19 @@ $(document).ready(function(){
                     let button
                     switch(data.name){
                         case "ABIERTA":
-                            button = `<button type="button" class="btn btn-success">ABIERTA</button>`
+                            button = `<span class="badge badge-success">ABIERTA</span>`
                             break;
                         case 'CERRADA':
-                            button = `<button type="button" class="btn btn-danger">CERRADA</button>`
-                            
+                            button = `<span class="badge badge-danger">CERRADA</span>`
                             break;
                         case 'PROCESO':
-                            button = `<button type="button" class="btn btn-primary">PROCESO</button>`
+                            button = `<span class="badge badge-primary">PROCESO</span>`
                             break;
                         case 'CANCELADA':
-                            button = `<button type="button" class="btn btn-info">CANCELADA</button>`
+                            button = `<span class="badge badge-info">CANCELADA</span>`
                             break;
                         default:
                             button = `<button type="button" class="btn btn-secundary">${data.name}</button>`
-
                             break;
                     }
                     return button;
