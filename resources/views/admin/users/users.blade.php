@@ -22,56 +22,56 @@
 
         <!-- Main content -->
         <section class="content">
-        <div class="container-fluid">
-            <div class="row">
-            <div class="col-12">
-            <div class="card">
-              <div class="card-header">
-                <h3 class="card-title">DataTable with default features</h3>
-              </div>
-              <!-- /.card-header -->
-              <div class="card-body">
-                <table id="datable" class="table table-bordered table-striped">
-                  <thead>
-                    <tr>
-                        <th>Usuario</th>
-                        <th>Nombres</th>
-                        <th>Apellido Paterno</th>
-                        <th>Apellido Materno</th>
-                        <th>DNI</th>
-                        <th>Cargo</th>
-                        <th>Fecha de Inicio</th>
-                        <th>Estado</th>
-                        <th>Nivel</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                  
-                  
-                  </tbody>
-                  <tfoot>
-                    <tr>
-                        <th>Usuario</th>
-                        <th>Nombres</th>
-                        <th>Apellido Paterno</th>
-                        <th>Apellido Materno</th>
-                        <th>DNI</th>
-                        <th>Cargo</th>
-                        <th>Fecha de Inicio</th>
-                        <th>Estado</th>
-                        <th>Nivel</th>
-                    </tr>
-                  </tfoot>
-                </table>
-              </div>
-              <!-- /.card-body -->
+            <div class="container-fluid">
+                <div class="row">
+                <div class="col-12">
+                <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">DataTable with default features</h3>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body">
+                    <table id="datable" class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>Usuario</th>
+                            <th>Nombres</th>
+                            <th>Apellido Paterno</th>
+                            <th>Apellido Materno</th>
+                            <th>DNI</th>
+                            <th>Cargo</th>
+                            <th>Fecha de Inicio</th>
+                            <th>Estado</th>
+                            <th>Nivel</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    
+                    
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th>Usuario</th>
+                            <th>Nombres</th>
+                            <th>Apellido Paterno</th>
+                            <th>Apellido Materno</th>
+                            <th>DNI</th>
+                            <th>Cargo</th>
+                            <th>Fecha de Inicio</th>
+                            <th>Estado</th>
+                            <th>Nivel</th>
+                        </tr>
+                    </tfoot>
+                    </table>
+                </div>
+                <!-- /.card-body -->
+                </div>
+                    <!-- /.card -->
+                </div>
+                <!-- /.col -->
+                </div>
+                <!-- /.row -->
             </div>
-                <!-- /.card -->
-            </div>
-            <!-- /.col -->
-            </div>
-            <!-- /.row -->
-        </div>
         <!-- /.container-fluid -->
         </section>
         <!-- /.content -->
