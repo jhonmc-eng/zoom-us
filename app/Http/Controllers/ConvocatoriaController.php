@@ -232,7 +232,7 @@ class ConvocatoriaController extends Controller
                         ['type_result_id', '=', $case->id]
                     ])->first();
                     if($data){
-                        $data->token = $data->path;
+                        $case->file = $data;
                     }
                 }else{
                     $data = JobResult::with(['typeResult'])->where([
@@ -292,16 +292,16 @@ class ConvocatoriaController extends Controller
         }
     }
 
-    public function changeDocument(Request $request, $result_id){
+    public function changeDocument(Request $request, $id){
         
         $request->validate([
             'type_document' => 'required',
             'file_document' => 'nullable|file|max:10485760',
-            'date_publication' => 'nullable|date'
+            'date_publication' => 'required|date'
         ]); 
         
         try {
-            $id = Crypt::decrypt($result_id);
+            $id = Crypt::decrypt($id);
             $result = JobResult::where([
                 ['id', '=', $id]
             ])->first();

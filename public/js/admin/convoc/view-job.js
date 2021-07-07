@@ -49,16 +49,45 @@ $(document).ready(function(){
         let id = $(this).attr('data-id')
         let type = $(this).attr('data-type')
         let date = $(this).attr('data-publication')
-        
-        let url = `#formDocumentEdit > option[value='${type}']`
-        $(url).attr("selected",true);
+        console.log(type)
+        $(`#formDocumentEdit select[name='type_document']`).val(type)
         $('#formDocumentEdit input[name="date_publication"]').val(date)
         $('#modalDocumentEdit').modal('show')
 
         $('#formDocumentEdit').on('submit', function(e){
             e.preventDefault()
             e.stopPropagation()
-            console.log(id, type, date)
+            let form = $(this)
+            if (form[0].checkValidity()) {
+                $('#modal-loading').modal('show')
+                var data_ = new FormData();
+                var form_data = $(this).serializeArray();
+                $.each(form_data, function (key, input) {
+                    data_.append(input.name, input.value)
+                });
+                data_.append('file_document',$("#formDocumentEdit input[name=file_document]")[0].files[0])
+                //var params = new window.URLSearchParams(window.location.search);
+                $.ajax({
+                    url : `/admin/jobs/change-document/${id}`,
+                    type : 'POST',
+                    data : data_,
+                    processData: false,
+                    contentType: false,
+                    success: function(data){
+                        /*$('#modal-loading').modal('hide')
+                        $('#modalDocumentNew').modal('hide')
+                        $('#modalSuccess .modal-body').empty().append(data.message)
+                        $('#modalSuccess').modal('show')
+                        form[0].reset()
+                        form[0].classList.remove('was-validated')*/
+                        location.reload()
+                    },
+                    error:function(e){
+                        $('#modal-loading').modal('hide')
+                        error(e)
+                    }
+                });
+            }
             
         })
         

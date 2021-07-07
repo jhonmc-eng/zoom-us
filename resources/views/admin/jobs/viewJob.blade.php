@@ -142,8 +142,7 @@
                                     <b>Candidatos</b><br>
                                     15 candidatos<br>
                                 </div>
-                                <div class="col-sm-3 invoice-col">
-                                    <b>Fe de Erratas y Comunicados</b><br>
+                                <div class="col-sm-12 invoice-col margin-top-30">
                                     @foreach($types as $item)
                                         @if($item->multiple == 1)
                                             @foreach($item->file as $buttons)
@@ -152,6 +151,8 @@
                                         @endif
                                     @endforeach
                                 </div>
+                                
+                                
                                 <!-- /.col -->
                             </div>
                             <!-- Table row -->
@@ -206,7 +207,6 @@
                             <!-- this row will not appear when printing -->
                             <div class="row no-print" style="margin-top: 10px;">
                                 <div class="col-12">
-                                
                                     <button type="button" class="btn btn-primary float-right" id="uploadDocument" style="margin-right: 5px;">
                                         <i class="fas fa-upload"></i> Subir Documentos
                                     </button>
@@ -302,7 +302,7 @@
                             <div class="form-group row">
                                 <label for="type_document" class="col-sm-12 col-form-label">Tipo de Documento</label>
                                 <div class="col-sm-12">
-                                    <select name="type_document" id="type_document" class="form-control" required>
+                                    <select name="type_document" class="form-control" disabled required>
                                         @foreach($types as $item)
                                             <option value="{{$item->id}}">{{$item->name}}</option>
                                         @endforeach
