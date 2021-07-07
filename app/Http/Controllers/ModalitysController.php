@@ -66,7 +66,7 @@ class ModalitysController extends Controller
             $modality->name = $request->name;
             $modality->description = $request->description;
             $modality->state_delete = $request->state_delete;
-            $modality->syslog = '';
+            $modality->syslog = $this->syslog_admin(1, $request);
             $modality->save();
             return response()->json([
                 'success' => false,
