@@ -134,12 +134,11 @@
                                 <label for="description" class="col-sm-12 col-form-label">Descripción</label>
                                 <div class="col-sm-12">
                                     <textarea class="summernote form-control txtDescription" name="description" form="formModalityEdit" required>
-
                                     </textarea>
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label for="description" class="col-sm-12 col-form-label">Descripción</label>
+                                <label for="description" class="col-sm-12 col-form-label">Estado</label>
                                 <div class="col-sm-12">
                                     <select name="state_delete" class="form-control">
                                         <option value="0">ACTIVO</option>

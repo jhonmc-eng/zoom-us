@@ -21,9 +21,9 @@ $(document).ready(function(){
                 data: "state_delete",
                 render: function(data){
                     if(data == 0){
-                        return 'ACTIVA'
+                        return 'ACTIVO'
                     }else{
-                        return 'INACTIVA'
+                        return 'INACTIVO'
                     }
                 } 
             },
@@ -63,7 +63,6 @@ $(document).ready(function(){
         select: {
             style: 'single'
         },
-        order: [[1, 'asc']],
         bFilter: true,
        
     })
@@ -71,7 +70,6 @@ $(document).ready(function(){
     let buttons = `
         <button type="button" class="btn btn-success" id="button-register" data-toggle="modal"><i class="nav-icon fas fa-people-arrows"></i> Nuevo</button>
         <button type="button" class="btn btn-info" id="button-edit" data-toggle="modal"><i class="fas fa-edit"></i> Editar</button>
-        <button type="button" class="btn btn-primary" id="button-view" data-toggle="modal"><i class="far fa-eye"></i> Ver</button>
         <div class="btn-group" role="group">
             <button id="btnGroupDrop1" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <i class="fas fa-print"></i> Reporte
@@ -86,22 +84,19 @@ $(document).ready(function(){
     `
     $('#datable_wrapper .col-md-6:eq(0)').append(buttons)
 
-    $('#formJob').on('submit', function(e){
+    $('#formModalityNew').on('submit', function(e){
         e.preventDefault()
         e.stopPropagation()
+        let form = $(this)
         if (form[0].checkValidity()) {
-            $('#modal-loading').modal('show')
-            var data = new FormData();
-            var form_data = $(this).serializeArray();
+            //$('#modal-loading').modal('show') 
             $.ajax({
-                url : '/admin/modalitys/register-job',
+                url : '/admin/modalitys/register-modality',
                 type : 'POST',
-                data : data,
-                processData: false,
-                contentType: false,
+                data : form.serialize(),
                 success: function(data){
-                    $('#modal-loading').modal('hide')
-                    $('#modalJob').modal('hide')
+                    //$('#modal-loading').modal('hide')
+                    $('#modalModalityNew').modal('hide')
                     $('#modalSuccess .modal-body').empty().append(data.message)
                     $('#modalSuccess').modal('show')
                     form[0].reset()
@@ -109,7 +104,7 @@ $(document).ready(function(){
                     table.ajax.reload();
                 },
                 error:function(e){
-                    $('#modal-loading').modal('hide')
+                    //$('#modal-loading').modal('hide')
                     error(e)
                 }
             });
@@ -130,16 +125,10 @@ $(document).ready(function(){
         let data = table.row({selected:true}).data();
         if(data !== undefined){
             console.log(data)
-            /$('#formEditJob input[name="inputName"]').val(data.title)
-            $('#formEditJob input[name="inputDatePublication"]').val(data.date_publication)
-            $('#formEditJob input[name="inputDatePostulation"]').val(data.date_postulation)
-            $('#formEditJob select[name="inputModality"]').val(data.modality_id)
-            $('#formEditJob select[name="inputState"]').val(data.state_job_id)
-            $('#formEditJob input[name="inputNumber"]').val(data.number_jobs)
-            $('#formEditJob .txtarea_description').summernote("code", data.description);
-            $('#formEditJob .txt_function').summernote("code", data.functions);
-            $('#formEditJob .txtarea_profile').summernote("code", data.requirements);
-            $('#modalEditJob').modal('show')
+            $('#formModalityEdit input[name="name"]').val(data.name)
+            $('#formModalityEdit .txtDescription').summernote("code", data.description);
+            $('#formModalityEdit select[name="state_delete"]').val(data.state_delete);
+            $('#modalModalityEdit').modal('show')
         }else{
             errorSelect()
         }
@@ -147,32 +136,21 @@ $(document).ready(function(){
 
     })
 
-    $('#formEditJob').on('submit', function(e){
+    $('#formModalityEdit').on('submit', function(e){
         e.preventDefault()
         e.stopPropagation()
+        let form = $(this)
         let data = table.row({selected:true}).data();
         if(data !== undefined){
-            let form = $(this)
             if (form[0].checkValidity()) {
-                $('#modal-loading').modal('show')
-                var data_ = new FormData();
-                var form_data = $(this).serializeArray();
-                $.each(form_data, function (key, input) {
-                    data_.append(input.name, input.value)
-                });
-                data_.append('inputBaseFile',$("#formEditJob input[name=inputBaseFile]")[0].files[0])
-                data_.append('inputScheduleFile',$("#formEditJob input[name=inputScheduleFile]")[0].files[0])
-                data_.append('inputProfileFile',$("#formEditJob input[name=inputProfileFile]")[0].files[0])
-                
+                //$('#modal-loading').modal('show')                
                 $.ajax({
-                    url : `/admin/jobs/update-job/${data.id}`,
+                    url : `/admin/modalitys/update-modality/${data.token}`,
                     type : 'POST',
-                    data : data_,
-                    processData: false,
-                    contentType: false,
+                    data : form.serialize(),
                     success: function(data){
-                        $('#modal-loading').modal('hide')
-                        $('#modalEditJob').modal('hide')
+                        //$('#modal-loading').modal('hide')
+                        $('#modalModalityEdit').modal('hide')
                         $('#modalSuccess .modal-body').empty().append(data.message)
                         $('#modalSuccess').modal('show')
                         form[0].reset()
@@ -182,7 +160,7 @@ $(document).ready(function(){
                         //$('#modal-loading').modal('hide')
                     },
                     error:function(e){
-                        $('#modal-loading').modal('hide')
+                        //$('#modal-loading').modal('hide')
                         error(e)
                     }
                 });
@@ -191,8 +169,6 @@ $(document).ready(function(){
             errorSelect()
         }
 
-        
-        
     })  
 
     
