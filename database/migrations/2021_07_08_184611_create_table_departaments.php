@@ -3,25 +3,21 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-
-class TypeMeets extends Migration
+use Illuminate\Support\Facades\DB;
+class CreateTableDepartaments extends Migration
 {
     /**
      * Run the migrations.
      *
      * @return void
      */
-    protected $connection = 'mysql';
     public function up()
     {
-        //
-        Schema::create('type_meets', function (Blueprint $table) {
+        Schema::create('departaments', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('room_id')->constrained('rooms');
             $table->string('name');
-            $table->text('syslog');
-            $table->boolean('state_delete');
-            $table->timestamps();
+            $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
+            $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
         });
     }
 
@@ -32,7 +28,6 @@ class TypeMeets extends Migration
      */
     public function down()
     {
-        //
-        Schema::dropIfExists('type_meets');
+        Schema::dropIfExists('departaments');
     }
 }

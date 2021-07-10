@@ -16,7 +16,9 @@ class ModalitysController extends Controller
 
     public function listModalitys(){
         try {
-            $data = Modality::where('state_delete', 0)->orderBy('id', 'ASC')->get();
+            $data = Modality::orderBy('id', 'ASC')->get()->each(function($item){
+                $item->token = Crypt::encrypt($item->id);
+            });
             return response()->json([
                 'success' => true,
                 'data' => $data
@@ -41,7 +43,7 @@ class ModalitysController extends Controller
             $modality->syslog = $this->syslog_admin(1, $request);
             $modality->save();
             return response()->json([
-                'success' => false,
+                'success' => true,
                 'message' => 'Modalidad Creada Correctamente'
             ]);
         } catch (\Exception $e) {
@@ -66,10 +68,10 @@ class ModalitysController extends Controller
             $modality->name = $request->name;
             $modality->description = $request->description;
             $modality->state_delete = $request->state_delete;
-            $modality->syslog = $this->syslog_admin(1, $request);
+            $modality->syslog = $modality->syslog . ' | '. $this->syslog_admin(2, $request);
             $modality->save();
             return response()->json([
-                'success' => false,
+                'success' => true,
                 'message' => 'Modalidad Actualizada Correctamente'
             ]);
         } catch (\Exception $e) {

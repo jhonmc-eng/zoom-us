@@ -25,9 +25,9 @@ class Jobs extends Migration
             $table->string('bases');
             $table->string('schedule');
             $table->string('profile');
-            $table->text('description');
-            $table->text('functions');
-            $table->text('requirements');
+            $table->text('description')->nullable();
+            $table->text('functions')->nullable();
+            $table->text('requirements')->nullable();
             $table->boolean('state_delete')->default(0);
             $table->text('syslog');
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));

@@ -61,14 +61,6 @@
           
           <li class="nav-item">
             <a href="#" class="nav-link">
-              <i class="nav-icon far fa-file-pdf"></i>
-              <p>
-                Formatos
-              </p>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="#" class="nav-link">
               <i class="nav-icon fas fa-user-tie"></i>
               <p>
                 Candidatos

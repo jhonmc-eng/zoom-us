@@ -18,8 +18,8 @@ class StatesJob extends Migration
         Schema::create('states_jobs', function(Blueprint $table){
             $table->id();
             $table->string('name')->unique();
-            $table->text('description');
-            $table->boolean('state_delete');
+            $table->text('description')->nullable();
+            $table->boolean('state_delete')->default(0);
             $table->text('syslog');
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));

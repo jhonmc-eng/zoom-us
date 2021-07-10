@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\DB;
-class JobResults extends Migration
+class CreateTableDistricts extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,11 @@ class JobResults extends Migration
      */
     public function up()
     {
-        //
-        Schema::create('job_results', function(Blueprint $table){
+        Schema::create('districts', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('type_result_id')->constrained('type_results');
-            $table->foreignId('job_id')->constrained('jobs');
-            $table->date('date_publication');
-            $table->string('path');
-            $table->boolean('state_delete')->default(0);
-            $table->text('syslog');
+            $table->string('name');
+            $table->foreignId('departament_id')->constrained('departaments');
+            $table->foreignId('province_id')->constrained('provinces');
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
         });
@@ -34,8 +30,6 @@ class JobResults extends Migration
      */
     public function down()
     {
-        //
-        Schema::dropIfExists('job_results');
-
+        Schema::dropIfExists('districts');
     }
 }

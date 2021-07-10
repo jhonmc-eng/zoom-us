@@ -89,7 +89,7 @@
                             <div class="form-group row">
                                 <label for="description" class="col-sm-12 col-form-label">Descripción</label>
                                 <div class="col-sm-12">
-                                    <textarea class="summernote form-control txtarea_description" name="description" form="formModalityNew" required>
+                                    <textarea class="summernote form-control txtarea_description" name="description" form="formModalityNew">
 
                                     </textarea>
                                 </div>
@@ -133,7 +133,7 @@
                             <div class="form-group row">
                                 <label for="description" class="col-sm-12 col-form-label">Descripción</label>
                                 <div class="col-sm-12">
-                                    <textarea class="summernote form-control txtDescription" name="description" form="formModalityEdit" required>
+                                    <textarea class="summernote form-control txtDescription" name="description" form="formModalityEdit">
 
                                     </textarea>
                                 </div>
