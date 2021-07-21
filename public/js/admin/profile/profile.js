@@ -26,8 +26,9 @@ $(function() {
                 contentType: false,
                 success: function(data) {
                     if (data.success) {
-                        form[0].reset()
+                        //form[0].reset()
                         form[0].classList.remove('was-validated')
+                        success(data.message)
                     } else {
                         error(data.error)
                     }
@@ -159,6 +160,12 @@ $(function() {
 
     function error(e) {
         $('#modalSuccess .modal-header').empty().append('Error')
+        $('#modalSuccess .modal-body').empty().append(e)
+        $('#modalSuccess').modal('show')
+    }
+
+    function success(e) {
+        $('#modalSuccess .modal-header').empty().append('Exito')
         $('#modalSuccess .modal-body').empty().append(e)
         $('#modalSuccess').modal('show')
     }

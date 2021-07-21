@@ -99,7 +99,7 @@
                                         </div>
                                         <div class="col-md-4">
                                             <label for="phone">Teléfono/Celular (*)</label>
-                                            <input type="number" class="form-control" id="phone" name="phone" required placeholder="Ingrese su telefono o celular">
+                                            <input type="number" class="form-control" id="phone" value="{{$data->phone}}" name="phone" required placeholder="Ingrese su telefono o celular">
                                         </div>
                                     </div>
                                     <div class="row mt-2">
@@ -126,7 +126,7 @@
                                                 
                                             </label>
                                             <div class="custom-file">
-                                                <input type="file" name="file_dni" id="file_dni" accept="application/pdf" required class="form-control custom-file-input validation-pdf">
+                                                <input type="file" name="file_dni" id="file_dni" accept="application/pdf" class="form-control custom-file-input validation-pdf">
                                                 <label class="custom-file-label" for="file_document">Escoge un archivo</label>
                                             </div>
                                         </div>
@@ -175,7 +175,7 @@
                                         </div>
                                         <div class="col-md-3">
                                             <label for="date_birth">Fecha de nacimiento(*)</label>
-                                            <input type="date" class="form-control" name="date_birth" id="date_birth" required>
+                                            <input type="date" class="form-control" name="date_birth" id="date_birth" required value="{{$data->date_birth}}">
                                         </div>
                                     </div>
                                     <div class="row mt-2">
@@ -224,15 +224,15 @@
                                     <div class="row mt-2">
                                         <div class="col-md-4">
                                             <label for="address_one">Calle / Jirón / Avenida (*)</label>
-                                            <input type="text" class="form-control" id="address_one" name="address_one" required placeholder="Ingrese su apellido paterno">
+                                            <input type="text" class="form-control" id="address_one" name="address_one" required placeholder="Ingrese su apellido paterno" value="{{$data->address_one}}">
                                         </div>
                                         <div class="col-md-4">
                                             <label for="address_two">Urb./ AAHH./ Asoc. (*)</label>
-                                            <input type="text" class="form-control" id="address_two" name="address_two" required placeholder="Ingrese su apellido materno">
+                                            <input type="text" class="form-control" id="address_two" name="address_two" required placeholder="Ingrese su apellido materno" value="{{$data->address_two}}">
                                         </div>
                                         <div class="col-md-4">
                                             <label for="address_number">Nro/MZ-LTE (*)</label>
-                                            <input type="text" class="form-control" id="address_number" name="address_number" required placeholder="Ingrese su nombre">
+                                            <input type="text" class="form-control" id="address_number" name="address_number" required placeholder="Ingrese su nombre" value="{{$data->address_number}}">
                                         </div>
                                         
                                     </div>
@@ -242,6 +242,16 @@
                                             <div class="row">
                                                 <div class="form-check col-md-4">
                                                 </div>
+                                                @if($data->pension_id == 1)
+                                                <div class="form-check col-md-4">
+                                                    <input class="form-check-input" type="radio" name="pension_state" id="pension_state_onp" value="1" checked>
+                                                    <label class="form-check-label" for="pension_state_onp">ONP</label>
+                                                </div>
+                                                <div class="form-check col-md-4">
+                                                    <input class="form-check-input" type="radio" name="pension_state" id="pension_state_afp" value="2">
+                                                    <label class="form-check-label" for="pension_state_afp">AFP</label>
+                                                </div>
+                                                @else
                                                 <div class="form-check col-md-4">
                                                     <input class="form-check-input" type="radio" name="pension_state" id="pension_state_onp" value="1">
                                                     <label class="form-check-label" for="pension_state_onp">ONP</label>
@@ -250,10 +260,24 @@
                                                     <input class="form-check-input" type="radio" name="pension_state" id="pension_state_afp" value="2" checked>
                                                     <label class="form-check-label" for="pension_state_afp">AFP</label>
                                                 </div>
+                                                @endif
+                                                
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <label for="type_afp">Nombre de AFP</label>
+                                            @if($data->pension_id == 1)
+                                            <select class="form-control" id="type_afp" name="type_afp" required disabled>
+                                                <option value="">Seleccionar</option>
+                                                @foreach($pension as $item)
+                                                    @if($data->type_pension_id == $item->id)
+                                                        <option value="{{$item->id}}" selected >{{$item->name}}</option>
+                                                    @else
+                                                        <option value="{{$item->id}}">{{$item->name}}</option>
+                                                    @endif
+                                                @endforeach
+                                            </select>
+                                            @else
                                             <select class="form-control" id="type_afp" name="type_afp" required>
                                                 <option value="">Seleccionar</option>
                                                 @foreach($pension as $item)
@@ -264,12 +288,15 @@
                                                     @endif
                                                 @endforeach
                                             </select>
+                                            @endif
+                                            
                                         </div>
                                         <div class="col-md-3">
                                             <label for="exampleInputEmail1">Licenciado FF.AA. (*)</label>
                                             <div class="row">
                                                 <div class="form-check col-md-4">
                                                 </div>
+                                                @if($data->license_FA)
                                                 <div class="form-check col-md-4">
                                                     <input class="form-check-input" type="radio" name="fa_state" id="fa_state_y" value="true" checked>
                                                     <label class="form-check-label" for="fa_state_y">SI</label>
@@ -278,13 +305,29 @@
                                                     <input class="form-check-input" type="radio" name="fa_state" id="fa_state_n" value="false">
                                                     <label class="form-check-label" for="fa_state_n">NO</label>
                                                 </div>
+                                                @else
+                                                <div class="form-check col-md-4">
+                                                    <input class="form-check-input" type="radio" name="fa_state" id="fa_state_y" value="true">
+                                                    <label class="form-check-label" for="fa_state_y">SI</label>
+                                                </div>
+                                                <div class="form-check col-md-4">
+                                                    <input class="form-check-input" type="radio" name="fa_state" id="fa_state_n" value="false" checked>
+                                                    <label class="form-check-label" for="fa_state_n">NO</label>
+                                                </div>
+                                                @endif
+                                                
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <label for="file_fa">Adjuntar Documento</label>
                                             <div class="custom-file">
+                                                @if($data->license_FA)
                                                 <input type="file" name="file_fa" id="file_fa" accept="application/pdf" class="form-control custom-file-input validation-pdf" required>
+                                                @else
+                                                <input type="file" name="file_fa" id="file_fa" accept="application/pdf" class="form-control custom-file-input validation-pdf" disabled>
+                                                @endif
                                                 <label class="custom-file-label" for="file_document">Escoge un archivo</label>
+                                                
                                             </div>
                                         </div>
                                     </div>
@@ -294,6 +337,7 @@
                                             <div class="row">
                                                 <div class="form-check col-md-4">
                                                 </div>
+                                                @if($data->discapacity_state)
                                                 <div class="form-check col-md-4">
                                                     <input class="form-check-input" type="radio" name="discapacity_state" value="true" id="discapacity_state_y" checked>
                                                     <label class="form-check-label" for="discapacity_state_y">SI</label>
@@ -302,10 +346,21 @@
                                                     <input class="form-check-input" type="radio" name="discapacity_state" value="false" id="discapacity_state_n">
                                                     <label class="form-check-label" for="discapacity_state_n">NO</label>
                                                 </div>
+                                                @else
+                                                <div class="form-check col-md-4">
+                                                    <input class="form-check-input" type="radio" name="discapacity_state" value="true" id="discapacity_state_y" >
+                                                    <label class="form-check-label" for="discapacity_state_y">SI</label>
+                                                </div>
+                                                <div class="form-check col-md-4">
+                                                    <input class="form-check-input" type="radio" name="discapacity_state" value="false" id="discapacity_state_n" checked>
+                                                    <label class="form-check-label" for="discapacity_state_n">NO</label>
+                                                </div>
+                                                @endif
                                             </div>
                                         </div>
                                         <div class="col-md-4">
                                             <label for="type_discapacity">Tipo de Discapacidad</label>
+                                            @if($data->discapacity_state)
                                             <select name="type_discapacity" id="type_discapacity" class="form-control" required>
                                                 <option value="">Seleccionar</option>
                                                 @foreach($type_discapacity as $item)
@@ -316,12 +371,29 @@
                                                     @endif
                                                 @endforeach
                                             </select>
+                                            @else
+                                            <select name="type_discapacity" id="type_discapacity" class="form-control" disabled>
+                                                <option value="">Seleccionar</option>
+                                                @foreach($type_discapacity as $item)
+                                                    @if($data->type_discapacity_id == $item->id)
+                                                        <option value="{{$item->id}}" selected >{{$item->name}}</option>
+                                                    @else
+                                                        <option value="{{$item->id}}">{{$item->name}}</option>
+                                                    @endif
+                                                @endforeach
+                                            </select>
+                                            @endif
+                                            
                                         </div>
                                         
                                         <div class="col-md-4">
                                             <label for="file_discapacity">Adjuntar Documento Sustentario</label>
                                             <div class="custom-file">
+                                                @if($data->discapacity_state)
                                                 <input type="file" name="file_discapacity" id="file_discapacity" required accept="application/pdf" class="form-control custom-file-input validation-pdf">
+                                                @else
+                                                <input type="file" name="file_discapacity" id="file_discapacity" disabled accept="application/pdf" class="form-control custom-file-input validation-pdf">
+                                                @endif
                                                 <label class="custom-file-label" for="file_document">Escoge un archivo</label>
                                             </div>
                                         </div>
@@ -332,6 +404,7 @@
                                             <div class="row">
                                                 <div class="form-check col-md-4">
                                                 </div>
+                                                @if($data->license_driver)
                                                 <div class="form-check col-md-4">
                                                     <input class="form-check-input" type="radio" name="license_driver" value="true" id="license_driver_y" checked>
                                                     <label class="form-check-label" for="license_driver_y">SI</label>
@@ -340,12 +413,27 @@
                                                     <input class="form-check-input" type="radio" name="license_driver" value="false" id="license_driver_n">
                                                     <label class="form-check-label" for="license_driver_n">NO</label>
                                                 </div>
+                                                @else
+                                                <div class="form-check col-md-4">
+                                                    <input class="form-check-input" type="radio" name="license_driver" value="true" id="license_driver_y" >
+                                                    <label class="form-check-label" for="license_driver_y">SI</label>
+                                                </div>
+                                                <div class="form-check col-md-4">
+                                                    <input class="form-check-input" type="radio" name="license_driver" value="false" id="license_driver_n" checked>
+                                                    <label class="form-check-label" for="license_driver_n">NO</label>
+                                                </div>
+                                                @endif
+                                                
                                             </div>
                                         </div>
                                         <div class="col-md-4">
                                             <label for="exampleInputEmail1">Adjuntar Documento Sustentario</label>
                                             <div class="custom-file">
-                                                <input type="file" required name="file_license_driver" accept="application/pdf" id="file_license_driver" class="form-control custom-file-input validation-pdf">
+                                                @if($data->license_driver)
+                                                <input type="file" required name="file_license_driver" accept="application/pdf" id="file_license_driver" class="form-control custom-file-input validation-pdf" required>
+                                                @else
+                                                <input type="file" required name="file_license_driver" accept="application/pdf" id="file_license_driver" class="form-control custom-file-input validation-pdf" disabled>
+                                                @endif
                                                 <label class="custom-file-label" for="file_license_driver" >Escoge un archivo</label>
                                             </div>
                                         </div>
@@ -355,14 +443,26 @@
                                             <div class="row">
                                                 <div class="form-check col-md-4">
                                                 </div>
+                                                @if($data->consanguinity)
                                                 <div class="form-check col-md-4">
-                                                    <input class="form-check-input" type="radio" id="consanguinity_state_y" value="true" name="consanguinity_state">
+                                                    <input class="form-check-input" type="radio" id="consanguinity_state_y" value="true" name="consanguinity_state" checked>
                                                     <label class="form-check-label" for="consanguinity_state_y">SI</label>
                                                 </div>
                                                 <div class="form-check col-md-4">
                                                     <input class="form-check-input" type="radio" id="consanguinity_state_n" value="false" name="consanguinity_state">
                                                     <label class="form-check-label" for="consanguinity_state_n">NO</label>
                                                 </div>
+                                                @else
+                                                <div class="form-check col-md-4">
+                                                    <input class="form-check-input" type="radio" id="consanguinity_state_y" value="true" name="consanguinity_state">
+                                                    <label class="form-check-label" for="consanguinity_state_y">SI</label>
+                                                </div>
+                                                <div class="form-check col-md-4">
+                                                    <input class="form-check-input" type="radio" id="consanguinity_state_n" value="false" name="consanguinity_state" checked>
+                                                    <label class="form-check-label" for="consanguinity_state_n">NO</label>
+                                                </div>
+                                                @endif
+                                                
                                             </div>
                                         </div>
                                     </div>

@@ -7,12 +7,12 @@ use App\Models\Candidate;
 use App\Models\Departament;
 use App\Models\District;
 use App\Models\Nationality;
-use App\Models\Pension;
 use App\Models\Province;
 use App\Models\StatusCivil;
 use App\Models\TypeDiscapacity;
 use App\Models\TypePension;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 
 class CandidateController extends Controller
 {
@@ -59,18 +59,18 @@ class CandidateController extends Controller
                 'address_two' => 'required',
                 'address_number' => 'required',
                 'pension_state' => 'required',
-                'type_afp' => 'required',
+                'type_afp' => 'nullable',
                 'fa_state' => 'required',
                 'discapacity_state' => 'required',
-                'type_discapacity' => 'required',
+                'type_discapacity' => 'nullable',
                 'license_driver' => 'required',
                 'consanguinity_state' => 'required',
-                'description' => 'required',
-                'file_dni' => 'required|file|max:10485760',
-                'file_fa' => 'nullable|file|max:10485760',
-                'file_discapacity' => 'nullable|file|max:10485760',
-                'file_license_driver' => 'nullable|file|max:10485760',
-                'file_profile' => 'nullable|file|max:10485760'
+                'description' => 'nullable',
+                'file_dni' => 'nullable|max:10485760',
+                'file_fa' => 'nullable|max:10485760',
+                'file_discapacity' => 'nullable|max:10485760',
+                'file_license_driver' => 'nullable|max:10485760',
+                'file_profile' => 'nullable|max:10485760'
             ]);
             $candidate = Candidate::where('id', session('candidate')->id)->first();
             $candidate->ruc = $request->ruc;
@@ -88,8 +88,105 @@ class CandidateController extends Controller
             $candidate->address_one = $request->address_one;
             $candidate->address_two = $request->address_two;
             $candidate->address_number = $request->address_number;
+            $candidate->pension_id = $request->pension_state;
+            $request->pension_state == 2 ? $candidate->type_pension_id = $request->type_afp : $candidate->type_pension_id = null;
+            $request->fa_state == 'true' ? $candidate->license_FA = true : $candidate->license_FA = false;
+            if($request->fa_state == 'true'){
+                if($request->hasFile('file_fa')){
+                    if($this->verifyArchive($request->file('file_fa'))) {
+                        return response()->json([
+                            'success' => false,
+                            'error' => 'El archivo no es un PDF',
+                            'extension' => $request->file('file_fa')->getClientOriginalExtension()
+                        ]);
+                    }
+                    if($candidate->license_path != '' || !is_null($candidate->license_path)){
+                        File::delete(public_path().$candidate->license_path);
+                    }
+                    $candidate->license_path = $this->uploadArchive($request->file('file_fa'), session('candidate')->id, 'file_fa');
+                }
+            }else{
+                if($candidate->license_path != '' || !is_null($candidate->license_path)){
+                    File::delete(public_path().$candidate->license_path);
+                }
+            }
+            $request->discapacity_state == 'true' ? $candidate->discapacity_state = true : $candidate->discapacity_state = false;
+            $request->discapacity_state ? $candidate->type_discapacity_id = $request->type_discapacity : $candidate->type_discapacity_id = null;
+            
+            if($request->discapacity_state == 'true'){
+                if($request->hasFile('file_discapacity')){
+                    if($this->verifyArchive($request->file('file_discapacity'))) {
+                        return response()->json([
+                            'success' => false,
+                            'error' => 'El archivo no es un PDF',
+                            'extension' => $request->file('file_discapacity')->getClientOriginalExtension()
+                        ]);
+                    }
+                    if($candidate->discapacity_file_path != '' || !is_null($candidate->discapacity_file_path)){
+                        File::delete(public_path().$candidate->discapacity_file_path);
+                    }
+                    $candidate->discapacity_file_path = $this->uploadArchive($request->file('file_discapacity'), session('candidate')->id, 'file_discapacity');
+                }
+            }else{
+                if($candidate->discapacity_file_path != '' || !is_null($candidate->discapacity_file_path)){
+                    File::delete(public_path().$candidate->discapacity_file_path);
+                }
+            }
+
+            $request->license_driver == 'true' ? $candidate->license_driver = true : $candidate->license_Driver = false;
+            if($request->license_driver == 'true'){
+                if($request->hasFile('file_license_driver')){
+                    if($this->verifyArchive($request->file('file_license_driver'))) {
+                        return response()->json([
+                            'success' => false,
+                            'error' => 'El archivo no es un PDF',
+                            'extension' => $request->file('file_license_driver')->getClientOriginalExtension()
+                        ]);
+                    }
+                    if($candidate->license_driver_path != '' || !is_null($candidate->license_driver_path)){
+                        File::delete(public_path().$candidate->license_driver_path);
+                    }
+                    $candidate->license_driver_path = $this->uploadArchive($request->file('file_license_driver'), session('candidate')->id, 'file_license_driver');
+                }
+            }else{
+                if($candidate->license_driver_path != '' || !is_null($candidate->license_driver_path)){
+                    File::delete(public_path().$candidate->license_driver_path);
+                }
+            }
+            $candidate->description = $request->description;
+            $request->consanguinity_state_y == 'true' ? $candidate->consanguinity = true : $candidate->consanguinity = false;
+            if($request->hasFile('file_profile')){
+                if($this->verifyArchiveProfile($request->file('file_profile'))) {
+                    return response()->json([
+                        'success' => false,
+                        'error' => 'El archivo no es un JPG',
+                        'extension' => $request->file('file_profile')->getClientOriginalExtension()
+                    ]);
+                }
+                if($candidate->photo_perfil_path != '' || !is_null($candidate->photo_perfil_path)){
+                    File::delete(public_path().$candidate->photo_perfil_path);
+                }
+                $candidate->photo_perfil_path = $this->uploadArchive($request->file('file_profile'), session('candidate')->id, 'file_perfil');
+            }
+            if($request->hasFile('file_dni')){
+                if($this->verifyArchive($request->file('file_dni'))) {
+                    return response()->json([
+                        'success' => false,
+                        'error' => 'El archivo no es un JPG',
+                        'extension' => $request->file('file_dni')->getClientOriginalExtension()
+                    ]);
+                }
+                if($candidate->file_dni_path != '' || !is_null($candidate->file_dni_path)){
+                    File::delete(public_path().$candidate->file_dni_path);
+                }
+                $candidate->file_dni_path = $this->uploadArchive($request->file('file_dni'), session('candidate')->id, 'file_dni');
+            }
             $candidate->save();
-            dd($request, $candidate);
+            return response()->json([
+                'success' => true,
+                'message' => 'Datos Actualizados Exitosamente',
+                'data' => $candidate
+            ]);
         
         } catch (\Exception $e) {
             return response()->json([
@@ -128,5 +225,38 @@ class CandidateController extends Controller
                 'error' => $e->getMessage()
             ]);
         }
+    }
+    public function uploadArchive($request, $id, $type){
+        $file = $request;
+        $name = $type.'_'.time().'.'.$file->getClientOriginalExtension();
+        $file->move(public_path().'/files/users/user_'.$id.'/profile', $name);
+        return '/files/users/user_'.$id.'/profile/'.$name;
+        
+    }
+    public function verifyArchive($request){
+        if($request->getClientOriginalExtension() != "pdf"){
+            /*return response()->json([
+                'success' => false,
+                'message' => 'Ocurrio un error',
+                'error' => 'El archivo no es un PDF',
+                'type' => 'license_fa',
+                'extension' => $request->getClientOriginalExtension()
+            ]);*/
+            return true;
+        }
+        return false;
+    }
+    public function verifyArchiveProfile($request){
+        if($request->getClientOriginalExtension() != "jpeg"){
+            /*return response()->json([
+                'success' => false,
+                'message' => 'Ocurrio un error',
+                'error' => 'El archivo no es un PDF',
+                'type' => 'license_fa',
+                'extension' => $request->getClientOriginalExtension()
+            ]);*/
+            return true;
+        }
+        return false;
     }
 }
