@@ -364,9 +364,9 @@
 <script src="{{asset('plugins/datatables-buttons/js/buttons.print.min.js')}}"></script>
 <script src="{{asset('plugins/datatables-buttons/js/buttons.colVis.min.js')}}"></script>
 <!-- AdminLTE App -->
-<script src="{{asset('js/adminlte.min.js')}}"></script>
+<script src="{{asset('js/admin/adminlte.min.js')}}"></script>
 <!-- AdminLTE for demo purposes -->
-<script src="{{asset('js/demo.js')}}"></script>
+<script src="{{asset('js/admin/demo.js')}}"></script>
 <!-- Page specific script -->
 <script src="{{asset('js/admin/users/index.js')}}"></script>
 <script>

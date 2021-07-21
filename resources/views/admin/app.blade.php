@@ -12,7 +12,8 @@
   <!-- icheck bootstrap -->
   <link rel="stylesheet" href="{{asset('plugins/icheck-bootstrap/icheck-bootstrap.min.css')}}">
   <!-- Theme style -->
-  <link rel="stylesheet" href="{{asset('css/adminlte.min.css')}}">
+  <link rel="stylesheet" href="{{asset('css/admin/adminlte.min.css')}}">
+  <link rel="stylesheet" href="{{asset('plugins/select2/css/select2.min.css')}}">
   <!-- Font Awesome -->
   <!-- Ekko Lightbox -->
   <link rel="stylesheet" href="{{asset('plugins/ekko-lightbox/ekko-lightbox.css')}}">
@@ -36,9 +37,12 @@
     <!-- Ekko Lightbox -->
     <script src="{{asset('plugins/ekko-lightbox/ekko-lightbox.min.js')}}"></script>
     <!-- AdminLTE App -->
-    <script src="{{asset('js/adminlte.min.js')}}"></script>
+    <script src="{{asset('js/admin/adminlte.min.js')}}"></script>
     <!-- Filterizr-->
     <script src="{{asset('plugins/filterizr/jquery.filterizr.min.js')}}"></script>
+    <script src="{{asset('plugins/select2/js/select2.full.min.js')}}"></script>
+    
+    <script src="{{asset('plugins/bs-custom-file-input/bs-custom-file-input.min.js')}}"></script>
     <!-- AdminLTE for demo purposes -->
     <script src="{{asset('js/demo.js')}}"></script>
     <script>

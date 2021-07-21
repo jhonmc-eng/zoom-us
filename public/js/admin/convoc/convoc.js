@@ -1,9 +1,9 @@
-$(document).ready(function(){
+$(document).ready(function() {
 
     var table = $('#datable').DataTable({
         processing: true,
         responsive: true,
-        lengthChange: false, 
+        lengthChange: false,
         autoWidth: false,
         ajax: {
             url: "/admin/jobs/list-jobs",
@@ -12,19 +12,19 @@ $(document).ready(function(){
         },
         columns: [
             //{ "data": "id"},
-            { data: "number_jobs"},
-            { 
+            { data: "number_jobs" },
+            {
                 data: "modality",
-                render: function (data) {
+                render: function(data) {
                     return data.name;
                 }
             },
-            { data: "title"},
-            { 
+            { data: "title" },
+            {
                 data: "state_job",
-                render: function(data){
+                render: function(data) {
                     let button
-                    switch(data.name){
+                    switch (data.name) {
                         case "ABIERTA":
                             button = `<span class="badge badge-success">ABIERTA</span>`
                             break;
@@ -42,10 +42,10 @@ $(document).ready(function(){
                             break;
                     }
                     return button;
-                } 
+                }
             },
-            { data: "date_publication"},
-            { data: "date_postulation"},
+            { data: "date_publication" },
+            { data: "date_postulation" },
             /*{ 
                 data: "bases",
                 render: function (data) {
@@ -62,35 +62,35 @@ $(document).ready(function(){
                 render: function (data) {
                     return `<a target="_blank" href="${data}" type="button" class="btn btn-info">PERFIL</a>`                }
             },*/
-            { 
+            {
                 data: "state_delete",
-                render: function (data) {
-                    return data ? `INACTIVO`:`ACTIVO`
+                render: function(data) {
+                    return data ? `INACTIVO` : `ACTIVO`
                 }
             }
         ],
         lengthChange: false,
         pageLength: 10,
         language: {
-            emptyTable:     "No hay datos disponibles",
-            info:           "Mostrando _START_ de _END_ de un total de _TOTAL_ entradas",
-            infoEmpty:      "Mostrando 0 de 0 de un total de 0 entradas",
-            infoFiltered:   "(filtrado de un total de _MAX_ total entradas)",
-            infoPostFix:    "",
-            thousands:      ".",
-            lengthMenu:     "Mostrar _MENU_ entradas",
+            emptyTable: "No hay datos disponibles",
+            info: "Mostrando _START_ de _END_ de un total de _TOTAL_ entradas",
+            infoEmpty: "Mostrando 0 de 0 de un total de 0 entradas",
+            infoFiltered: "(filtrado de un total de _MAX_ total entradas)",
+            infoPostFix: "",
+            thousands: ".",
+            lengthMenu: "Mostrar _MENU_ entradas",
             loadingRecords: "Cargando...",
-            processing:     "Procesando...",
-            search:         "Buscar:",
-            zeroRecords:    "No se encontraron datos",
+            processing: "Procesando...",
+            search: "Buscar:",
+            zeroRecords: "No se encontraron datos",
             paginate: {
-                first:      "Primera",
-                last:       "ÚLtima",
-                next:       "Siguiente",
-                previous:   "Anterior"
+                first: "Primera",
+                last: "ÚLtima",
+                next: "Siguiente",
+                previous: "Anterior"
             },
             aria: {
-                sortAscending:  ": activate to sort column ascending",
+                sortAscending: ": activate to sort column ascending",
                 sortDescending: ": activate to sort column descending"
             },
             select: {
@@ -99,13 +99,15 @@ $(document).ready(function(){
                 }
             }
         },
-        
+
         select: {
             style: 'single'
         },
-        order: [[1, 'asc']],
+        order: [
+            [1, 'asc']
+        ],
         bFilter: true,
-       
+
     })
 
     let buttons = `
@@ -126,30 +128,30 @@ $(document).ready(function(){
     `
     $('#datable_wrapper .col-md-6:eq(0)').append(buttons)
 
-    $('#formJob').on('submit', function(e){
+    $('#formJob').on('submit', function(e) {
         e.preventDefault()
         e.stopPropagation()
         var form = $(this)
-        
+
         //console.log($("#formJob input[name=inputBaseFile]")[0].files[0])
         //form[0].trigger('reset')
         if (form[0].checkValidity()) {
             $('#modal-loading').modal('show')
             var data = new FormData();
             var form_data = $(this).serializeArray();
-            $.each(form_data, function (key, input) {
+            $.each(form_data, function(key, input) {
                 data.append(input.name, input.value)
             });
-            data.append('inputBaseFile',$("#formJob input[name=inputBaseFile]")[0].files[0])
-            data.append('inputScheduleFile',$("#formJob input[name=inputScheduleFile]")[0].files[0])
-            data.append('inputProfileFile',$("#formJob input[name=inputProfileFile]")[0].files[0])
+            data.append('inputBaseFile', $("#formJob input[name=inputBaseFile]")[0].files[0])
+            data.append('inputScheduleFile', $("#formJob input[name=inputScheduleFile]")[0].files[0])
+            data.append('inputProfileFile', $("#formJob input[name=inputProfileFile]")[0].files[0])
             $.ajax({
-                url : '/admin/jobs/register-job',
-                type : 'POST',
-                data : data,
+                url: '/admin/jobs/register-job',
+                type: 'POST',
+                data: data,
                 processData: false,
                 contentType: false,
-                success: function(data){
+                success: function(data) {
                     $('#modal-loading').modal('hide')
                     $('#modalJob').modal('hide')
                     $('#modalSuccess .modal-body').empty().append(data.message)
@@ -158,15 +160,15 @@ $(document).ready(function(){
                     form[0].classList.remove('was-validated')
                     table.ajax.reload();
                 },
-                error:function(e){
+                error: function(e) {
                     $('#modal-loading').modal('hide')
                     error(e)
                 }
             });
         }
-        
+
     });
-    $('#button-register').on('click', function (e) {
+    $('#button-register').on('click', function(e) {
         e.preventDefault()
         e.stopPropagation()
         $('#formJob').trigger('reset')
@@ -175,14 +177,14 @@ $(document).ready(function(){
         $('#formJob .txtarea_profile').summernote('reset');
         $('#modalJob').modal('show')
     });
-    
-    $('#button-edit').on('click', function(e){
+
+    $('#button-edit').on('click', function(e) {
         e.preventDefault()
         e.stopPropagation()
-        let data = table.row({selected:true}).data();
-        if(data !== undefined){
-            console.log(data)
-            /$('#formEditJob input[name="inputName"]').val(data.title)
+        let data = table.row({ selected: true }).data();
+        if (data !== undefined) {
+            console.log(data) /
+                $('#formEditJob input[name="inputName"]').val(data.title)
             $('#formEditJob input[name="inputDatePublication"]').val(data.date_publication)
             $('#formEditJob input[name="inputDatePostulation"]').val(data.date_postulation)
             $('#formEditJob select[name="inputModality"]').val(data.modality_id)
@@ -192,37 +194,37 @@ $(document).ready(function(){
             $('#formEditJob .txt_function').summernote("code", data.functions);
             $('#formEditJob .txtarea_profile').summernote("code", data.requirements);
             $('#modalEditJob').modal('show')
-        }else{
+        } else {
             errorSelect()
         }
-        
+
 
     })
 
-    $('#formEditJob').on('submit', function(e){
+    $('#formEditJob').on('submit', function(e) {
         e.preventDefault()
         e.stopPropagation()
-        let data = table.row({selected:true}).data();
-        if(data !== undefined){
+        let data = table.row({ selected: true }).data();
+        if (data !== undefined) {
             let form = $(this)
             if (form[0].checkValidity()) {
                 $('#modal-loading').modal('show')
                 var data_ = new FormData();
                 var form_data = $(this).serializeArray();
-                $.each(form_data, function (key, input) {
+                $.each(form_data, function(key, input) {
                     data_.append(input.name, input.value)
                 });
-                data_.append('inputBaseFile',$("#formEditJob input[name=inputBaseFile]")[0].files[0])
-                data_.append('inputScheduleFile',$("#formEditJob input[name=inputScheduleFile]")[0].files[0])
-                data_.append('inputProfileFile',$("#formEditJob input[name=inputProfileFile]")[0].files[0])
-                
+                data_.append('inputBaseFile', $("#formEditJob input[name=inputBaseFile]")[0].files[0])
+                data_.append('inputScheduleFile', $("#formEditJob input[name=inputScheduleFile]")[0].files[0])
+                data_.append('inputProfileFile', $("#formEditJob input[name=inputProfileFile]")[0].files[0])
+
                 $.ajax({
-                    url : `/admin/jobs/update-job/${data.id}`,
-                    type : 'POST',
-                    data : data_,
+                    url: `/admin/jobs/update-job/${data.id}`,
+                    type: 'POST',
+                    data: data_,
                     processData: false,
                     contentType: false,
-                    success: function(data){
+                    success: function(data) {
                         $('#modal-loading').modal('hide')
                         $('#modalEditJob').modal('hide')
                         $('#modalSuccess .modal-body').empty().append(data.message)
@@ -230,24 +232,24 @@ $(document).ready(function(){
                         form[0].reset()
                         form[0].classList.remove('was-validated')
                         table.ajax.reload();
-                        
+
                         //$('#modal-loading').modal('hide')
                     },
-                    error:function(e){
+                    error: function(e) {
                         $('#modal-loading').modal('hide')
                         error(e)
                     }
                 });
             }
-        }else{
+        } else {
             errorSelect()
         }
 
-        
-        
-    })  
 
-    $('.validation-pdf').on('change', function(e){
+
+    })
+
+    $('.validation-pdf').on('change', function(e) {
         //Toasts.reset()
         //toastr.error('Lorem ipsum dolor sit amet, consetetur sadipscing elitr.')
         e.preventDefault()
@@ -255,67 +257,68 @@ $(document).ready(function(){
         let file = $(this)[0].files[0]
         let size = file.size
         let type = file.type
-        console.log(file,size,type)
-        if(type != "application/pdf"){
+        console.log(file, size, type)
+        if (type != "application/pdf") {
             $(this).val('')
-            toastr.error('El tipo de archivo que quiere subir, no esta permitido',{
+            toastr.error('El tipo de archivo que quiere subir, no esta permitido', {
                 "closeButton": true,
-              })
+            })
         }
-        if(size >= 10000000){
+        if (size >= 10000000) {
             $(this).val('')
-            toastr.error('El tamaño de archivo que quiere subir, no esta permitido',{
+            toastr.error('El tamaño de archivo que quiere subir, no esta permitido', {
                 "closeButton": true,
-              })
+            })
         }
     })
-    $('#button-view').on('click', function(e){
-        e.preventDefault()
-        e.stopPropagation()
-        let data = table.row({selected:true}).data()
-        if(data !== undefined){
-            $(location).attr('href',`/admin/jobs/view-job?job_id=${data.token}`)   
-        }else{
-            errorSelect()
-        }
-        
-    })/*
-    $('#formUpdatePassword').on('submit', function(e){
-        e.preventDefault()
-        e.stopPropagation()
-        let form = $(this)
-        let data = table.row({select:true}).data()
-        console.log(data)
-        if(data != undefined){
-            $.ajax({
-                url : `/admin/users/resetPassword`,
-                type : 'POST',
-                data : form.serialize(),
-                success:function(data){
-                    $('#modalUpdatePassword').modal('hide')
-                    $('#modalSuccess .moda-header').empty().append('¡Exito!')
-                    $('#modalSuccess .modal-body').empty().append(data.message)
-                    $('#modalSuccess').modal('show')
-                    form[0].reset()
-                    form[0].classList.remove('was-validated')
-                    table.ajax.reload();
-                },
-                error:function(){
-                    console.log(e)
+    $('#button-view').on('click', function(e) {
+            e.preventDefault()
+            e.stopPropagation()
+            let data = table.row({ selected: true }).data()
+            if (data !== undefined) {
+                $(location).attr('href', `/admin/jobs/view-job?job_id=${data.token}`)
+            } else {
+                errorSelect()
+            }
+
+        })
+        /*
+            $('#formUpdatePassword').on('submit', function(e){
+                e.preventDefault()
+                e.stopPropagation()
+                let form = $(this)
+                let data = table.row({select:true}).data()
+                console.log(data)
+                if(data != undefined){
+                    $.ajax({
+                        url : `/admin/users/resetPassword`,
+                        type : 'POST',
+                        data : form.serialize(),
+                        success:function(data){
+                            $('#modalUpdatePassword').modal('hide')
+                            $('#modalSuccess .moda-header').empty().append('¡Exito!')
+                            $('#modalSuccess .modal-body').empty().append(data.message)
+                            $('#modalSuccess').modal('show')
+                            form[0].reset()
+                            form[0].classList.remove('was-validated')
+                            table.ajax.reload();
+                        },
+                        error:function(){
+                            console.log(e)
+                        }
+                    })
+                }else{
+                    errorSelect()
                 }
-            })
-        }else{
-            errorSelect()
-        }
-    })*/
-    
-    function errorSelect(){
+            })*/
+
+    function errorSelect() {
         $('#modalSuccess .modal-header').empty().append('Error')
         $('#modalSuccess .modal-body').empty().append('¡Debe seleccionar un registro!')
         $('#modalSuccess').modal('show')
     }
-    
-    function error(e){
+
+    function error(e) {
         $('#modalSuccess .modal-header').empty().append('Error')
         $('#modalSuccess .modal-body').empty().append(e.responseJSON.message)
         $('#modalSuccess').modal('show')

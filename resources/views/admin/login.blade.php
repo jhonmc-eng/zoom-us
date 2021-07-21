@@ -12,7 +12,7 @@
   <!-- icheck bootstrap -->
   <link rel="stylesheet" href="{{asset('plugins/icheck-bootstrap/icheck-bootstrap.min.css')}}">
   <!-- Theme style -->
-  <link rel="stylesheet" href="{{asset('css/adminlte.min.css')}}">
+  <link rel="stylesheet" href="{{asset('css/admin/adminlte.min.css')}}">
 </head>
 
 
@@ -67,6 +67,6 @@
 <!-- Bootstrap 4 -->
 <script src="{{asset('plugins/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
 <!-- AdminLTE App -->
-<script src="{{asset('js/adminlte.min.js')}}"></script>
+<script src="{{asset('js/admin/adminlte.min.js')}}"></script>
 </body>
 </html>
