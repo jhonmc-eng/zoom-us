@@ -10,20 +10,17 @@
 
 </head>
 
-<body class="transparent-header">
+<body class="">
 
 	<!-- Wrapper -->
 	<div id="wrapper">
 
 		<!-- Header Container
-================================================== -->
+		================================================== -->
         @include('client.layouts.header')
 		<!-- Header Container / End -->
-
         @yield('content')
 		
-
-
 		@include('client.layouts.footer')
 
 	</div>
@@ -32,7 +29,6 @@
 
 	<!-- Scripts
 ================================================== -->
-	<script data-cfasync="false" src="../../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
 	<script type="text/javascript" src="{{asset('js/client/jquery-3.4.1.min.js')}}"></script>
 	<script type="text/javascript" src="{{asset('js/client/jquery-migrate-3.1.0.min.js')}}"></script>
 	<script type="text/javascript" src="{{asset('js/client/mmenu.min.js')}}"></script>
@@ -51,9 +47,10 @@
 	<script src="{{asset('js/client/leaflet.min.js')}}"></script>
 
 	<!-- Leaflet Maps Scripts -->
-	<script src="{{asset('js/client/leaflet-markercluster.min.js')}}"></script>
-	<script src="{{asset('js/client/leaflet-gesture-handling.min.js')}}"></script>
-	<script src="{{asset('js/client/leaflet-listeo.js')}}"></script>
+	
+	<script type="text/javascript" src="{{asset('js/client/leaflet-markercluster.min.js')}}"></script>
+	<script type="text/javascript" src="{{asset('js/client/leaflet-gesture-handling.min.js')}}"></script>
+	<script type="text/javascript" src="{{asset('js/client/leaflet-listeo.js')}}"></script>
 
 	<!-- Leaflet Geocoder + Search Autocomplete // Docs: https://github.com/perliedman/leaflet-control-geocoder -->
 	<script src="{{asset('js/client/leaflet-autocomplete.js')}}"></script>
@@ -72,6 +69,7 @@
 			loop: true,
 			showCursor: true
 		});
+		
 	</script>
 	<style>
 		#header {

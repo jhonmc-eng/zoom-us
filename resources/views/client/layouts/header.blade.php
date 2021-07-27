@@ -9,7 +9,7 @@
 
 						<!-- Logo -->
 						<div id="logo">
-							<a href="index-2.html"><img src="{{asset('img/client/logo_b.png')}}" data-sticky-logo="{{asset('img/client/logo_b.png')}}"
+							<a href="/"><img src="{{asset('img/client/logo_b.png')}}" data-sticky-logo="{{asset('img/client/logo_b.png')}}"
 									alt=""></a>
 						</div>
 
@@ -207,7 +207,7 @@
 					<div class="right-side">
 						<div class="header-widget">
 							<a href="#sign-in-dialog" class="sign-in popup-with-zoom-anim button border with-icon"><i class="sl sl-icon-login"></i> Ingresar</a>
-                            <a href="/register" class="sign-in popup-with-zoom-anim button border with-icon"><i class="im im-icon-Add-User"></i> Registrarse</a>
+                            <a href="/register" class="button border with-icon"><i class="im im-icon-Add-User"></i> Registrarse</a>
 						</div>
                         
 					</div>
@@ -265,10 +265,3 @@
                 height: 100% !important;
             }
         </style>
-        <!-- Bootstrap 4 -->
-        <script>
-            $(function(){
-                
-                
-            })
-        </script>

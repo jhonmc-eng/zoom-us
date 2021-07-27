@@ -169,4 +169,26 @@ $(function() {
         $('#modalSuccess .modal-body').empty().append(e)
         $('#modalSuccess').modal('show')
     }
+    $('.validation-pdf').on('change', function(e) {
+        //Toasts.reset()
+        //toastr.error('Lorem ipsum dolor sit amet, consetetur sadipscing elitr.')
+        e.preventDefault()
+        e.stopPropagation()
+        let file = $(this)[0].files[0]
+        let size = file.size
+        let type = file.type
+        console.log(file, size, type)
+        if (type != "application/pdf") {
+            $(this).val('')
+            toastr.error('El tipo de archivo que quiere subir, no esta permitido', {
+                "closeButton": true,
+            })
+        }
+        if (size >= 10000000) {
+            $(this).val('')
+            toastr.error('El tamaño de archivo que quiere subir, no esta permitido', {
+                "closeButton": true,
+            })
+        }
+    })
 })

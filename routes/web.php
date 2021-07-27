@@ -26,7 +26,8 @@ Route::post('/admin/users/resetPassword', 'UserController@resetPassword');
 Route::get('/admin/users/get-data-dni/{dni}', 'UserController@getApiDni');*/
 Route::post('/login-verification', 'LoginController@loginAdmin');
 Route::post('/login-verification-candidate', 'LoginController@loginCandidate');
-Route::get('/create-directory', 'UserController@createDirectory');
+Route::get('/register', 'CandidateController@viewRegister');
+Route::get('/get-data-dni/{dni}', 'UserController@getApiDni');
 
 Route::group(['prefix' => 'admin', 'middleware' => 'auth_admin', 'as' => 'admin.'], function(){
     /*LOGUEARSE DEL ADMIN */

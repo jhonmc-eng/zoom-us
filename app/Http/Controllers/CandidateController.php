@@ -39,8 +39,15 @@ class CandidateController extends Controller
         }
         
     }
-
+    public function viewRegister(Request $request){
+        return view('client.register.register');
+    }
     public function updateProfile(Request $request){
+
+        //dd($request);
+        /*return response()->json([
+            'data' => $request
+        ]);*/
         try {
             $request->validate([
                 'ruc' => 'nullable',
@@ -66,11 +73,11 @@ class CandidateController extends Controller
                 'license_driver' => 'required',
                 'consanguinity_state' => 'required',
                 'description' => 'nullable',
-                'file_dni' => 'nullable|max:10485760',
-                'file_fa' => 'nullable|max:10485760',
-                'file_discapacity' => 'nullable|max:10485760',
-                'file_license_driver' => 'nullable|max:10485760',
-                'file_profile' => 'nullable|max:10485760'
+                'file_dni' => 'exclude_if:file_dni,undefined|nullable|mimes:pdf|max:10485760',
+                'file_fa' => 'exclude_if:file_fa,undefined|nullable|mimes:pdf|max:10485760',
+                'file_discapacity' => 'exclude_if:file_discapacity,undefined|nullable|mimes:pdf|max:10485760',
+                'file_license_driver' => 'exclude_if:file_license_driver,undefined|nullable|mimes:pdf|max:10485760',
+                'file_profile' => 'exclude_if:file_profile,undefined|nullable|image|max:10485760'
             ]);
             $candidate = Candidate::where('id', session('candidate')->id)->first();
             $candidate->ruc = $request->ruc;
@@ -93,13 +100,6 @@ class CandidateController extends Controller
             $request->fa_state == 'true' ? $candidate->license_FA = true : $candidate->license_FA = false;
             if($request->fa_state == 'true'){
                 if($request->hasFile('file_fa')){
-                    if($this->verifyArchive($request->file('file_fa'))) {
-                        return response()->json([
-                            'success' => false,
-                            'error' => 'El archivo no es un PDF',
-                            'extension' => $request->file('file_fa')->getClientOriginalExtension()
-                        ]);
-                    }
                     if($candidate->license_path != '' || !is_null($candidate->license_path)){
                         File::delete(public_path().$candidate->license_path);
                     }
@@ -115,13 +115,6 @@ class CandidateController extends Controller
             
             if($request->discapacity_state == 'true'){
                 if($request->hasFile('file_discapacity')){
-                    if($this->verifyArchive($request->file('file_discapacity'))) {
-                        return response()->json([
-                            'success' => false,
-                            'error' => 'El archivo no es un PDF',
-                            'extension' => $request->file('file_discapacity')->getClientOriginalExtension()
-                        ]);
-                    }
                     if($candidate->discapacity_file_path != '' || !is_null($candidate->discapacity_file_path)){
                         File::delete(public_path().$candidate->discapacity_file_path);
                     }
@@ -136,13 +129,6 @@ class CandidateController extends Controller
             $request->license_driver == 'true' ? $candidate->license_driver = true : $candidate->license_Driver = false;
             if($request->license_driver == 'true'){
                 if($request->hasFile('file_license_driver')){
-                    if($this->verifyArchive($request->file('file_license_driver'))) {
-                        return response()->json([
-                            'success' => false,
-                            'error' => 'El archivo no es un PDF',
-                            'extension' => $request->file('file_license_driver')->getClientOriginalExtension()
-                        ]);
-                    }
                     if($candidate->license_driver_path != '' || !is_null($candidate->license_driver_path)){
                         File::delete(public_path().$candidate->license_driver_path);
                     }
@@ -156,26 +142,12 @@ class CandidateController extends Controller
             $candidate->description = $request->description;
             $request->consanguinity_state_y == 'true' ? $candidate->consanguinity = true : $candidate->consanguinity = false;
             if($request->hasFile('file_profile')){
-                if($this->verifyArchiveProfile($request->file('file_profile'))) {
-                    return response()->json([
-                        'success' => false,
-                        'error' => 'El archivo no es un JPG',
-                        'extension' => $request->file('file_profile')->getClientOriginalExtension()
-                    ]);
-                }
                 if($candidate->photo_perfil_path != '' || !is_null($candidate->photo_perfil_path)){
                     File::delete(public_path().$candidate->photo_perfil_path);
                 }
                 $candidate->photo_perfil_path = $this->uploadArchive($request->file('file_profile'), session('candidate')->id, 'file_perfil');
             }
             if($request->hasFile('file_dni')){
-                if($this->verifyArchive($request->file('file_dni'))) {
-                    return response()->json([
-                        'success' => false,
-                        'error' => 'El archivo no es un JPG',
-                        'extension' => $request->file('file_dni')->getClientOriginalExtension()
-                    ]);
-                }
                 if($candidate->file_dni_path != '' || !is_null($candidate->file_dni_path)){
                     File::delete(public_path().$candidate->file_dni_path);
                 }

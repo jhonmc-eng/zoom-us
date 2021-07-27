@@ -119,17 +119,18 @@
                                         <div class="col-md-6">
                                             <label for="file_dni">
                                                 Adjuntar DNI (Ambos lados PDF)(*)
-                                                <div id="button-file" class="d-inline">
-                                                    <a target="_blank" href="#" type="button" class="btn btn-success view-file"><i class="fas fa-eye"></i></a>
-                                                    <br>
-                                                </div>
-                                                
                                             </label>
                                             <div class="custom-file">
                                                 <input type="file" name="file_dni" id="file_dni" accept="application/pdf" class="form-control custom-file-input validation-pdf">
                                                 <label class="custom-file-label" for="file_document">Escoge un archivo</label>
                                             </div>
                                         </div>
+                                        {{--<div class="col-md-1">
+                                            <div id="button-file" class="d-inline">
+                                                <a target="_blank" href="#" type="button" class="btn btn-success view-file"><i class="fas fa-eye"></i></a>
+                                                <br>
+                                            </div>
+                                        </div>--}}
                                     </div>
                                     <div class="row mt-2">
                                         <div class="col-md-9">
@@ -322,7 +323,7 @@
                                             <label for="file_fa">Adjuntar Documento</label>
                                             <div class="custom-file">
                                                 @if($data->license_FA)
-                                                <input type="file" name="file_fa" id="file_fa" accept="application/pdf" class="form-control custom-file-input validation-pdf" required>
+                                                <input type="file" name="file_fa" id="file_fa" accept="application/pdf" class="form-control custom-file-input validation-pdf">
                                                 @else
                                                 <input type="file" name="file_fa" id="file_fa" accept="application/pdf" class="form-control custom-file-input validation-pdf" disabled>
                                                 @endif
@@ -390,7 +391,7 @@
                                             <label for="file_discapacity">Adjuntar Documento Sustentario</label>
                                             <div class="custom-file">
                                                 @if($data->discapacity_state)
-                                                <input type="file" name="file_discapacity" id="file_discapacity" required accept="application/pdf" class="form-control custom-file-input validation-pdf">
+                                                <input type="file" name="file_discapacity" id="file_discapacity" accept="application/pdf" class="form-control custom-file-input validation-pdf">
                                                 @else
                                                 <input type="file" name="file_discapacity" id="file_discapacity" disabled accept="application/pdf" class="form-control custom-file-input validation-pdf">
                                                 @endif
@@ -430,7 +431,7 @@
                                             <label for="exampleInputEmail1">Adjuntar Documento Sustentario</label>
                                             <div class="custom-file">
                                                 @if($data->license_driver)
-                                                <input type="file" required name="file_license_driver" accept="application/pdf" id="file_license_driver" class="form-control custom-file-input validation-pdf" required>
+                                                <input type="file"  name="file_license_driver" accept="application/pdf" id="file_license_driver" class="form-control custom-file-input validation-pdf">
                                                 @else
                                                 <input type="file" required name="file_license_driver" accept="application/pdf" id="file_license_driver" class="form-control custom-file-input validation-pdf" disabled>
                                                 @endif
@@ -469,14 +470,16 @@
                                     <div class="row mt-2">
                                         <div class="col-md-12">
                                             <label for="description" class="col-md-12">Sobre mi</label>
-                                            <textarea class="col-md-12 summernote" name="description" id="description"></textarea>
+                                            <textarea class="col-md-12 summernote" name="description" id="description">
+                                            {{$data->description}}
+                                            </textarea>
                                         </div>
                                     </div>
                                     <div class="row mt-2">
                                         <div class="col-md-12">
                                             <label for="file_perfil">Subir Imagen de Perfil</label>
                                             <div class="custom-file">
-                                                <input type="file" name="file_perfil" id="file_perfil" accept="application/pdf" class="form-control custom-file-input validation-pdf">
+                                                <input type="file" name="file_perfil" id="file_perfil" class="form-control custom-file-input">
                                                 <label class="custom-file-label" for="file_perfil">Escoge un archivo</label>
                                             </div>
                                         </div>
