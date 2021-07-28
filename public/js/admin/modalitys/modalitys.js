@@ -70,38 +70,33 @@ $(document).ready(function(){
     let buttons = `
         <button type="button" class="btn btn-success" id="button-register" data-toggle="modal"><i class="nav-icon fas fa-people-arrows"></i> Nuevo</button>
         <button type="button" class="btn btn-info" id="button-edit" data-toggle="modal"><i class="fas fa-edit"></i> Editar</button>
-        <div class="btn-group" role="group">
-            <button id="btnGroupDrop1" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <i class="fas fa-print"></i> Reporte
-            </button>
-            <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                <button class="dropdown-item" id="reportCsv">CSV</button>
-                <button class="dropdown-item" id="reportExcel">Excel</button>
-                <button class="dropdown-item" id="reportPDF">PDF</button>
-                <button class="dropdown-item" id="reportPrint">Imprmir</button>
-            </div>
-        </div>
+        
     `
     $('#datable_wrapper .col-md-6:eq(0)').append(buttons)
 
     $('#formModalityNew').on('submit', function(e){
         e.preventDefault()
         e.stopPropagation()
-        let form = $(this)
+        var form = $(this);
         if (form[0].checkValidity()) {
-            //$('#modal-loading').modal('show') 
+            //$('#modal-loading').modal('show')
             $.ajax({
                 url : '/admin/modalitys/register-modality',
                 type : 'POST',
-                data : form.serialize(),
+                data : $(this).serialize(),
                 success: function(data){
                     //$('#modal-loading').modal('hide')
-                    $('#modalModalityNew').modal('hide')
-                    $('#modalSuccess .modal-body').empty().append(data.message)
-                    $('#modalSuccess').modal('show')
-                    form[0].reset()
-                    form[0].classList.remove('was-validated')
-                    table.ajax.reload();
+                    if(data.success){
+                        $('#modalModalityNew').modal('hide')
+                        $('#modalSuccess .modal-body').empty().append(data.message)
+                        $('#modalSuccess').modal('show')
+                        form[0].reset()
+                        form[0].classList.remove('was-validated')
+                        table.ajax.reload();
+                    }else{
+                        error(e)
+                    }
+                    
                 },
                 error:function(e){
                     //$('#modal-loading').modal('hide')
@@ -126,8 +121,7 @@ $(document).ready(function(){
         if(data !== undefined){
             console.log(data)
             $('#formModalityEdit input[name="name"]').val(data.name)
-            $('#formModalityEdit .txtDescription').summernote("code", data.description);
-            $('#formModalityEdit select[name="state_delete"]').val(data.state_delete);
+            $('#formModalityEdit .txtDescription').summernote("code", data.description)
             $('#modalModalityEdit').modal('show')
         }else{
             errorSelect()
@@ -143,21 +137,22 @@ $(document).ready(function(){
         let data = table.row({selected:true}).data();
         if(data !== undefined){
             if (form[0].checkValidity()) {
-                //$('#modal-loading').modal('show')                
+                //$('#modal-loading').modal('show')
                 $.ajax({
                     url : `/admin/modalitys/update-modality/${data.token}`,
                     type : 'POST',
-                    data : form.serialize(),
+                    data : $(this).serialize(),
                     success: function(data){
-                        //$('#modal-loading').modal('hide')
-                        $('#modalModalityEdit').modal('hide')
-                        $('#modalSuccess .modal-body').empty().append(data.message)
-                        $('#modalSuccess').modal('show')
-                        form[0].reset()
-                        form[0].classList.remove('was-validated')
-                        table.ajax.reload();
-                        
-                        //$('#modal-loading').modal('hide')
+                        if(data.success){
+                            $('#modalModalityEdit').modal('hide')
+                            $('#modalSuccess .modal-body').empty().append(data.message)
+                            $('#modalSuccess').modal('show')
+                            form[0].reset()
+                            form[0].classList.remove('was-validated')
+                            table.ajax.reload();
+                        }else{
+                            error(e)
+                        }
                     },
                     error:function(e){
                         //$('#modal-loading').modal('hide')
