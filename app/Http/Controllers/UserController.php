@@ -247,15 +247,17 @@ class UserController extends Controller
         curl_close($ch);
         $data = json_decode($result);
         
-        if(isset($data->success)){
+        if($data->success){
             $username = $this->username($data->data->nombres,$data->data->apellido_paterno,$data->data->apellido_materno);
             return response()->json([
+                'success' => true,
                 'username' => $username,
                 'data' => $data->data
             ], 200);
             //dd($data);
         }else{  
             return response()->json([
+                'success' => false,
                 'message' => 'Ocurrio un error',
                 'error' => 'El DNI no existe, intente nuevamente'
             ], 400);

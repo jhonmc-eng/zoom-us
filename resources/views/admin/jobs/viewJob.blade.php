@@ -20,36 +20,7 @@
                 </div>
             </div><!-- /.container-fluid -->
         </section>
-        
-        {{--<section class="content">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-12">
-                        <div class="card">
-                            <div class="card-header">
-                                <div class="company-detail-header text-center">
-                                    <h2 class="heading mb-15">CONCURSO CAS N°058-2021 GOB.REG.TACNA DE LA SUB GERENCIA DE PLANEAMIENTO Y ACONDICIONAMIENTO TERRITORIAL</h2>
-                                
-                                    <div class="meta-div clearfix mb-25">
-                                        <span>de <a target="_blank" href="#">Gobierno Regional De Tacna</a> estado </span>
-                                        <span class="badge badge-success">CERRADA</span>	
-                                    </div>
-                                </div>
-                            </div>
-                        <!-- /.card-header -->
-                            <div class="card-body">
-                           
-                            </div>
-                        <!-- /.card-body -->
-                        </div>
-                        <!-- /.card -->
-                    </div>
-                    <!-- /.col -->
-                </div>
-                <!-- /.row -->
-            </div>
-        <!-- /.container-fluid -->
-        </section>--}}
+       
         <section class="content">
             <div class="container-fluid">
                 <div class="row">
@@ -371,9 +342,9 @@
 
 @section('after-scripts')
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script src="{{asset('js/adminlte.min.js')}}"></script>
+<script src="{{asset('js/admin/adminlte.min.js')}}"></script>
 <!-- AdminLTE for demo purposes -->
-<script src="{{asset('js/demo.js')}}"></script>
+<script src="{{asset('js/admin/demo.js')}}"></script>
 <script src="{{asset('plugins/bs-custom-file-input/bs-custom-file-input.min.js')}}"></script>
 <script src="{{asset('plugins/toastr/toastr.min.js')}}"></script>
 <link rel="stylesheet" href="{{asset('plugins/toastr/toastr.min.css')}}">

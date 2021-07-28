@@ -1,9 +1,6 @@
 <?php
 
-use App\Http\Controllers\AdminController;
-use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Middleware\CkeckAuthAdmin;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,7 +14,7 @@ use App\Http\Middleware\CkeckAuthAdmin;
 */
 
 Route::get('/', function () {
-    redirect('/login');
+    return view('welcome');
 });
 
 Route::get('/login', 'AdminController@index')->name('login.admin');
@@ -28,13 +25,16 @@ Route::post('/admin/users/update-user/{id}','UserController@editUser');
 Route::post('/admin/users/resetPassword', 'UserController@resetPassword');
 Route::get('/admin/users/get-data-dni/{dni}', 'UserController@getApiDni');*/
 Route::post('/login-verification', 'LoginController@loginAdmin');
-Route::get('/create-directory', 'UserController@createDirectory');
+Route::post('/login-verification-candidate', 'LoginController@loginCandidate');
+Route::get('/register', 'CandidateController@viewRegister');
+Route::get('/get-data-dni/{dni}', 'UserController@getApiDni');
 
 Route::group(['prefix' => 'admin', 'middleware' => 'auth_admin', 'as' => 'admin.'], function(){
-   
+    /*LOGUEARSE DEL ADMIN */
+    Route::get('/', 'AdminController@dashboard');
     Route::get('/logout','LoginController@logoutAdmin');
-    
-    Route::group(['prefix' => 'users'], function(){
+    /*MODULO DE USUARIOS*/
+    Route::group(['prefix' => 'users', 'middleware' => 'admin'], function(){
         Route::get('/', 'UserController@view');
         Route::get('/list-users', 'UserController@listUsers');
         Route::post('/create-user', 'UserController@registerUser');
@@ -42,7 +42,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth_admin', 'as' => 'admin.
         Route::post('/resetPassword', 'UserController@resetPassword');
         Route::get('/get-data-dni/{dni}', 'UserController@getApiDni');
     });
-    
+    /* MODULO DE CONVOCATORIA*/
     Route::group(['prefix' => 'jobs'], function(){
         Route::get('/', 'ConvocatoriaController@view');
         Route::get('/list-jobs', 'ConvocatoriaController@listJobs');
@@ -56,15 +56,36 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth_admin', 'as' => 'admin.
         Route::post('/upload-result/{id}', 'ConvocatoriaController@uploadDocuments');
         Route::post('/change-document/{id}', 'ConvocatoriaController@changeDocument');
         Route::post('/delete-document/{id}', 'ConvocatoriaController@deleteDocument');
-
-        
     });
-    Route::group(['prefix' => 'modalitys'], function(){
+    /*MODULO DE MODALIDADES*/
+    Route::group(['prefix' => 'modalitys', 'middleware' => 'admin'], function(){
         Route::get('/', 'ModalitysController@viewModalitys');
         Route::post('/register-modality','ModalitysController@registerModality');
         Route::get('/list-modalitys','ModalitysController@listModalitys');
         Route::post('/update-modality/{id}','ModalitysController@updateModality');
     });
+});
+
+Route::group(['prefix' => 'candidate', 'middleware' => 'auth_candidate', 'as' => 'candidate.'], function(){
+
+    Route::get('/logout-candidate','LoginController@logoutCandidate');
+
+    Route::group(['prefix' => 'profile'], function(){
+        Route::get('/', 'CandidateController@viewProfile');
+        Route::get('/get-province', 'CandidateController@provinces');
+        Route::get('/get-district', 'CandidateController@district');
+        Route::post('/update-profile', 'CandidateController@updateProfile');
+    }); 
+    //Route::group)
+
+/*
+    Route::group(['prefix' => 'academic'], function(){
+
+    });
+
+    Route::group(['prefix' => 'qualification'], function(){
+
+    });*/
 });
 
 
