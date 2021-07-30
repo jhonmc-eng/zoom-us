@@ -8,12 +8,12 @@
         <div class="container-fluid">
             <div class="row mb-2">
             <div class="col-sm-6">
-                <h1>Cursos Y Programas de Especializacion</h1>
+                <h1>Formación Académica</h1>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                 <li class="breadcrumb-item"><a href="/">Inicio</a></li>
-                <li class="breadcrumb-item active">Cursos y Programas</li>
+                <li class="breadcrumb-item active">Formación Académica</li>
                 </ol>
             </div>
             </div>
@@ -88,6 +88,12 @@
             <div class="modal-body">
                 <div class="card">
                     <div class="card-body">
+                        <div class="alert alert-danger alert-dismissible">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                            <h5><i class="icon fas fa-ban"></i> Alerta!</h5>
+                            <p class="mb-0"> En el campo "FECHA" debe indicar la fecha de obtención del "NIVEL DE ESTUDIOS" que está registrando. En el caso de estudiante, debe indicar la fecha del ciclo culminado que está registrando.</p>
+                            <p class="mb-0">El tamaño máximo para los documentos adjuntos (.pdf) es de 10MB</p>
+                        </div>
                         <div class="form-group row">
                             <label for="study_center" class="col-sm-12 col-form-label">Centro de Estudios</label>
                             <div class="col-sm-12">
@@ -147,8 +153,8 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="date_start" class="col-sm-6 col-form-label">Fecha de publicación</label>
-                            <label for="date_end" class="col-sm-6 col-form-label">Fecha de postulación</label>
+                            <label for="date_start" class="col-sm-6 col-form-label">Fecha de inicio</label>
+                            <label for="date_end" class="col-sm-6 col-form-label">Fecha de fin</label>
                               
                             <div class="col-sm-6">
                                 <input type="date" name="date_start" class="form-control" required>
@@ -194,6 +200,12 @@
             <div class="modal-body">
                 <div class="card">
                     <div class="card-body">
+                        <div class="alert alert-danger alert-dismissible">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                            <h5><i class="icon fas fa-ban"></i> Alerta!</h5>
+                            <p class="mb-0"> En el campo "FECHA" debe indicar la fecha de obtención del "NIVEL DE ESTUDIOS" que está registrando. En el caso de estudiante, debe indicar la fecha del ciclo culminado que está registrando.</p>
+                            <p class="mb-0">El tamaño máximo para los documentos adjuntos (.pdf) es de 10MB</p>
+                        </div>
                         <div class="form-group row">
                             <label for="study_center" class="col-sm-12 col-form-label">Centro de Estudios</label>
                             <div class="col-sm-12">
@@ -259,8 +271,8 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="date_start" class="col-sm-6 col-form-label">Fecha de publicación</label>
-                            <label for="date_end" class="col-sm-6 col-form-label">Fecha de postulación</label>
+                            <label for="date_start" class="col-sm-6 col-form-label">Fecha de inicio</label>
+                            <label for="date_end" class="col-sm-6 col-form-label">Fecha de fin</label>
                               
                             <div class="col-sm-6">
                                 <input type="date" name="date_start" class="form-control" required>

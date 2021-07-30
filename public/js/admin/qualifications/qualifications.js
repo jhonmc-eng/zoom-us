@@ -5,24 +5,26 @@ $(document).ready(function() {
         lengthChange: false,
         autoWidth: false,
         ajax: {
-            url: "/candidate/academic/get-data",
+            url: "/candidate/qualifications/get-data-qualifications",
             dataSrc: 'data',
             type: "GET"
         },
+
         columns: [{
-                data: "type_academic",
+                data: "type_qualification",
                 render: function(data) {
                     return data.name
                 }
             },
             {
-                data: "education_level",
-                render: function(data) {
-                    return data.name;
-                }
+                data: 'cant_hours'
             },
-            { data: "study_center" },
-            { data: "career" },
+            {
+                data: 'name_institution'
+            },
+            {
+                data: 'title_course'
+            },
             { data: "date_start" },
             { data: "date_end" }
         ],
@@ -65,7 +67,7 @@ $(document).ready(function() {
     })
 
     let buttons = `
-        <button type="button" class="btn btn-success" id="button-register" data-toggle="modal"><i class="fas fas fa-graduation-cap"></i> Nuevo</button>
+        <button type="button" class="btn btn-success" id="button-register" data-toggle="modal"><i class="fas fa-laptop"></i> Nuevo</button>
         <button type="button" class="btn btn-info" id="button-edit" data-toggle="modal"><i class="fas fa-edit"></i> Editar</button>
         <button type="button" class="btn btn-danger" id="button-delete" data-toggle="modal"><i class="fas fa-trash-alt"></i> Eliminar</button>
         
@@ -75,12 +77,12 @@ $(document).ready(function() {
     $('#button-register').on('click', function(e) {
         e.preventDefault()
         e.stopPropagation()
-        $('#formAcademic').trigger('reset')
-        $('#modalRegisterAcademic').modal('show')
+        $('#formQualification').trigger('reset')
+        $('#modalRegisterQualification').modal('show')
 
 
     });
-    $('#formAcademic').on('submit', function(e) {
+    $('#formQualification').on('submit', function(e) {
         e.preventDefault()
         e.stopPropagation()
         var form = $(this)
@@ -92,17 +94,16 @@ $(document).ready(function() {
             $.each(form_data, function(key, input) {
                 data.append(input.name, input.value)
             });
-            data.append('tuition_file', $("#formAcademic input[name=tuition_file]")[0].files[0])
-            data.append('certificate', $("#formAcademic input[name=certificate]")[0].files[0])
+            data.append('certificate', $("#formQualification input[name=certificate]")[0].files[0])
             $.ajax({
-                url: '/candidate/academic/register-academic',
+                url: '/candidate/qualifications/register-qualification',
                 type: 'POST',
                 data: data,
                 processData: false,
                 contentType: false,
                 success: function(data) {
                     if (data.success) {
-                        $('#modalRegisterAcademic').modal('hide')
+                        $('#modalRegisterQualification').modal('hide')
                         Swal.close();
                         form[0].reset()
                         form[0].classList.remove('was-validated')
@@ -126,42 +127,20 @@ $(document).ready(function() {
         let data = table.row({ selected: true }).data();
         if (data !== undefined) {
             console.log(data)
-            $('#formEditAcademic input[name="study_center"]').val(data.study_center)
-            $('#formEditAcademic select[name="type_academic"]').val(data.type_academic_id)
-            $('#formEditAcademic select[name="education_level"]').val(data.education_level_id)
-            $('#formEditAcademic input[name="career"]').val(data.career)
-
-            if (data.tuition_state) {
-                $('#tuition_state_edit_true').prop('checked', true)
-                $('#tuition_state_edit_false').prop('checked', false)
-                $('#formEditAcademic input[name="tuition_number"]').empty().prop('disabled', false)
-                $('#formEditAcademic input[name="tuition_file"]').empty().prop('disabled', false)
-                $('#file_license_fa_path').removeClass('btn-danger').addClass('btn-success').prop('href', `/candidate/academic/view-document?id=${data.tuition_file_path}`).empty().append('<i class="fas fa-eye"></i>').prop('target', '_blank')
-            } else {
-                $('#tuition_state_edit_true').prop('checked', false)
-                $('#tuition_state_edit_false').prop('checked', true)
-                $('#formEditAcademic input[name="tuition_number"]').empty().prop('disabled', true)
-                $('#formEditAcademic input[name="tuition_file"]').empty().prop('disabled', true)
-                $('#file_license_fa_path').removeClass('btn-success').addClass('btn-danger').removeAttr("href").empty().append('<i class="fas fa-eye-slash"></i>').removeAttr("target")
-
-            }
-            //$('#formEditAcademic input[name="tuition_state"]').val(data.tuition_state)
-            $('#formEditAcademic input[name="tuition_number"]').val(data.tuition_number)
-            $('#formEditAcademic input[name="date_start"]').val(data.date_start)
-            $('#formEditAcademic input[name="date_end"]').val(data.date_end)
-            $('#file_path_certificate').prop('href', `/candidate/academic/view-document?id=${data.certificate_file_path}`)
-
-            /*$('#formEditAcademic input[name="inputDatePostulation"]').val(data.date_postulation)
-            $('#formEditAcademic select[name="inputModality"]').val(data.modality_id)
-            $('#formEditAcademic select[name="inputState"]').val(data.state_job_id)
-            $('#formEditAcademic input[name="inputNumber"]').val(data.number_jobs)*/
-            $('#modalEditAcademic').modal('show')
+            $('#formEditQualification input[name="cant_hours"]').val(data.cant_hours)
+            $('#formEditQualification select[name="type_academic"]').val(data.type_qualifications_id)
+            $('#formEditQualification input[name="name_institution"]').val(data.name_institution)
+            $('#formEditQualification input[name="name_course"]').val(data.title_course)
+            $('#formEditQualification input[name="date_start"]').val(data.date_start)
+            $('#formEditQualification input[name="date_end"]').val(data.date_end)
+            $('#file_path_certificate').prop('href', `/candidate/qualifications/view-document?id=${data.certificate_file_path}`)
+            $('#modalEditQualification').modal('show')
         } else {
             error('Debe seleccionar un registro')
         }
 
     })
-    $('#formEditAcademic').on('submit', function(e) {
+    $('#formEditQualification').on('submit', function(e) {
         e.preventDefault()
         e.stopPropagation()
         var form = $(this)
@@ -173,18 +152,17 @@ $(document).ready(function() {
             $.each(form_data, function(key, input) {
                 data.append(input.name, input.value)
             });
-            data.append('tuition_file', $("#formEditAcademic input[name=tuition_file]")[0].files[0])
-            data.append('certificate', $("#formEditAcademic input[name=certificate]")[0].files[0])
+            data.append('certificate', $("#formEditQualification input[name=certificate]")[0].files[0])
             data.append('id', datos.id)
             $.ajax({
-                url: '/candidate/academic/update-academic',
+                url: '/candidate/qualifications/update-qualification',
                 type: 'POST',
                 data: data,
                 processData: false,
                 contentType: false,
                 success: function(data) {
                     if (data.success) {
-                        $('#modalEditAcademic').modal('hide')
+                        $('#modalEditQualification').modal('hide')
                         Swal.close();
                         form[0].reset()
                         form[0].classList.remove('was-validated')
@@ -220,7 +198,7 @@ $(document).ready(function() {
                 if (result.isConfirmed) {
                     showLoading();
                     $.ajax({
-                        url: '/candidate/academic/delete-academic',
+                        url: '/candidate/qualifications/delete-qualification',
                         type: 'POST',
                         data: { id: data.id },
                         headers: {
@@ -243,18 +221,6 @@ $(document).ready(function() {
             })
         } else {
             error('Debe seleccionar un registro')
-        }
-    })
-    $('#tuition_state_true').on('change', function(e) {
-        if ($(this).is(':checked')) {
-            $('#tuition_file').val('').prop("disabled", false).prop("required", true)
-            $('#tuition_number').val('').prop("disabled", false).prop("required", true)
-        }
-    })
-    $('#tuition_state_false').on('change', function(e) {
-        if ($(this).is(':checked')) {
-            $('#tuition_file').val('').prop("disabled", true).prop("required", false)
-            $('#tuition_number').val('').prop("disabled", true).prop("required", false)
         }
     })
     $('.validation-pdf').on('change', function(e) {

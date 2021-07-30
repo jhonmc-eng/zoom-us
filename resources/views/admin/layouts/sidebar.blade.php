@@ -130,10 +130,18 @@
               </a>
             </li>
             <li class="nav-item">
-              <a href="#" class="nav-link">
+              <a href="/candidate/qualifications" class="nav-link">
                 <i class="nav-icon fas fa-laptop"></i>
                 <p>
-                  Cursos o Programas {{--de Especializacion--}}
+                  Cursos y/o Programas 
+                </p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="#" class="nav-link">
+                <i class="nav-icon fas fa-brain"></i>
+                <p>
+                  Conocimientos
                 </p>
               </a>
             </li>
@@ -141,7 +149,7 @@
               <a href="#" class="nav-link">
                 <i class="nav-icon fas fa-briefcase"></i>
                 <p>
-                  Conocimientos {{--para el puesto--}}
+                  Experiencia Laboral
                 </p>
               </a>
             </li>

@@ -88,7 +88,7 @@ class AcademicController extends Controller
                 'success' => true,
                 'message' => 'Registro ingresado exitosamente'
             ]);
-            dd($request);
+            //dd($request);
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
@@ -121,7 +121,7 @@ class AcademicController extends Controller
             $academic->date_start = $request->date_start;
             $academic->date_end = $request->date_end;
             $request->tuition_state == 'true' ? $academic->tuition_state = true : $academic->tuition_state = false;
-            $academic->syslog = $this->syslog_candidate(2, $request);
+            $academic->syslog = $academic->syslog. ' | ' .$this->syslog_candidate(2, $request);
             //$academic->save();
             if($request->tuition_state == 'true'){
                 $academic->tuition_number = $request->tuition_number;

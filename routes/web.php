@@ -87,6 +87,15 @@ Route::group(['prefix' => 'candidate', 'middleware' => 'auth_candidate', 'as' =>
         Route::post('/update-academic', 'AcademicController@updateAcademic');
         Route::post('/delete-academic', 'AcademicController@deleteAcademic');
     });
+
+    Route::group(['prefix' =>  'qualifications'], function(){
+        Route::get('/', 'QualificationsController@viewQualifications');
+        Route::get('/get-data-qualifications', 'QualificationsController@getDataQualification');
+        Route::post('/register-qualification', 'QualificationsController@registerQualification');
+        Route::get('/view-document', 'QualificationsController@viewDocument');
+        Route::post('/update-qualification', 'QualificationsController@updateQualification');
+        Route::post('/delete-qualification', 'QualificationsController@deleteQualification');
+    });
     //Route::group)
 
 /*
