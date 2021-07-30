@@ -114,7 +114,7 @@
 
           @if(Session::get('candidate'))
             <li class="nav-item">
-              <a href="#" class="nav-link">
+              <a href="/candidate/profile" class="nav-link">
                 <i class="nav-icon fas fa-user"></i>
                 <p>
                   Datos Personales
@@ -122,7 +122,7 @@
               </a>
             </li>
             <li class="nav-item">
-              <a href="#" class="nav-link">
+              <a href="/candidate/academic" class="nav-link">
                 <i class="nav-icon fas fa-graduation-cap"></i>
                 <p>
                   Formacion Academica
@@ -133,7 +133,7 @@
               <a href="#" class="nav-link">
                 <i class="nav-icon fas fa-laptop"></i>
                 <p>
-                  Cursos o Programas de Especializacion
+                  Cursos o Programas {{--de Especializacion--}}
                 </p>
               </a>
             </li>
@@ -141,7 +141,7 @@
               <a href="#" class="nav-link">
                 <i class="nav-icon fas fa-briefcase"></i>
                 <p>
-                  Conocimientos para el puesto
+                  Conocimientos {{--para el puesto--}}
                 </p>
               </a>
             </li>

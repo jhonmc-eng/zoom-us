@@ -22,7 +22,8 @@
 				</div>
 
 				<div id="add-listing" class="separated-form margin-bottom-55">
-                    <form id="form_register">
+                    <form id="form_register" enctype="multipart/form-data">
+                        @csrf
                         <div class="add-listing-section">
 
                             <!-- Headline -->
@@ -34,9 +35,9 @@
                                 <div class="col-md-3">
                                     <h5>Tipo</h5>
                                     <select name="type_document" id="type_document">
-                                        <option value="1">DNI</option>
-                                        <option value="2">PASAPORTE</option>
-                                        <option value="3">OTROS</option>
+                                    @foreach($type_documents as $item)
+                                        <option value="{{$item->id}}">{{$item->name}}</option>
+                                    @endforeach
                                     </select>
                                 </div>
                                 <div class="col-md-9">
@@ -55,37 +56,37 @@
                             <div class="row with-forms">
                                 <div class="col-md-12">
                                     <h5>Nombres(*) <i class="tip" data-tip-content="Name of your business"></i></h5>
-                                    <input class="search-field disabled api" name="name" type="text" disabled/>
+                                    <input class="search-field disabled api" name="name" type="text" readonly required/>
                                 </div>
                             </div>
                             <div class="row with-forms">
                                 <div class="col-md-12">
                                     <h5>Apellido Paterno(*) <i class="tip" data-tip-content="Apellido Paterno"></i></h5>
-                                    <input class="search-field disabled api" name="lastname_patern" type="text" disabled/>
+                                    <input class="search-field disabled api" name="lastname_patern" type="text" readonly required/>
                                 </div>
                             </div>
                             <div class="row with-forms">
                                 <div class="col-md-12">
                                     <h5>Apellido Materno(*) <i class="tip" data-tip-content="Apellido Materno"></i></h5>
-                                    <input class="search-field disabled api" name="lastname_matern" type="text" disabled/>
+                                    <input class="search-field disabled api" name="lastname_matern" type="text" readonly required/>
                                 </div>
                             </div>
                             <div class="row with-forms">
                                 <div class="col-md-12">
                                     <h5>Correo Electronico(*) <i class="tip" data-tip-content="Ingrese Correo Electronico"></i></h5>
-                                    <input class="search-field" type="text" name="email" required placeholder="Ingrese correo electronico"/>
+                                    <input class="search-field" type="email" name="email" required placeholder="Ingrese correo electronico"/>
                                 </div>
                             </div>
                             <div class="row with-forms">
                                 <div class="col-md-12">
                                     <h5>Contraseña(*) <i class="tip" data-tip-content="Min 8 y Max 20 caracteres"></i></h5>
-                                    <input class="search-field" type="password" required placeholder="Min 8 y Max 20 caracteres"/>
+                                    <input class="search-field" type="password" name="password" required placeholder="Min 8 y Max 20 caracteres"/>
                                 </div>
                             </div>
                             <div class="row with-forms">
                                 <div class="col-md-12">
                                     <h5>Confirmar Contraseña(*) <i class="tip" data-tip-content="Confirme contraseña"></i></h5>
-                                    <input class="search-field" type="password" required placeholder="Confirme contraseña"/>
+                                    <input class="search-field" type="password" name="password_confirmation" required placeholder="Confirme contraseña"/>
                                 </div>
                             </div>
                             <div class="row with-forms">

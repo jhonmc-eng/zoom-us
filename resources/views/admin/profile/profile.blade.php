@@ -44,7 +44,7 @@
                                     <div class="row">
                                         <div class="col-md-4">
                                             <label for="dni">DNI (*)</label>
-                                            <input type="number" class="form-control" name="dni" id="dni" placeholder="Ingrese su DNI" disabled value="{{$data->dni}}" required>
+                                            <input type="number" class="form-control" name="dni" id="dni" placeholder="Ingrese su DNI" disabled value="{{$data->document}}" required>
                                         </div>
                                         <div class="col-md-4">
                                             <label for="ruc">RUC (**)</label>
@@ -120,17 +120,19 @@
                                             <label for="file_dni">
                                                 Adjuntar DNI (Ambos lados PDF)(*)
                                             </label>
+                                            <div id="button-file" class="d-inline">
+                                                @if($data->file_dni_path == '' || is_null($data->file_dni_path))
+                                                <a type="button" id="file_dni_path" class="btn btn-danger view-file"><i class="fas fa-eye-slash"></i></a>
+                                                @else
+                                                <a target="_blank" id="file_dni_path" href="/candidate/profile/view-document?id={{Crypt::encrypt($data->file_dni_path)}}" type="button" class="btn btn-success view-file"><i class="fas fa-eye"></i></a>
+                                                @endif
+                                                <br>
+                                            </div>
                                             <div class="custom-file">
                                                 <input type="file" name="file_dni" id="file_dni" accept="application/pdf" class="form-control custom-file-input validation-pdf">
                                                 <label class="custom-file-label" for="file_document">Escoge un archivo</label>
                                             </div>
                                         </div>
-                                        {{--<div class="col-md-1">
-                                            <div id="button-file" class="d-inline">
-                                                <a target="_blank" href="#" type="button" class="btn btn-success view-file"><i class="fas fa-eye"></i></a>
-                                                <br>
-                                            </div>
-                                        </div>--}}
                                     </div>
                                     <div class="row mt-2">
                                         <div class="col-md-9">
@@ -321,6 +323,14 @@
                                         </div>
                                         <div class="col-md-3">
                                             <label for="file_fa">Adjuntar Documento</label>
+                                            <div id="button-file" class="d-inline">
+                                                @if($data->license_path == '' || is_null($data->license_path))
+                                                <a type="button" id="file_license_fa_path" class="btn btn-danger view-file"><i class="fas fa-eye-slash"></i></a>                                               
+                                                @else
+                                                <a target="_blank" id="file_license_fa_path" href="/candidate/profile/view-document?id={{Crypt::encrypt($data->license_path)}}" type="button" class="btn btn-success view-file"><i class="fas fa-eye"></i></a>
+                                                @endif                                                
+                                                <br>
+                                            </div>
                                             <div class="custom-file">
                                                 @if($data->license_FA)
                                                 <input type="file" name="file_fa" id="file_fa" accept="application/pdf" class="form-control custom-file-input validation-pdf">
@@ -389,6 +399,14 @@
                                         
                                         <div class="col-md-4">
                                             <label for="file_discapacity">Adjuntar Documento Sustentario</label>
+                                            <div id="button-file" class="d-inline">
+                                                @if($data->discapacity_file_path == '' || is_null($data->discapacity_file_path))
+                                                <a type="button" id="file_discapacity_path" class="btn btn-danger view-file"><i class="fas fa-eye-slash"></i></a>                                               
+                                                @else
+                                                <a target="_blank" id="file_discapacity_path" href="/candidate/profile/view-document?id={{Crypt::encrypt($data->discapacity_file_path)}}" type="button" class="btn btn-success view-file"><i class="fas fa-eye"></i></a>
+                                                @endif                                                
+                                                <br>
+                                            </div>
                                             <div class="custom-file">
                                                 @if($data->discapacity_state)
                                                 <input type="file" name="file_discapacity" id="file_discapacity" accept="application/pdf" class="form-control custom-file-input validation-pdf">
@@ -429,6 +447,13 @@
                                         </div>
                                         <div class="col-md-4">
                                             <label for="exampleInputEmail1">Adjuntar Documento Sustentario</label>
+                                            <div id="button-file" class="d-inline">
+                                                @if($data->license_driver_path == '' || is_null($data->license_driver_path))
+                                                <a type="button" id="file_license_driver_path" class="btn btn-danger view-file"><i class="fas fa-eye-slash"></i></a>                                               
+                                                @else
+                                                <a target="_blank" id="file_license_driver_path" href="/candidate/profile/view-document?id={{Crypt::encrypt($data->license_driver_path)}}" type="button" class="btn btn-success view-file"><i class="fas fa-eye"></i></a>
+                                                @endif                                                 <br>
+                                            </div>
                                             <div class="custom-file">
                                                 @if($data->license_driver)
                                                 <input type="file"  name="file_license_driver" accept="application/pdf" id="file_license_driver" class="form-control custom-file-input validation-pdf">
@@ -478,6 +503,13 @@
                                     <div class="row mt-2">
                                         <div class="col-md-12">
                                             <label for="file_perfil">Subir Imagen de Perfil</label>
+                                            <div id="button-file" class="d-inline">
+                                                @if($data->photo_perfil_path == '' || is_null($data->photo_perfil_path))
+                                                <a type="button" id="file_perfil_path" class="btn btn-danger view-file"><i class="fas fa-eye-slash"></i></a>                                               
+                                                @else
+                                                <a target="_blank" id="file_perfil_path" href="/candidate/profile/view-document?id={{Crypt::encrypt($data->photo_perfil_path)}}" type="button" class="btn btn-success view-file"><i class="fas fa-eye"></i></a>
+                                                @endif                                                <br>
+                                            </div>
                                             <div class="custom-file">
                                                 <input type="file" name="file_perfil" id="file_perfil" class="form-control custom-file-input">
                                                 <label class="custom-file-label" for="file_perfil">Escoge un archivo</label>
@@ -532,6 +564,9 @@
 <link rel="stylesheet" href="{{asset('plugins/summernote/summernote-bs4.min.css')}}">
 <script src="{{asset('plugins/summernote/summernote-bs4.min.js')}}"></script>
 <script src="{{asset('js/admin/profile/profile.js')}}"></script>
+<script src="{{asset('plugins/toastr/toastr.min.js')}}"></script>
+<script src="{{asset('plugins/bs-custom-file-input/bs-custom-file-input.min.js')}}"></script>
+<link rel="stylesheet" href="{{asset('plugins/toastr/toastr.min.css')}}">
 <script>
     bsCustomFileInput.init();
     $('.summernote').summernote({

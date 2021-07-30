@@ -28,6 +28,7 @@ Route::post('/login-verification', 'LoginController@loginAdmin');
 Route::post('/login-verification-candidate', 'LoginController@loginCandidate');
 Route::get('/register', 'CandidateController@viewRegister');
 Route::get('/get-data-dni/{dni}', 'UserController@getApiDni');
+Route::post('/validate-register-candidate', 'CandidateController@registerCandidate');
 
 Route::group(['prefix' => 'admin', 'middleware' => 'auth_admin', 'as' => 'admin.'], function(){
     /*LOGUEARSE DEL ADMIN */
@@ -75,7 +76,17 @@ Route::group(['prefix' => 'candidate', 'middleware' => 'auth_candidate', 'as' =>
         Route::get('/get-province', 'CandidateController@provinces');
         Route::get('/get-district', 'CandidateController@district');
         Route::post('/update-profile', 'CandidateController@updateProfile');
+        Route::get('/view-document', 'CandidateController@viewDocument');
     }); 
+
+    Route::group(['prefix' => 'academic'], function(){
+        Route::get('/', 'AcademicController@viewAcademic');
+        Route::get('/get-data', 'AcademicController@getDataAcademic');
+        Route::post('/register-academic', 'AcademicController@registerAcademic');
+        Route::get('/view-document', 'AcademicController@viewDocument');
+        Route::post('/update-academic', 'AcademicController@updateAcademic');
+        Route::post('/delete-academic', 'AcademicController@deleteAcademic');
+    });
     //Route::group)
 
 /*

@@ -15,13 +15,15 @@ class CreateTableCandidates extends Migration
     {
         Schema::create('candidates', function (Blueprint $table) {
             $table->id();
-            $table->string('dni')->unique();
+            $table->string('document')->unique();
+            $table->foreignId('type_document')->constrained('type_documents');
             $table->string('ruc')->unique()->nullable();;
             $table->string('names');
             $table->string('lastname_patern');
             $table->string('lastname_matern');
             $table->string('email')->unique();
             $table->string('password');
+            $table->string('file_dni_path')->nullable();
             $table->foreignId('gender_id')->constrained('genders')->nullable();
             $table->foreignId('status_civil_id')->constrained('status_civil')->nullable();
             $table->string('phone')->nullable();
@@ -48,6 +50,7 @@ class CreateTableCandidates extends Migration
             $table->boolean('consanguinity')->nullable();
             $table->text('description')->nullable();
             $table->string('photo_perfil_path')->nullable();
+            $table->boolean('state_activate')->default(0);
             $table->boolean('state_delete')->default(0);
             $table->text('syslog');
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));

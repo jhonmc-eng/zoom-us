@@ -13,10 +13,75 @@ use App\Models\TypeDiscapacity;
 use App\Models\TypePension;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Crypt;
+use App\Http\Traits\SysLog as TraitsSysLog;
 
 class CandidateController extends Controller
 {
     //
+    use TraitsSysLog;
+    public function registerCandidate(Request $request){
+        //dd($request);
+        try {
+            $request->validate([
+                'type_document' => 'required',
+                'document' => 'required',
+                'type_document' => 'required',
+                'name' => 'nullable',
+                'lastname_patern' => 'nullable',
+                'lastname_matern' => 'nullable',
+                'email' => 'required|email',
+                'password' => 'required',
+                'password_confirmation'=> 'required'
+            ]);
+            //dd($request);
+            if(Candidate::where('document', $request->document)->first()){
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Ocurrio un error',
+                    'error' => 'El DNI ya esta registrado en el sistema'
+                ]);
+            }else{
+                if(Candidate::where('email', $request->email)->first()){
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Ocurrio un error',
+                        'error' => 'El email ya esta registrado en el sistema'
+                    ]);
+                }else{
+                    if($request->password == $request->password_confirmation){
+                        $candidate = New Candidate();
+                        $candidate->document = $request->type_document;
+                        $candidate->type_document = $request->type_document;
+                        $candidate->names = $request->name;
+                        $candidate->lastname_patern = $request->lastname_patern;
+                        $candidate->lastname_matern = $request->lastname_matern;
+                        $candidate->email = $request->email;
+                        $candidate->password = bcrypt($request->password);
+                        $candidate->syslog = $this->syslog_candidate(1, $request);
+                        $candidate->save();
+                        return response()->json([
+                            'success' => true,
+                            'message' => 'Usuario Creado Exitosamente'
+                        ]);
+                    }else{
+                        return response()->json([
+                            'success' => false,
+                            'message' => 'Ocurrio un error',
+                            'error' => 'Las contraseñas no coinciden'
+                        ]);
+                    }
+                    
+                }
+            }
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Ocurrio un error',
+                'error' => $e->getMessage()
+            ]);
+        }
+    }
     public function viewProfile(Request $request){
         try {
             $data = Candidate::where('id', session('candidate')->id)->first();
@@ -40,7 +105,8 @@ class CandidateController extends Controller
         
     }
     public function viewRegister(Request $request){
-        return view('client.register.register');
+        $type_documents = DB::table('type_documents')->where('state_delete', 0)->get();
+        return view('client.register.register')->with(compact('type_documents'));
     }
     public function updateProfile(Request $request){
 
@@ -109,6 +175,7 @@ class CandidateController extends Controller
                 if($candidate->license_path != '' || !is_null($candidate->license_path)){
                     File::delete(public_path().$candidate->license_path);
                 }
+                $candidate->license_path = '';
             }
             $request->discapacity_state == 'true' ? $candidate->discapacity_state = true : $candidate->discapacity_state = false;
             $request->discapacity_state ? $candidate->type_discapacity_id = $request->type_discapacity : $candidate->type_discapacity_id = null;
@@ -124,6 +191,7 @@ class CandidateController extends Controller
                 if($candidate->discapacity_file_path != '' || !is_null($candidate->discapacity_file_path)){
                     File::delete(public_path().$candidate->discapacity_file_path);
                 }
+                $candidate->discapacity_file_path = '';
             }
 
             $request->license_driver == 'true' ? $candidate->license_driver = true : $candidate->license_Driver = false;
@@ -138,6 +206,7 @@ class CandidateController extends Controller
                 if($candidate->license_driver_path != '' || !is_null($candidate->license_driver_path)){
                     File::delete(public_path().$candidate->license_driver_path);
                 }
+                $candidate->license_driver_path = '';
             }
             $candidate->description = $request->description;
             $request->consanguinity_state_y == 'true' ? $candidate->consanguinity = true : $candidate->consanguinity = false;
@@ -154,6 +223,11 @@ class CandidateController extends Controller
                 $candidate->file_dni_path = $this->uploadArchive($request->file('file_dni'), session('candidate')->id, 'file_dni');
             }
             $candidate->save();
+            $candidate->file_dni_path == '' || is_null($candidate->file_dni_path) ? $candidate->file_dni_path = '' : $candidate->file_dni_path = Crypt::encrypt($candidate->file_dni_path);
+            $candidate->license_path == '' || is_null($candidate->license_path) ? $candidate->license_path = '' : $candidate->license_path = Crypt::encrypt($candidate->license_path);
+            $candidate->discapacity_file_path == '' || is_null($candidate->discapacity_file_path) ? $candidate->discapacity_file_path = '' : $candidate->discapacity_file_path = Crypt::encrypt($candidate->discapacity_file_path);
+            $candidate->license_driver_path == '' || is_null($candidate->license_driver_path) ? $candidate->license_driver_path = '' : $candidate->license_driver_path = Crypt::encrypt($candidate->license_driver_path);
+            $candidate->photo_perfil_path == '' || is_null($candidate->photo_perfil_path) ? $candidate->photo_perfil_path = '' : $candidate->photo_perfil_path = Crypt::encrypt($candidate->photo_perfil_path);
             return response()->json([
                 'success' => true,
                 'message' => 'Datos Actualizados Exitosamente',
@@ -205,30 +279,8 @@ class CandidateController extends Controller
         return '/files/users/user_'.$id.'/profile/'.$name;
         
     }
-    public function verifyArchive($request){
-        if($request->getClientOriginalExtension() != "pdf"){
-            /*return response()->json([
-                'success' => false,
-                'message' => 'Ocurrio un error',
-                'error' => 'El archivo no es un PDF',
-                'type' => 'license_fa',
-                'extension' => $request->getClientOriginalExtension()
-            ]);*/
-            return true;
-        }
-        return false;
-    }
-    public function verifyArchiveProfile($request){
-        if($request->getClientOriginalExtension() != "jpeg"){
-            /*return response()->json([
-                'success' => false,
-                'message' => 'Ocurrio un error',
-                'error' => 'El archivo no es un PDF',
-                'type' => 'license_fa',
-                'extension' => $request->getClientOriginalExtension()
-            ]);*/
-            return true;
-        }
-        return false;
+    public function viewDocument(Request $request){
+        $url = Crypt::decrypt($request->id);
+        return response()->file(public_path().$url);
     }
 }

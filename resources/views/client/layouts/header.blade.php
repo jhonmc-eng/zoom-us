@@ -223,13 +223,16 @@
 						<!--Tabs -->
 						<div class="sign-in-form style-1">
 
-                            <form method="post" class="login" action="/login-verification-candidate">
+                            <form method="post" class="login" id="form-login">
 								@csrf
+								<p class="form-row form-row-wide" id="notificacion-error">
+									
+								</p>
                                 <p class="form-row form-row-wide">
                                     <label for="username">Correo Electronico:
                                         <i class="im im-icon-Male"></i>
                                         <input type="email" class="input-text" name="email" id="email"
-                                            value="" />
+                                            value="" required />
                                     </label>
                                 </p>
 
@@ -237,10 +240,10 @@
                                     <label for="password">Contraseña:
                                         <i class="im im-icon-Lock-2"></i>
                                         <input class="input-text" type="password" name="password"
-                                            id="password"/>
+                                            id="password" required/>
                                     </label>
                                 </p>
-
+								
                                 <div class="form-row form-row-wide">
                                     <input type="submit" class="button border margin-top-5"
                                         value="Iniciar Sesion" />
@@ -265,3 +268,6 @@
                 height: 100% !important;
             }
         </style>
+		<script src="{{asset('plugins/jquery/jquery.min.js')}}"></script>
+    	<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+		<script src="{{asset('js/client/login/login.js')}}"></script>

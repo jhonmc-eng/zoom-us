@@ -1,4 +1,4 @@
-$(function() {
+$(document).ready(function() {
     $('#formProfile').on('submit', function(e) {
         e.stopPropagation()
         e.preventDefault()
@@ -28,7 +28,14 @@ $(function() {
                     if (data.success) {
                         //form[0].reset()
                         form[0].classList.remove('was-validated')
-                        success(data.message)
+                        console.log(data.data)
+                        data.data.file_dni_path != '' ? $('#file_dni_path').removeClass('btn-danger').addClass('btn-success').prop('href', `/candidate/profile/view-document?id=${data.data.file_dni_path}`).empty().append('<i class="fas fa-eye"></i>').prop('target', '_blank')  : $('#file_dni_path').removeClass('btn-success').addClass('btn-danger').removeAttr("href").empty().append('<i class="fas fa-eye-slash"></i>').removeAttr("target");
+                        data.data.discapacity_file_path != '' ? $('#file_discapacity_path').removeClass('btn-danger').addClass('btn-success').prop('href', `/candidate/profile/view-document?id=${data.data.discapacity_file_path}`).empty().append('<i class="fas fa-eye"></i>').prop('target', '_blank') : $('#file_discapacity_path').removeClass('btn-success').addClass('btn-danger').removeAttr("href").empty().append('<i class="fas fa-eye-slash"></i>').removeAttr("target")
+                        data.data.license_driver_path != '' ? $('#file_license_driver_path').removeClass('btn-danger').addClass('btn-success').prop('href', `/candidate/profile/view-document?id=${data.data.license_driver_path}`).empty().append('<i class="fas fa-eye"></i>').prop('target', '_blank') : $('#file_license_driver_path').removeClass('btn-success').addClass('btn-danger').removeAttr("href").empty().append('<i class="fas fa-eye-slash"></i>').removeAttr("target")
+                        data.data.license_path != '' ? $('#file_license_fa_path').removeClass('btn-danger').addClass('btn-success').prop('href', `/candidate/profile/view-document?id=${data.data.license_path}`).empty().append('<i class="fas fa-eye"></i>').prop('target', '_blank') : $('#file_license_fa_path').removeClass('btn-success').addClass('btn-danger').removeAttr("href").empty().append('<i class="fas fa-eye-slash"></i>').removeAttr("target")
+                        data.data.photo_perfil_path != '' ? $('#file_perfil_path').removeClass('btn-danger').addClass('btn-success').prop('href', `/candidate/profile/view-document?id=${data.data.photo_perfil_path}`).empty().append('<i class="fas fa-eye"></i>').prop('target', '_blank') : $('#file_perfil_path').removeClass('btn-success').addClass('btn-danger').removeAttr("href").empty().append('<i class="fas fa-eye-slash"></i>').removeAttr("target")
+
+                       success(data.message)
                     } else {
                         error(data.error)
                     }
@@ -170,8 +177,6 @@ $(function() {
         $('#modalSuccess').modal('show')
     }
     $('.validation-pdf').on('change', function(e) {
-        //Toasts.reset()
-        //toastr.error('Lorem ipsum dolor sit amet, consetetur sadipscing elitr.')
         e.preventDefault()
         e.stopPropagation()
         let file = $(this)[0].files[0]

@@ -5,9 +5,6 @@ use Carbon\Carbon;
 use App\Models\User;
 
 trait SysLog {
-    public function register(){
-        
-    }
     public function syslog_admin($type, $request) {
         switch($type){
             case 1: 
@@ -55,6 +52,31 @@ trait SysLog {
         } catch (\Exception $e) {
             dd($e);
         }
+    }
+    public function syslog_candidate($type, $request) {
+        switch($type){
+            case 1: 
+                $message = 'Registrado: User' . 
+                            ' Ip: '. $request->ip() . 
+                            ' Fecha: '. Carbon::now()->toDateTimeString();
+                break;
+            case 2: 
+                $message = 'Actualizado por: '. session('candidate')->email . 
+                            ' Ip: '. $request->ip() . 
+                            ' Fecha: '. Carbon::now()->toDateTimeString();
+                break;
+            case 3:
+                $message = 'Eliminado por: '. session('candidate')->email . 
+                            ' Ip: '. $request->ip()  . 
+                            ' Fecha: '. Carbon::now()->toDateTimeString();
+                break;
+            case 4: 
+                    $message = 'Registrado por: '. session('candidate')->email . 
+                                ' Ip: '. $request->ip() . 
+                                ' Fecha: '. Carbon::now()->toDateTimeString();
+                    break;
+        }
+        return $message;
     }
 
     

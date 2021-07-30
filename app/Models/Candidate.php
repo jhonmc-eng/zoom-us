@@ -14,7 +14,8 @@ class Candidate extends Model
 
     protected $fillable = [
         'id',
-        'dni',
+        'document',
+        'type_document',
         'ruc',
         'names',
         'lastname_patern',
@@ -47,6 +48,7 @@ class Candidate extends Model
         'consanguinity',
         'description',
         'photo_perfil_path',
+        'state_activate',
         'state_delete',
         'syslog'
     ];
