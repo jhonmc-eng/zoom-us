@@ -22,56 +22,50 @@
 
         <!-- Main content -->
         <section class="content">
-        <div class="container-fluid">
-            <div class="row">
-            <div class="col-12">
-            <div class="card">
-              
-              <!-- /.card-header -->
-              <div class="card-body">
-                <table id="datable" class="table table-bordered table-striped">
-                  <thead>
-                    <tr>
-                        <th>Tipo de Estudios</th>
-                        <th>Nivel de Estudio</th>
-                        <th>Centro de Estudios</th>
-                        <th>Carrera</th>
-                        <th>Fecha de inicio</th>
-                        <th>Fecha de fin</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                        
-                        </tr>
-                  
-                  </tbody>
-                  <tfoot>
-                    <tr>
-                        <th>Tipo de Estudios</th>
-                        <th>Nivel de Estudio</th>
-                        <th>Centro de Estudios</th>
-                        <th>Carrera</th>
-                        <th>Fecha de inicio</th>
-                        <th>Fecha de fin</th>
-                    </tr>
-                  </tfoot>
-                </table>
-              </div>
-              <!-- /.card-body -->
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <table id="datable" class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Tipo de Estudios</th>
+                                            <th>Nivel de Estudio</th>
+                                            <th>Centro de Estudios</th>
+                                            <th>Carrera</th>
+                                            <th>Fecha de inicio</th>
+                                            <th>Fecha de fin</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                            
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <th>Tipo de Estudios</th>
+                                            <th>Nivel de Estudio</th>
+                                            <th>Centro de Estudios</th>
+                                            <th>Carrera</th>
+                                            <th>Fecha de inicio</th>
+                                            <th>Fecha de fin</th>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                    
+                        </div>
+                    
+                    </div>
+                
+                </div>
+                
             </div>
-                <!-- /.card -->
-            </div>
-            <!-- /.col -->
-            </div>
-            <!-- /.row -->
-        </div>
-        <!-- /.container-fluid -->
+      
         </section>
         
 
-<!-- Modal -->
 
-        <!-- /.content -->
     </div>
     
     <div class="modal fade" id="modalRegisterAcademic" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" aria-labelledby="modalNewJob" aria-hidden="true">
@@ -342,9 +336,6 @@
 <script src="{{asset('plugins/datatables-buttons/js/buttons.print.min.js')}}"></script>
 <script src="{{asset('plugins/datatables-buttons/js/buttons.colVis.min.js')}}"></script>
 <!-- AdminLTE App -->
-<script src="{{asset('js/admin/adminlte.min.js')}}"></script>
-<!-- AdminLTE for demo purposes -->
-<script src="{{asset('js/admin/demo.js')}}"></script>
 <script src="{{asset('plugins/bs-custom-file-input/bs-custom-file-input.min.js')}}"></script>
 <script src="{{asset('js/admin/academic/academic.js')}}"></script>
 <script src="{{asset('plugins/toastr/toastr.min.js')}}"></script>

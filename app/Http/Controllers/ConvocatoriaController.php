@@ -9,7 +9,9 @@ use App\Models\Modality;
 use App\Models\StateJob;
 use Illuminate\Support\Facades\Crypt;
 use App\Models\JobResult;
+use App\Models\Oficine;
 use App\Models\TypeResult;
+use Carbon\Carbon;
 use Illuminate\Contracts\Encryption\DecryptException;
 
 class ConvocatoriaController extends Controller
@@ -18,22 +20,61 @@ class ConvocatoriaController extends Controller
     use TraitsSysLog;
     
     public function view(){
-        //dd(Carbon::now()->toDateTimeString());
         try {
-            $modalitys = Modality::where('state_delete', 0)->get();
+            $modalitys = Modality::where('state_delete', 0)->where('id', '!=', 2)->get();
             $states = StateJob::where('state_delete', 0)->get();
+            $oficines = Oficine::where('state_delete', 0)->get();
         } catch (\Exception $e) {
             return response()->json([
                 'message' => 'Ocurrio un error',
                 'error' => $e->getMessage()
             ],500);
         }
-        return view('admin.jobs.jobs')->with(compact('modalitys', 'states'));
+        return view('admin.jobs.jobs')->with(compact('modalitys', 'states', 'oficines'));
     }
-
+    public function viewPractices(){
+        try {
+            $modalitys = Modality::where('state_delete', 0)->get();
+            $states = StateJob::where('state_delete', 0)->get();
+            $oficines = Oficine::where('state_delete', 0)->get();
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Ocurrio un error',
+                'error' => $e->getMessage()
+            ],500);
+        }
+        return view('admin.practices.practices')->with(compact('modalitys', 'states', 'oficines'));
+    }
     public function listJobs(){
         try {
-            $data = Job::with(['modality', 'stateJob'])->where('state_delete', 0)->orderBy('id', 'DESC')->get()->each(function($item){
+            $data = Job::with(['modality', 'stateJob'])
+            ->where('state_delete', 0)
+            ->where('modality_id', '!=', 2)
+            ->orderBy('id', 'DESC')
+            ->get()
+            ->each(function($item){
+                $item->token = Crypt::encrypt($item->id);
+            });
+            return response()->json([
+                'success' => true,
+                'data' => $data
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Ocurrio un error',
+                'error' => $e->getMessage()
+            ]);
+        }
+    }
+    public function listPractices(){
+        try {
+            $data = Job::with(['modality', 'stateJob'])
+            ->where('state_delete', 0)
+            ->where('modality_id', '=', 2)
+            ->orderBy('id', 'DESC')
+            ->get()
+            ->each(function($item){
                 $item->token = Crypt::encrypt($item->id);
             });
             return response()->json([
@@ -56,76 +97,58 @@ class ConvocatoriaController extends Controller
             'inputNumber' => 'required',
             'inputDatePublication' => 'required',
             'inputDatePostulation' => 'required',
-            'inputBaseFile' => 'required|file|max:10485760',
-            'inputScheduleFile' => 'required|file|max:10485760',
-            'inputProfileFile' => 'required|file|max:10485760',
+            'inputBaseFile' => 'required|mimes:pdf|max:10485760',
+            'inputScheduleFile' => 'required|mimes:pdf|max:10485760',
+            'inputProfileFile' => 'required|mimes:pdf|max:10485760',
             'inputDescription' => 'required',
             'inputFunction' => 'required',
             'inputProfile' => 'required'
         ]);
-        //dd($request);
-        if($request->file('inputBaseFile')->getClientOriginalExtension() != "pdf"){
-            return response()->json([
-                'success' => false,
-                'message' => 'Ocurrio un error',
-                'error' => 'El archivo no es un PDF',
-                'type' => 'bases',
-                'extension' => $request->file('inputBaseFile')->getClientOriginalExtension()
-            ], 400);
-        }
-        if($request->file('inputScheduleFile')->getClientOriginalExtension() != "pdf"){
-            return response()->json([
-                'success' => false,
-                'message' => 'Ocurrio un error',
-                'error' => 'El archivo no es un PDF',
-                'type' => 'crogrnama',
-                'extension' => $request->file('inputScheduleFile')->getClientOriginalExtension()
-            ], 400);
-        }
-        if($request->file('inputProfileFile')->getClientOriginalExtension() != "pdf"){
-            return response()->json([
-                'success' => false,
-                'message' => 'Ocurrio un error',
-                'error' => 'El archivo no es un PDF',
-                'type' => 'perfil',
-                'extension' => $request->file('inputProfileFile')->getClientOriginalExtension()
-            ], 400);
-        }
         try {
+            $year = Carbon::createFromFormat('Y-m-d', $request->inputDatePublication)->year;
+            if(Job::where('state_delete', 0)->where('modality_id', $request->inputModality)->where('number_jobs', $request->inputNumber)->whereYear('date_publication', $year)->first()){
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Ocurrio un error',
+                    'error' => 'Existe una convocatoria con ese número'
+                ]);
+            }else{
+                $job = New Job();
+                $job->title = $request->inputName;
+                $job->modality_id = $request->inputModality;
+                $job->state_job_id = $request->inputState;
+                $job->number_jobs = $request->inputNumber;
+                $job->date_publication = $request->inputDatePublication;
+                $job->date_postulation = $request->inputDatePostulation;
+                $job->bases = '$request->inputBaseFile';
+                $job->schedule = '$request->inputScheduleFile';
+                $job->profile = '$request->inputProfileFile';
+                $job->description = $request->inputDescription;
+                $job->functions = $request->inputFunction;
+                $job->requirements = $request->inputProfile;
+                $job->syslog = $this->syslog_admin(1, $request);
+                $job->save();
+                $this->createDirectory($job->id);
+                if($request->hasFile('inputBaseFile')) {
+                    $job->bases = $this->uploadArchive($request->file('inputBaseFile'), $job->id, "base");
+                }
+                if($request->hasFile('inputScheduleFile')) {
+                    $job->schedule = $this->uploadArchive($request->file('inputScheduleFile'), $job->id, "schedule");
+                }
+                if($request->hasFile('inputProfileFile')) {
+                    $job->profile = $this->uploadArchive($request->file('inputProfileFile'), $job->id, 'profile');
+                }
+                $job->save();
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Convocatoria creada exitosamente'
+                ]);
+            }
             
-            $job = New Job();
-            $job->title = $request->inputName;
-            $job->modality_id = $request->inputModality;
-            $job->state_job_id = $request->inputState;
-            $job->number_jobs = $request->inputNumber;
-            $job->date_publication = $request->inputDatePublication;
-            $job->date_postulation = $request->inputDatePostulation;
-            $job->bases = '$request->inputBaseFile';
-            $job->schedule = '$request->inputScheduleFile';
-            $job->profile = '$request->inputProfileFile';
-            $job->description = $request->inputDescription;
-            $job->functions = $request->inputFunction;
-            $job->requirements = $request->inputProfile;
-            $job->syslog = $this->syslog_admin(1, $request);
-            $job->save();
-            $this->createDirectory($job->id);
-            if($request->hasFile('inputBaseFile')) {
-                $job->bases = $this->uploadArchive($request->file('inputBaseFile'), $job->id, "base");
-            }
-            if($request->hasFile('inputScheduleFile')) {
-                $job->schedule = $this->uploadArchive($request->file('inputScheduleFile'), $job->id, "schedule");
-            }
-            if($request->hasFile('inputProfileFile')) {
-                $job->profile = $this->uploadArchive($request->file('inputProfileFile'), $job->id, 'profile');
-            }
-            $job->save();
-            return response()->json([
-                'success' => TRUE,
-                'message' => 'Convocatoria creada exitosamente'
-            ]);
 
         } catch (\Exception $e) {
             return response()->json([
+                'success' => false,
                 'message' => 'Ocurrio un error',
                 'error' => $e->getMessage() 
             ]);
@@ -140,9 +163,9 @@ class ConvocatoriaController extends Controller
             'inputNumber' => 'required',
             'inputDatePublication' => 'required',
             'inputDatePostulation' => 'required',
-            'inputBaseFile' => 'nullable|max:10485760',
-            'inputScheduleFile' => 'nullable|max:10485760',
-            'inputProfileFile' => 'nullable|max:10485760',
+            'inputBaseFile' => 'nullable|mimes:pdf|max:10485760',
+            'inputScheduleFile' => 'nullable|mimes:pdf|max:10485760',
+            'inputProfileFile' => 'nullable|mimes:pdfmax:10485760',
             'inputDescription' => 'required',
             'inputFunction' => 'required',
             'inputProfile' => 'required'
@@ -156,42 +179,14 @@ class ConvocatoriaController extends Controller
             $job->date_publication = $request->inputDatePublication;
             $job->date_postulation = $request->inputDatePostulation;
             if($request->hasFile('inputBaseFile')) {
-                if($request->file('inputBaseFile')->getClientOriginalExtension() != "pdf"){
-                    return response()->json([
-                        'success' => false,
-                        'message' => 'Ocurrio un error',
-                        'error' => 'El archivo no es un PDF',
-                        'type' => 'crogrnama',
-                        'extension' => $request->file('inputScheduleFile')->getClientOriginalExtension()
-                    ], 400);
-                }
                 File::delete(public_path().$job->bases);
                 $job->bases = $this->uploadArchive($request->file('inputBaseFile'), $job->id, "base");
             }
             if($request->hasFile('inputScheduleFile')) {
-                if($request->file('inputScheduleFile')->getClientOriginalExtension() != "pdf"){
-                    return response()->json([
-                        'success' => false,
-                        'message' => 'Ocurrio un error',
-                        'error' => 'El archivo no es un PDF',
-                        'type' => 'crogrnama',
-                        'extension' => $request->file('inputScheduleFile')->getClientOriginalExtension()
-                    ], 400);
-                }
                 File::delete(public_path().$job->schedule);
                 $job->schedule = $this->uploadArchive($request->file('inputScheduleFile'), $job->id, "schedule");
             }
             if($request->hasFile('inputProfileFile')) {
-                
-                if($request->file('inputProfileFile')->getClientOriginalExtension() != "pdf"){
-                    return response()->json([
-                        'success' => false,
-                        'message' => 'Ocurrio un error',
-                        'error' => 'El archivo no es un PDF',
-                        'type' => 'crogrnama',
-                        'extension' => $request->file('inputProfileFile')->getClientOriginalExtension()
-                    ], 400);
-                }
                 File::delete(public_path().$job->profile);
                 $job->profile = $this->uploadArchive($request->file('inputProfileFile'), $job->id, 'profile');
             }

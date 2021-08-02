@@ -30,6 +30,8 @@ class UserController extends Controller
             'dni',
             'cargo',
             'date_start',
+            'permission_practices',
+            'permission_cas',
             'state_delete',
             DB::raw('(CASE 
             WHEN users.state_delete = 0 THEN "ACTIVO" 
@@ -58,8 +60,9 @@ class UserController extends Controller
                 'inputDni' => 'required',
                 'inputPassword' => 'required',
                 'inputUser' => 'required|max:255',
-                //'cargo' => 'required',
+                'inputCharge' => 'required',
                 'inputDate' => 'required|date',
+                'inputPermission' => 'required',
                 'inputTypeUser' => 'required'
             ]);
     
@@ -81,21 +84,32 @@ class UserController extends Controller
                         'message' => 'El nombre de usuario ya existe'
                     ],500);
                 }
-                User::insert([
-                    'names' => $request->inputName,
-                    'lastNamePatern' => $request->inputLastNamePatern,
-                    'lastNameMatern' => $request->inputLastNameMatern,
-                    'dni' => $request->inputDni,
-                    'password' => bcrypt($request->inputPassword),
-                    'nivel' => $request->inputTypeUser,
-                    'username' => $request->inputUser,
-                    'date_start' => $request->inputDate,
-                    'cargo' => 'OTI',
-                    'syslog' => $this->syslog_admin(1, $request)
-                    //'syslog' => 'asdasdasd'
+                $user = New User();
+                $user->names = $request->inputName;
+                $user->lastNamePatern = $request->inputLastNamePatern;
+                $user->lastNameMatern = $request->inputLastNameMatern;
+                $user->dni = $request->inputDni;
+                $user->password = bcrypt($request->inputPassword);
+                $user->nivel = $request->inputTypeUser;
+                $user->username = $request->inputUser;
+                $user->date_start = $request->inputDate;
+                if($request->inputPermission == '1'){
+                    $user->permission_cas = 1;
+                    $user->permission_practices = 0;
+                }else if($request->inputPermission == '2'){
+                    $user->permission_cas = 0;
+                    $user->permission_practices = 1;
+                }else if($request->inputPermission == '3'){
+                    $user->permission_cas = 1;
+                    $user->permission_practices = 1;
+                }else{
+                    $user->permission_cas = 0;
+                    $user->permission_practices = 0;
+                }   
+                $user->cargo = $request->inputCharge;
 
-                ]);
-                
+                $user->syslog = $this->syslog_admin(1, $request);
+                $user->save();
                 return response()->json([
                     'message' => 'Usuario Creado Exitosamente'
                 ], 200);
@@ -120,6 +134,8 @@ class UserController extends Controller
                 'inputUpdateType' => 'required',
                 'inputUpdateDate' => 'required',
                 'inputUpdateState' => 'required',
+                'inputUpdateCharge' => 'required',
+                'inputUpdatePermission' => 'required',
                 'inputUpdateUsername' => 'required|max:255'
             ]);
             if($this->dniUnique($request->inputDni)){
@@ -142,6 +158,20 @@ class UserController extends Controller
             $user->lastNameMatern = $request->inputUpdateLastnameMatern;
             $user->state_delete = $request->inputUpdateState;
             $user->date_start = $request->inputUpdateDate;
+            if($request->inputUpdatePermission == '1'){
+                $user->permission_cas = 1;
+                $user->permission_practices = 0;
+            }else if($request->inputUpdatePermission == '2'){
+                $user->permission_cas = 0;
+                $user->permission_practices = 1;
+            }else if($request->inputUpdatePermission == '3'){
+                $user->permission_cas = 1;
+                $user->permission_practices = 1;
+            }else{
+                $user->permission_cas = 0;
+                $user->permission_practices = 0;
+            }   
+            $user->cargo = $request->inputUpdateCharge;
             $user->syslog = $user->syslog . ' | ' . $this->syslog_admin(2, $request);
             $user->save(); 
             return response()->json([

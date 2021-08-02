@@ -64,13 +64,15 @@ $(document).ready(function(){
             style: 'single'
         },
         bFilter: true,
+        order: []
        
     })
 
     let buttons = `
+    <div class="dt-buttons flex-wrap">
         <button type="button" class="btn btn-success" id="button-register" data-toggle="modal"><i class="nav-icon fas fa-people-arrows"></i> Nuevo</button>
         <button type="button" class="btn btn-info" id="button-edit" data-toggle="modal"><i class="fas fa-edit"></i> Editar</button>
-        
+    </div>
     `
     $('#datable_wrapper .col-md-6:eq(0)').append(buttons)
 

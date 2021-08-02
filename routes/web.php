@@ -58,6 +58,21 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth_admin', 'as' => 'admin.
         Route::post('/change-document/{id}', 'ConvocatoriaController@changeDocument');
         Route::post('/delete-document/{id}', 'ConvocatoriaController@deleteDocument');
     });
+    Route::group(['prefix' => 'practices'], function(){
+        Route::get('/', 'ConvocatoriaController@viewPractices');
+        Route::get('/list-practices', 'ConvocatoriaController@listPractices');
+        Route::post('/register-practice', 'ConvocatoriaController@registerPractice');
+        Route::post('/update-practice/{id}', 'ConvocatoriaController@editPractice');
+        
+        Route::get('/view-job', 'ConvocatoriaController@viewJob');
+        Route::get('/view-base', 'ConvocatoriaController@viewBase');
+        Route::get('/view-schedule','ConvocatoriaController@viewSchedule');
+        Route::get('/view-profile', 'ConvocatoriaController@viewProfile');
+        Route::get('/view-result', 'ConvocatoriaController@viewResult');
+        Route::post('/upload-result/{id}', 'ConvocatoriaController@uploadDocuments');
+        Route::post('/change-document/{id}', 'ConvocatoriaController@changeDocument');
+        Route::post('/delete-document/{id}', 'ConvocatoriaController@deleteDocument');
+    });
     /*MODULO DE MODALIDADES*/
     Route::group(['prefix' => 'modalitys', 'middleware' => 'admin'], function(){
         Route::get('/', 'ModalitysController@viewModalitys');
@@ -95,6 +110,39 @@ Route::group(['prefix' => 'candidate', 'middleware' => 'auth_candidate', 'as' =>
         Route::get('/view-document', 'QualificationsController@viewDocument');
         Route::post('/update-qualification', 'QualificationsController@updateQualification');
         Route::post('/delete-qualification', 'QualificationsController@deleteQualification');
+    });
+
+    Route::group(['prefix' => 'knowledge'], function(){
+        Route::get('/', 'KnowledgeController@viewKnowledge');
+        Route::get('/get-data-knowledge', 'KnowledgeController@getDataKnowledge');
+        Route::post('/register-knowledge', 'KnowledgeController@registerKnowledge');
+        Route::post('/update-knowledge', 'KnowledgeController@updateKnowledge');
+        Route::post('/delete-knowledge', 'KnowledgeController@deleteKnowledge');
+    });
+
+    Route::group(['prefix' => 'references'], function(){
+        Route::get('/', 'ReferenceController@viewReference');
+        Route::get('/get-data-references', 'ReferenceController@getDataReferences');
+        Route::post('/register-reference', 'ReferenceController@registerReference');
+        Route::post('/update-reference', 'ReferenceController@updateReference');
+        Route::post('/delete-reference', 'ReferenceController@deleteReference');
+    });
+
+    Route::group(['prefix' => 'training'], function(){
+        Route::get('/', 'TrainingController@viewTraining');
+        Route::get('/get-data-trainings', 'TrainingController@getDataTrainings');
+        Route::post('/register-training', 'TrainingController@registerTraining');
+        Route::post('/update-training', 'TrainingController@updateTraining');
+        Route::get('/view-document', 'TrainingController@viewDocument');
+        Route::post('/delete-training', 'TrainingController@deleteTraining');
+    });
+    Route::group(['prefix' => 'experiencie'], function(){
+        Route::get('/', 'ExperienciesController@viewExperiencie');
+        Route::get('/get-data-experiencies', 'ExperienciesController@getDataExperiencies');
+        Route::post('/register-experiencie', 'ExperienciesController@registerExperiencie');
+        Route::post('/update-experiencie', 'ExperienciesController@updateExperiencie');
+        Route::get('/view-document', 'ExperienciesController@viewDocument');
+        Route::post('/delete-experiencie', 'ExperienciesController@deleteExperiencie');
     });
     //Route::group)
 

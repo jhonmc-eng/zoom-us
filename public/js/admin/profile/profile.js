@@ -7,6 +7,7 @@ $(document).ready(function() {
         //console.log($("#formJob input[name=inputBaseFile]")[0].files[0])
         //form[0].trigger('reset')
         if (form[0].checkValidity()) {
+            showLoading();
             var data = new FormData();
             var form_data = $(this).serializeArray();
             $.each(form_data, function(key, input) {
@@ -26,9 +27,8 @@ $(document).ready(function() {
                 contentType: false,
                 success: function(data) {
                     if (data.success) {
-                        //form[0].reset()
+                        Swal.close()
                         form[0].classList.remove('was-validated')
-                        console.log(data.data)
                         data.data.file_dni_path != '' ? $('#file_dni_path').removeClass('btn-danger').addClass('btn-success').prop('href', `/candidate/profile/view-document?id=${data.data.file_dni_path}`).empty().append('<i class="fas fa-eye"></i>').prop('target', '_blank')  : $('#file_dni_path').removeClass('btn-success').addClass('btn-danger').removeAttr("href").empty().append('<i class="fas fa-eye-slash"></i>').removeAttr("target");
                         data.data.discapacity_file_path != '' ? $('#file_discapacity_path').removeClass('btn-danger').addClass('btn-success').prop('href', `/candidate/profile/view-document?id=${data.data.discapacity_file_path}`).empty().append('<i class="fas fa-eye"></i>').prop('target', '_blank') : $('#file_discapacity_path').removeClass('btn-success').addClass('btn-danger').removeAttr("href").empty().append('<i class="fas fa-eye-slash"></i>').removeAttr("target")
                         data.data.license_driver_path != '' ? $('#file_license_driver_path').removeClass('btn-danger').addClass('btn-success').prop('href', `/candidate/profile/view-document?id=${data.data.license_driver_path}`).empty().append('<i class="fas fa-eye"></i>').prop('target', '_blank') : $('#file_license_driver_path').removeClass('btn-success').addClass('btn-danger').removeAttr("href").empty().append('<i class="fas fa-eye-slash"></i>').removeAttr("target")
@@ -196,4 +196,33 @@ $(document).ready(function() {
             })
         }
     })
+    function showLoading() {
+        Swal.fire({
+            title: '¡Subiendo archivos!',
+            html: 'Espere un momento',
+            allowOutsideClick: false,
+            timerProgressBar: true,
+            didOpen: () => {
+                Swal.showLoading()
+            }
+        })
+    }
+
+    function error(error) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: error,
+            confirmButtonColor: "#D40E1E"
+        })
+    }
+
+    function success(message) {
+        Swal.fire({
+            icon: 'success',
+            title: 'Exito',
+            text: `¡${message}!`,
+            confirmButtonColor: "#D40E1E"
+        })
+    }
 })

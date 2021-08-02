@@ -31,8 +31,8 @@ $(document).ready(function() {
                         case 'CERRADA':
                             button = `<span class="badge badge-danger">CERRADA</span>`
                             break;
-                        case 'PROCESO':
-                            button = `<span class="badge badge-primary">PROCESO</span>`
+                        case 'EN PROCESO':
+                            button = `<span class="badge badge-primary">EN PROCESO</span>`
                             break;
                         case 'CANCELADA':
                             button = `<span class="badge badge-info">CANCELADA</span>`
@@ -107,10 +107,12 @@ $(document).ready(function() {
             [1, 'asc']
         ],
         bFilter: true,
+        order: []
 
     })
 
     let buttons = `
+    <div class="dt-buttons flex-wrap">
         <button type="button" class="btn btn-success" id="button-register" data-toggle="modal"><i class="fas fa-briefcase"></i> Nuevo</button>
         <button type="button" class="btn btn-info" id="button-edit" data-toggle="modal"><i class="fas fa-edit"></i> Editar</button>
         <button type="button" class="btn btn-primary" id="button-view" data-toggle="modal"><i class="far fa-eye"></i> Ver</button>
@@ -125,6 +127,7 @@ $(document).ready(function() {
                 <button class="dropdown-item" id="reportPrint">Imprmir</button>
             </div>
         </div>
+    </div>
     `
     $('#datable_wrapper .col-md-6:eq(0)').append(buttons)
 
@@ -132,11 +135,8 @@ $(document).ready(function() {
         e.preventDefault()
         e.stopPropagation()
         var form = $(this)
-
-        //console.log($("#formJob input[name=inputBaseFile]")[0].files[0])
-        //form[0].trigger('reset')
         if (form[0].checkValidity()) {
-            $('#modal-loading').modal('show')
+            showLoading('Ingresando datos')
             var data = new FormData();
             var form_data = $(this).serializeArray();
             $.each(form_data, function(key, input) {
@@ -152,17 +152,22 @@ $(document).ready(function() {
                 processData: false,
                 contentType: false,
                 success: function(data) {
-                    $('#modal-loading').modal('hide')
-                    $('#modalJob').modal('hide')
-                    $('#modalSuccess .modal-body').empty().append(data.message)
-                    $('#modalSuccess').modal('show')
-                    form[0].reset()
-                    form[0].classList.remove('was-validated')
-                    table.ajax.reload();
+                    if(data.success){
+                        Swal.close()
+                        $('#modalJob').modal('hide')
+                        success(data.message)
+                        form[0].reset()
+                        form[0].classList.remove('was-validated')
+                        table.ajax.reload();
+                    }else{
+                        Swal.close()
+                        error(data.error)
+                    }
+                    
                 },
                 error: function(e) {
-                    $('#modal-loading').modal('hide')
-                    error(e)
+                    Swal.close()
+                    error(e.responseJSON.message)
                 }
             });
         }
@@ -177,14 +182,15 @@ $(document).ready(function() {
         $('#formJob .txtarea_profile').summernote('reset');
         $('#modalJob').modal('show')
     });
-
+    $('#pruebita').on('change', function(e){
+        console.log($(this).val())
+    })
     $('#button-edit').on('click', function(e) {
         e.preventDefault()
         e.stopPropagation()
         let data = table.row({ selected: true }).data();
         if (data !== undefined) {
-            console.log(data) /
-                $('#formEditJob input[name="inputName"]').val(data.title)
+            $('#formEditJob input[name="inputName"]').val(data.title)
             $('#formEditJob input[name="inputDatePublication"]').val(data.date_publication)
             $('#formEditJob input[name="inputDatePostulation"]').val(data.date_postulation)
             $('#formEditJob select[name="inputModality"]').val(data.modality_id)
@@ -195,7 +201,7 @@ $(document).ready(function() {
             $('#formEditJob .txtarea_profile').summernote("code", data.requirements);
             $('#modalEditJob').modal('show')
         } else {
-            errorSelect()
+            error('Debe seleccionar un registro')
         }
 
 
@@ -208,7 +214,7 @@ $(document).ready(function() {
         if (data !== undefined) {
             let form = $(this)
             if (form[0].checkValidity()) {
-                $('#modal-loading').modal('show')
+                showLoading('Actualizando datos')
                 var data_ = new FormData();
                 var form_data = $(this).serializeArray();
                 $.each(form_data, function(key, input) {
@@ -225,24 +231,22 @@ $(document).ready(function() {
                     processData: false,
                     contentType: false,
                     success: function(data) {
-                        $('#modal-loading').modal('hide')
+                        Swal.close()
                         $('#modalEditJob').modal('hide')
-                        $('#modalSuccess .modal-body').empty().append(data.message)
-                        $('#modalSuccess').modal('show')
+                        success(data.message)
                         form[0].reset()
                         form[0].classList.remove('was-validated')
                         table.ajax.reload();
 
-                        //$('#modal-loading').modal('hide')
                     },
                     error: function(e) {
-                        $('#modal-loading').modal('hide')
-                        error(e)
+                        Swal.close()
+                        error(e.responseJSON.message)
                     }
                 });
             }
         } else {
-            errorSelect()
+            error('Debe seleccionar un registro')
         }
 
 
@@ -282,36 +286,6 @@ $(document).ready(function() {
             }
 
         })
-        /*
-            $('#formUpdatePassword').on('submit', function(e){
-                e.preventDefault()
-                e.stopPropagation()
-                let form = $(this)
-                let data = table.row({select:true}).data()
-                console.log(data)
-                if(data != undefined){
-                    $.ajax({
-                        url : `/admin/users/resetPassword`,
-                        type : 'POST',
-                        data : form.serialize(),
-                        success:function(data){
-                            $('#modalUpdatePassword').modal('hide')
-                            $('#modalSuccess .moda-header').empty().append('¡Exito!')
-                            $('#modalSuccess .modal-body').empty().append(data.message)
-                            $('#modalSuccess').modal('show')
-                            form[0].reset()
-                            form[0].classList.remove('was-validated')
-                            table.ajax.reload();
-                        },
-                        error:function(){
-                            console.log(e)
-                        }
-                    })
-                }else{
-                    errorSelect()
-                }
-            })*/
-
     function errorSelect() {
         $('#modalSuccess .modal-header').empty().append('Error')
         $('#modalSuccess .modal-body').empty().append('¡Debe seleccionar un registro!')
@@ -322,5 +296,34 @@ $(document).ready(function() {
         $('#modalSuccess .modal-header').empty().append('Error')
         $('#modalSuccess .modal-body').empty().append(e.responseJSON.message)
         $('#modalSuccess').modal('show')
+    }
+    function showLoading() {
+        Swal.fire({
+            title: '¡Subiendo archivos!',
+            html: 'Espere un momento',
+            allowOutsideClick: false,
+            timerProgressBar: true,
+            didOpen: () => {
+                Swal.showLoading()
+            }
+        })
+    }
+
+    function error(error) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: error,
+            confirmButtonColor: "#D40E1E"
+        })
+    }
+
+    function success(message) {
+        Swal.fire({
+            icon: 'success',
+            title: 'Exito',
+            text: `¡${message}!`,
+            confirmButtonColor: "#D40E1E"
+        })
     }
 })

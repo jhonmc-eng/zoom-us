@@ -61,14 +61,15 @@ $(document).ready(function() {
             style: 'single'
         },
         bFilter: true,
-
+        order: []
     })
 
     let buttons = `
+    <div class="dt-buttons flex-wrap">
         <button type="button" class="btn btn-success" id="button-register" data-toggle="modal"><i class="fas fas fa-graduation-cap"></i> Nuevo</button>
         <button type="button" class="btn btn-info" id="button-edit" data-toggle="modal"><i class="fas fa-edit"></i> Editar</button>
         <button type="button" class="btn btn-danger" id="button-delete" data-toggle="modal"><i class="fas fa-trash-alt"></i> Eliminar</button>
-        
+    </div> 
     `
     $('#datable_wrapper .col-md-6:eq(0)').append(buttons)
 

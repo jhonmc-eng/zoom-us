@@ -44,7 +44,7 @@
     
     <script src="{{asset('plugins/bs-custom-file-input/bs-custom-file-input.min.js')}}"></script>
     <!-- AdminLTE for demo purposes -->
-    <script src="{{asset('js/demo.js')}}"></script>
+    <script src="{{asset('js/admin/demo.js')}}"></script>
     <script>
     $(function () {
         $(document).on('click', '[data-toggle="lightbox"]', function(event) {

@@ -25,6 +25,8 @@ class CreateUsersTable extends Migration
             $table->string('nivel');
             $table->string('cargo');
             $table->string('date_start');
+            $table->boolean('permission_practices');
+            $table->boolean('permission_cas');
             $table->boolean('state_delete')->default(0);
             $table->text('syslog');
             $table->rememberToken();

@@ -73,100 +73,21 @@
 
         <!-- /.content -->
     </div>
-    
-    <div class="modal fade" id="modalRegisterQualification" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" aria-labelledby="modalNewJob" aria-hidden="true">
-        <form id="formQualification" class="needs-validation" enctype="multipart/form-data" novalidate>
+    <form id="formQualification" class="needs-validation" enctype="multipart/form-data" novalidate>
         @csrf
-        <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
-            <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalScrollableTitle">AGREGAR CURSO O PROGRAMA DE ESPECIALIZACIÓN</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="alert alert-danger alert-dismissible">
-                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                            <h5><i class="icon fas fa-ban"></i> Alerta!</h5>
-                            <p class="mb-0">El tamaño máximo para los documentos adjuntos (.pdf) es de 10MB</p>
-                        </div>
-                        <div class="form-group row">
-                            <label for="type_academic" class="col-sm-6 col-form-label">Tipo de Estudios</label>
-                            <label for="cant_hours" class="col-sm-6 col-form-label">Cantidad de Horas</label>
-                            <div class="col-sm-6">
-                                <select name="type_academic" class="form-control" id="type_academic" required>
-                                @foreach($type_qualification as $item)
-                                    <option value="{{$item->id}}">{{$item->name}}</option>
-                                @endforeach
-                                </select>
-                            </div>
-                            <div class="col-sm-6">
-                                <input type="number" name="cant_hours" class="form-control" placeholder="Ingrese cantidad de horas" required>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="name_institution" class="col-sm-12 col-form-label">Nombre de la Institución</label>
-                            <div class="col-sm-12">
-                                <input type="text" name="name_institution" class="form-control" placeholder="Ingrese nombre de la institucion" required>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="name_course" class="col-sm-12 col-form-label">Titulo del curso y/o programa de especialización</label>
-                            <div class="col-sm-12">
-                                <input type="text" name="name_course" class="form-control" placeholder="Ingrese nombre del curso o programa" required>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="date_start" class="col-sm-6 col-form-label">Fecha de inicio</label>
-                            <label for="date_end" class="col-sm-6 col-form-label">Fecha de fin</label>
-                              
-                            <div class="col-sm-6">
-                                <input type="date" name="date_start" class="form-control" required>
-                            </div>                     
-                            <div class="col-sm-6">
-                                <input type="date" name="date_end" class="form-control" required>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="certificate" class="col-sm-12 col-form-label">Adjuntar certificado</label>
-                              
-                            <div class="col-sm-12">
-                                <div class="custom-file">
-                                    <input type="file" name="certificate" accept="application/pdf" class="form-control custom-file-input validation-pdf" required>
-                                    <label class="custom-file-label" for="certificate">Escoge un archivo</label>
-                                </div>
-                            </div>  
-                        </div>
-                        
-                    </div>
+        <div class="modal fade" id="modalRegisterQualification" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" aria-labelledby="modalNewJob" aria-hidden="true">
+            
+            <div class="modal-dialog modal-dialog-scrollable modal-lg modal-dialog-centered" role="document">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalScrollableTitle">AGREGAR CURSO O PROGRAMA DE ESPECIALIZACIÓN</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
-                
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                <input type="submit" class="btn btn-success" value="Guardar">
-            </div>
-            </div>
-        </div>
-        </form>
-    </div>
-    <div class="modal fade" id="modalEditQualification" tabindex="-1" role="dialog" aria-labelledby="modalNewJob" data-backdrop="static" data-keyboard="false" aria-hidden="true">
-        <form id="formEditQualification" class="needs-validation" enctype="multipart/form-data" novalidate>
-        @csrf
-        <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
-            <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalScrollableTitle">EDITAR FORMACIÓN ACADÉMICA</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="card">
-                    <div class="card-body">
+                <div class="modal-body">
+                    <div class="card">
+                        <div class="card-body">
                             <div class="alert alert-danger alert-dismissible">
                                 <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
                                 <h5><i class="icon fas fa-ban"></i> Alerta!</h5>
@@ -210,17 +131,11 @@
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label for="certificate" class="col-sm-12 col-form-label">
-                                    Adjuntar certificado
-                                    <div id="button-file" class="d-inline">
-                                        <a target="_blank" type="button" id="file_path_certificate" class="btn btn-success view-file"><i class="fas fa-eye"></i></a>                                               
-                                        <br>
-                                    </div>
-                                </label>
+                                <label for="certificate" class="col-sm-12 col-form-label">Adjuntar certificado</label>
                                 
                                 <div class="col-sm-12">
                                     <div class="custom-file">
-                                        <input type="file" name="certificate" accept="application/pdf" class="form-control custom-file-input validation-pdf">
+                                        <input type="file" name="certificate" accept="application/pdf" class="form-control custom-file-input validation-pdf" required>
                                         <label class="custom-file-label" for="certificate">Escoge un archivo</label>
                                     </div>
                                 </div>  
@@ -228,16 +143,102 @@
                             
                         </div>
                     </div>
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <input type="submit" class="btn btn-success" value="Guardar">
+                </div>
+                </div>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                <input type="submit" class="btn btn-success" value="Guardar">
-            </div>
+            
+        </div>
+    </form>
+    <form id="formEditQualification" class="needs-validation" enctype="multipart/form-data" novalidate>
+        @csrf
+        <div class="modal fade" id="modalEditQualification" tabindex="-1" role="dialog" aria-labelledby="modalNewJob" data-backdrop="static" data-keyboard="false" aria-hidden="true">
+            
+            <div class="modal-dialog modal-dialog-scrollable modal-lg modal-dialog-centered" role="document">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalScrollableTitle">EDITAR FORMACIÓN ACADÉMICA</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="card">
+                        <div class="card-body">
+                                <div class="alert alert-danger alert-dismissible">
+                                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                    <h5><i class="icon fas fa-ban"></i> Alerta!</h5>
+                                    <p class="mb-0">El tamaño máximo para los documentos adjuntos (.pdf) es de 10MB</p>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="type_academic" class="col-sm-6 col-form-label">Tipo de Estudios</label>
+                                    <label for="cant_hours" class="col-sm-6 col-form-label">Cantidad de Horas</label>
+                                    <div class="col-sm-6">
+                                        <select name="type_academic" class="form-control" id="type_academic" required>
+                                        @foreach($type_qualification as $item)
+                                            <option value="{{$item->id}}">{{$item->name}}</option>
+                                        @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <input type="number" name="cant_hours" class="form-control" placeholder="Ingrese cantidad de horas" required>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="name_institution" class="col-sm-12 col-form-label">Nombre de la Institución</label>
+                                    <div class="col-sm-12">
+                                        <input type="text" name="name_institution" class="form-control" placeholder="Ingrese nombre de la institucion" required>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="name_course" class="col-sm-12 col-form-label">Titulo del curso y/o programa de especialización</label>
+                                    <div class="col-sm-12">
+                                        <input type="text" name="name_course" class="form-control" placeholder="Ingrese nombre del curso o programa" required>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="date_start" class="col-sm-6 col-form-label">Fecha de inicio</label>
+                                    <label for="date_end" class="col-sm-6 col-form-label">Fecha de fin</label>
+                                    
+                                    <div class="col-sm-6">
+                                        <input type="date" name="date_start" class="form-control" required>
+                                    </div>                     
+                                    <div class="col-sm-6">
+                                        <input type="date" name="date_end" class="form-control" required>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="certificate" class="col-sm-12 col-form-label">
+                                        Adjuntar certificado
+                                        <div id="button-file" class="d-inline">
+                                            <a target="_blank" type="button" id="file_path_certificate" class="btn btn-success view-file"><i class="fas fa-eye"></i></a>                                               
+                                            <br>
+                                        </div>
+                                    </label>
+                                    
+                                    <div class="col-sm-12">
+                                        <div class="custom-file">
+                                            <input type="file" name="certificate" accept="application/pdf" class="form-control custom-file-input validation-pdf">
+                                            <label class="custom-file-label" for="certificate">Escoge un archivo</label>
+                                        </div>
+                                    </div>  
+                                </div>
+                                
+                            </div>
+                        </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <input type="submit" class="btn btn-success" value="Guardar">
+                </div>
+                </div>
             </div>
         </div>
-        </form>
-    </div>
-
+    </form>
 @endsection
 
 @section('after-scripts')
@@ -268,10 +269,6 @@
 <script src="{{asset('plugins/datatables-buttons/js/buttons.html5.min.js')}}"></script>
 <script src="{{asset('plugins/datatables-buttons/js/buttons.print.min.js')}}"></script>
 <script src="{{asset('plugins/datatables-buttons/js/buttons.colVis.min.js')}}"></script>
-<!-- AdminLTE App -->
-<script src="{{asset('js/admin/adminlte.min.js')}}"></script>
-<!-- AdminLTE for demo purposes -->
-<script src="{{asset('js/admin/demo.js')}}"></script>
 <script src="{{asset('plugins/bs-custom-file-input/bs-custom-file-input.min.js')}}"></script>
 <script src="{{asset('js/admin/qualifications/qualifications.js')}}"></script>
 <script src="{{asset('plugins/toastr/toastr.min.js')}}"></script>

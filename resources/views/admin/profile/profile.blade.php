@@ -567,6 +567,8 @@
 <script src="{{asset('plugins/toastr/toastr.min.js')}}"></script>
 <script src="{{asset('plugins/bs-custom-file-input/bs-custom-file-input.min.js')}}"></script>
 <link rel="stylesheet" href="{{asset('plugins/toastr/toastr.min.css')}}">
+<script src="{{asset('plugins/sweetalert2/sweetalert2.min.js')}}"></script>
+<link rel="stylesheet" href="{{asset('plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css')}}">
 <script>
     bsCustomFileInput.init();
     $('.summernote').summernote({

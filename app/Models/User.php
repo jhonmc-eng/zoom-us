@@ -28,6 +28,8 @@ class User extends Authenticatable
         'cargo',
         'date_start',
         'nivel',
+        'permission_practices',
+        'permission_cas',
         'state_delete',
         'syslog',
         'password'

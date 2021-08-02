@@ -1,8 +1,8 @@
 <aside class="main-sidebar sidebar-dark-primary elevation-4" style="position:fixed !important;/*background-color: #c12323fa;*/">
     <!-- Brand Logo -->
-    <a href="../index3.html" class="brand-link">
+    <a href="/candidate/profile" class="brand-link">
       <img src="{{ asset('img/admin/logotipo_region_tacna.png') }}" alt="Gobierno Regional de Tacna" class="brand-image img-circle elevation-3" style="opacity: .8">
-      <span class="brand-text font-weight-light">GRT - OTI</span>
+      <span class="brand-text font-weight-light">SAC - GRT</span>
     </a>
 
     <!-- Sidebar -->
@@ -51,12 +51,27 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a href="/admin/jobs" class="nav-link">
+                <a href="#" class="nav-link">
                   <i class="nav-icon fas fa-briefcase"></i>
                   <p>
                     Convocatorias
+                    <i class="right fas fa-angle-left"></i>
                   </p>
                 </a>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="/admin/jobs" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>CAS</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="/admin/practices" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Practicas</p>
+                    </a>
+                  </li>
+                </ul>
               </li>
               <li class="nav-item">
                 <a href="/admin/modalitys" class="nav-link">
@@ -138,7 +153,7 @@
               </a>
             </li>
             <li class="nav-item">
-              <a href="#" class="nav-link">
+              <a href="/candidate/knowledge" class="nav-link">
                 <i class="nav-icon fas fa-brain"></i>
                 <p>
                   Conocimientos
@@ -146,7 +161,7 @@
               </a>
             </li>
             <li class="nav-item">
-              <a href="#" class="nav-link">
+              <a href="/candidate/experiencie" class="nav-link">
                 <i class="nav-icon fas fa-briefcase"></i>
                 <p>
                   Experiencia Laboral
@@ -154,7 +169,7 @@
               </a>
             </li>
             <li class="nav-item">
-              <a href="#" class="nav-link">
+              <a href="/candidate/training" class="nav-link">
                 <i class="nav-icon fas fa-folder-open"></i>
                 <p>
                   Otros documentos
@@ -162,7 +177,7 @@
               </a>
             </li>
             <li class="nav-item">
-              <a href="#" class="nav-link">
+              <a href="/candidate/references" class="nav-link">
                 <i class="nav-icon fas fa-users"></i>
                 <p>
                   Referencias

@@ -23,7 +23,7 @@ $(function () {
             { "data": "nivel" }
         ],
         'lengthChange': false,
-        'pageLength': 10,
+        'pageLength': 5,
         "language": {
             "emptyTable":     "No hay datos disponibles",
             "info":           "Mostrando _START_ de _END_ de un total de _TOTAL_ entradas",
@@ -56,12 +56,13 @@ $(function () {
         'select': {
             'style':    'single'
         },
-        'order': [[1, 'asc']],
+        order: [],
         'bFilter': true,
        
     })
 
     let buttons = `
+    <div class="dt-buttons flex-wrap">
         <button type="button" class="btn btn-success" id="button-register" data-toggle="modal"><i class="far fa-edit"></i> Nuevo</button>
         <button type="button" class="btn btn-info" id="button-edit" data-toggle="modal"><i class="fas fa-user-edit"></i> Editar</button>
         <button type="button" class="btn btn-primary" id="button-password" data-toggle="modal"><i class="fas fa-key"></i> Password</button>
@@ -76,6 +77,7 @@ $(function () {
                 <button class="dropdown-item" id="reportPrint">Imprmir</button>
             </div>
         </div>
+    </div>
     `
     $('#datable_wrapper .col-md-6:eq(0)').append(buttons)
     
@@ -85,20 +87,22 @@ $(function () {
         var form = $(this)
         //form[0].trigger('reset')
         if (form[0].checkValidity()) {
+            showLoading('Ingresando datos');
             $.ajax({
                 url : '/admin/users/create-user',
                 type : 'POST',
                 data : $('#formRegisterUser').serialize(),
                 success: function(data){
+                    Swal.close()
                     $('#modalNewUser').modal('hide')
-                    $('#modalSuccess .modal-body').empty().append(data.message)
-                    $('#modalSuccess').modal('show')
+                    success(data.message)
                     form[0].reset()
                     form[0].classList.remove('was-validated')
                     table.ajax.reload();
                 },
                 error:function(e){
-                    errorDniOrUsername(e)
+                    Swal.close()
+                    error(e.responseJSON.message)
                 }
             });
         }
@@ -109,9 +113,6 @@ $(function () {
         e.stopPropagation()
         $('#formRegisterUser').trigger('reset')
         $('#modalNewUser').modal('show')
-        /*let data = table.row({select:true}).data()
-        console.log(data)*/
-        //$("#formEditUser input['name']").val(data.names)
         
     });
     $('#button-edit').on('click', function(e){
@@ -119,6 +120,7 @@ $(function () {
         e.stopPropagation()
         let data = table.row({selected:true}).data();
         if(data !== undefined){
+            console.log(data)
             $('#formUpdateUser input[name="inputUpdateNames"]').val(data.names)
             $('#formUpdateUser select[name="inputUpdateType"]').val(data.nivel)
             $('#formUpdateUser input[name="inputUpdateDni"]').val(data.dni)
@@ -127,9 +129,18 @@ $(function () {
             $('#formUpdateUser input[name="inputUpdateDate"]').val(data.date_start)
             $('#formUpdateUser input[name="inputUpdateUsername"]').val(data.username)
             $('#formUpdateUser input[name="inputUpdateState"]').val(data.state_delete)
+            $('#formUpdateUser input[name="inputUpdateCharge"]').val(data.cargo)
+            if(data.permission_practices == '1' && data.permission_cas == '1'){
+                $('#formUpdateUser select[name="inputUpdatePermission"]').val(3)
+            }else if(data.permission_practices == 1){
+                $('#formUpdateUser select[name="inputUpdatePermission"]').val(2)
+            }else{
+                $('#formUpdateUser select[name="inputUpdatePermission"]').val(1)
+            }
+            //$('#formUpdateUser select[name="inputUpdatePermission"]').val(data.nivel)
             $('#modalEditUser').modal('show')
         }else{
-            errorSelect()
+            error('¡Debe seleccionar un registro!')
         }
         
 
@@ -139,30 +150,30 @@ $(function () {
         e.preventDefault()
         e.stopPropagation()
         let data = table.row({selected:true}).data();
-        console.log(data)
         if(data !== undefined){
             let form = $(this)
             if (form[0].checkValidity()) {
+                showLoading('Actualizando Datos')
                 $.ajax({
                     url : `/admin/users/update-user/${data.id}`,
                     type : 'POST',
                     data : form.serialize(),
                     success: function(data){
+                        Swal.close()
                         $('#modalEditUser').modal('hide')
-                        $('#modalSuccess .moda-header').empty().append('¡Exito!')
-                        $('#modalSuccess .modal-body').empty().append(data.message)
-                        $('#modalSuccess').modal('show')
+                        success(data.message)
                         form[0].reset()
                         form[0].classList.remove('was-validated')
                         table.ajax.reload();
                     },
                     error:function(e){
-                        errorDniOrUsername(e)
+                        Swal.close()
+                        error(e)
                     }
                 });
             }
         }else{
-            errorSelect()
+            error('¡Debe seleccionar un registro!')
         }
         
     })  
@@ -175,7 +186,7 @@ $(function () {
             $('#formUpdatePassword input[name="inputUserUpdatePassword"]').empty().val(data.username)
             $('#modalUpdatePassword').modal('show')
         }else{
-            errorSelect()
+            error('¡Debe seleccionar un registro!')
         }
         
     })
@@ -186,21 +197,22 @@ $(function () {
         let data = table.row({select:true}).data()
         console.log(data)
         if(data != undefined){
+            showLoading('Actualizando Password')
             $.ajax({
                 url : `/admin/users/resetPassword`,
                 type : 'POST',
                 data : form.serialize(),
                 success:function(data){
                     $('#modalUpdatePassword').modal('hide')
-                    $('#modalSuccess .moda-header').empty().append('¡Exito!')
-                    $('#modalSuccess .modal-body').empty().append(data.message)
-                    $('#modalSuccess').modal('show')
+                    Swal.close()
+                    success(data.message)
                     form[0].reset()
                     form[0].classList.remove('was-validated')
                     table.ajax.reload();
                 },
-                error:function(){
-                    console.log(e)
+                error:function(e){
+                    Swal.close()
+                    error(e)
                 }
             })
         }else{
@@ -213,35 +225,51 @@ $(function () {
         $('#modal-loading').modal('show')
         let parent = $(this).parent().parent().parent();
         let dni = parent.find('input').val()
+        showLoading('Obteniendo datos de la RENIEC')
         $.ajax({
             url : `/admin/users/get-data-dni/${dni}`,
             type : 'GET',
             success: function(data){
-                $('#modal-loading').modal('hide')
+                Swal.close()
                 parent.parents('form').find('.names input').val(data.data.nombres)
                 parent.parents('form').find('.lastnamePatern input').val(data.data.apellido_paterno)
                 parent.parents('form').find('.lastnameMatern input').val(data.data.apellido_materno)
                 parent.parents('form').find('.username input').val(data.username)
             },
             error: function(e){
-                $('#modal-loading').modal('hide')
-                $('#modalSuccess .modal-header').empty().append('Error')
-                $('#modalSuccess .modal-body').empty().append(e.responseJSON.error)
-                $('#modalSuccess').modal('show')
+                Swal.close()
+                error(e.responseJSON.error)
             }
         })
-        console.log(dni)
     })
-    function errorSelect(){
-        $('#modalSuccess .modal-header').empty().append('Error')
-        $('#modalSuccess .modal-body').empty().append('¡Debe seleccionar un registro!')
-        $('#modalSuccess').modal('show')
+    function showLoading(message) {
+        Swal.fire({
+            title: `¡${message}!`,
+            html: 'Espere un momento',
+            allowOutsideClick: false,
+            timerProgressBar: true,
+            didOpen: () => {
+                Swal.showLoading()
+            }
+        })
     }
-    
-    function errorDniOrUsername(e){
-        $('#modalSuccess .modal-header').empty().append('Error')
-        $('#modalSuccess .modal-body').empty().append(e.responseJSON.message)
-        $('#modalSuccess').modal('show')
+
+    function error(error) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: error,
+            confirmButtonColor: "#D40E1E"
+        })
+    }
+
+    function success(message) {
+        Swal.fire({
+            icon: 'success',
+            title: 'Exito',
+            text: `¡${message}!`,
+            confirmButtonColor: "#D40E1E"
+        })
     }
     
   })
