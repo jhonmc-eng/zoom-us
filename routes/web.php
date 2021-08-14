@@ -1,6 +1,10 @@
 <?php
 
+use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Storage;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,6 +19,40 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
+});
+Route::get('/pruebita', function () {
+    // Find the user
+    //dd('asdasd');
+    try {
+        $user = DB::table('tbl_other_attachments')->get();
+        $i = 1;
+        foreach($user as $item){
+            $image_64 = $item->attachment; 
+            $replace = substr($image_64, 0, strpos($image_64, ',')+1); 
+            $image = str_replace($replace, '', $image_64); 
+            $image = str_replace(' ', '+', $image); 
+            $imageName = $i.'_asdasd.pdf';
+            File::put(public_path('/files/users'.$imageName), $image_64);
+            $i++;
+        }
+        
+        //dd($file);
+       // $name = 'FILE_'.time().'.pdf';
+        //$file->move(public_path().'/files/', $name);*/
+        return response()->json([
+            'success' => TRUE
+        ]);
+        // Return the image in the response with the correct MIME type
+        /*return response()->make($user->attachment, 200, array(
+            'Content-Type' => (new finfo(FILEINFO_MIME))->buffer($user->attachment)
+        ));*/
+    } catch (\Exception $e) {
+        return response()->json([
+            'success' => false,
+            'error' => $e->getMessage()
+        ]);
+    }
+    
 });
 
 Route::get('/login', 'AdminController@index')->name('login.admin');
@@ -63,7 +101,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth_admin', 'as' => 'admin.
         Route::get('/list-practices', 'ConvocatoriaController@listPractices');
         Route::post('/register-practice', 'ConvocatoriaController@registerPractice');
         Route::post('/update-practice/{id}', 'ConvocatoriaController@editPractice');
-        
+
         Route::get('/view-job', 'ConvocatoriaController@viewJob');
         Route::get('/view-base', 'ConvocatoriaController@viewBase');
         Route::get('/view-schedule','ConvocatoriaController@viewSchedule');
