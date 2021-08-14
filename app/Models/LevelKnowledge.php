@@ -19,6 +19,8 @@ class LevelKnowledge extends Model
     ];
     
     protected $hidden = [
-        'syslog'
+        'syslog',
+        'updated_at',
+        'created_at'
     ];
 }

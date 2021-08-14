@@ -30,7 +30,11 @@ class Job extends Model
         'state_delete',
         'syslog'
     ];
-
+    protected $hidden = [
+        'syslog',
+        'updated_at',
+        'created_at'
+    ];
     public function modality(){
         return $this->hasOne('App\Models\Modality', 'id', 'modality_id');
     }
@@ -41,6 +45,18 @@ class Job extends Model
 
     public function results(){
         return $this->hasMany('App\Models\JobResult', 'job_id', 'id');
+    }
+
+    public function oficineCas(){
+        return $this->hasOne('App\Models\JobOficine', 'job_id', 'id');
+    }
+    
+    public function oficinePractices(){
+        return $this->hasMany('App\Models\JobOficine', 'job_id', 'id');
+    }
+
+    public function oficine($id){
+        return Oficine::where('id', $id)->first();
     }
 }
 

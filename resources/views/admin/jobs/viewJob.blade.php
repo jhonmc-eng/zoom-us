@@ -93,25 +93,25 @@
                                 <div class="col-sm-3 invoice-col">
                                     <address>
                                         <strong>Bases</strong><br>
-                                        <a target="_blank" href="/admin/jobs/view-base?job_base={{\Crypt::encrypt($job->bases)}}" type="button" class="btn btn-success">BASES</a><br>
+                                        <a target="_blank" href="/admin/jobs/view-base?job_base={{\Crypt::encrypt($job->bases)}}" type="button" class="btn btn-danger">Descargar <i class="fas fa-download"></i></a><br>
                                     </address>
                                 </div>
                                 <!-- /.col -->
                                 <div class="col-sm-3 invoice-col">
                                     <address>
                                         <strong>Cronograma</strong><br>
-                                        <a target="_blank" href="/admin/jobs/view-schedule?job_schedule={{\Crypt::encrypt($job->schedule)}}" type="button" class="btn btn-success">CRONOGRAMA</a><br>
+                                        <a target="_blank" href="/admin/jobs/view-schedule?job_schedule={{\Crypt::encrypt($job->schedule)}}" type="button" class="btn btn-danger">Descargar <i class="fas fa-download"></i></a><br>
                                     </address>
                                 </div>
                                 <!-- /.col -->
                                 <div class="col-sm-3 invoice-col">
                                     <b>Perfil</b><br>
-                                    <a target="_blank" href="/admin/jobs/view-profile?job_profile={{\Crypt::encrypt($job->profile)}}" type="button" class="btn btn-success">PERFIL</a><br>
+                                    <a target="_blank" href="/admin/jobs/view-profile?job_profile={{\Crypt::encrypt($job->profile)}}" type="button" class="btn btn-danger">Descargar <i class="fas fa-download"></i></a><br>
                                 </div>
 
                                 <div class="col-sm-3 invoice-col">
                                     <b>Candidatos</b><br>
-                                    15 candidatos<br>
+                                    <a target="_blank" href="#" type="button" class="btn btn-primary"><i class="fas fa-user-tie"></i></a>`<br>
                                 </div>
                                 <div class="col-sm-12 invoice-col margin-top-30">
                                     @foreach($types as $item)
@@ -149,7 +149,7 @@
                                                             @if(isset($item->file))
                                                                 <td>{{$item->file->date_publication}}</td>
                                                                 <td>                                    
-                                                                    <a target="_blank" href="/admin/jobs/view-result?result={{\Crypt::encrypt($item->file->token)}}" type="button" class="btn btn-info"><i class="fas fa-download"></i></a><br>
+                                                                    <a target="_blank" href="/admin/jobs/view-result?result={{Crypt::encrypt($item->file->path)}}" type="button" class="btn btn-info"><i class="fas fa-download"></i></a><br>
                                                                 </td>
                                                                 <td>
                                                                     <button type="button" data-id="{{\Crypt::encrypt($item->file->id)}}" data-type="{{$item->file->type_result_id}}" data-publication="{{$item->file->date_publication}}" data-name="{{$item->name}}" class="btn btn-warning edit-document"><i class="fas fa-edit"></i></button>
@@ -191,158 +191,124 @@
         </section>
         
     </div>
-    <div class="modal fade" id="modalDocumentNew" tabindex="-1" role="dialog" aria-labelledby="modalDocumentNew" data-backdrop="static" data-keyboard="false" aria-hidden="true">
-        
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalScrollableTitle">Publicar Documento</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <form id="formDocumentNew" class="needs-validation" enctype="multipart/form-data" novalidate>
-            @csrf
-                <div class="modal-body">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="form-group row">
-                                <label for="type_document" class="col-sm-12 col-form-label">Tipo de Documento</label>
-                                <div class="col-sm-12">
-                                    <select name="type_document" id="type_document" class="form-control" required>
-                                        @foreach($types as $item)
-                                            
-                                            @if($item->multiple == 0)
-                                                @if(!isset($item->file))
-                                                    <option value="{{$item->id}}">{{$item->name}}</option>
-                                                @endif
-                                            @else
-                                                <option value="{{$item->id}}">{{$item->name}}</option>
-                                            @endif
-                                            
-                                           
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label for="date_publication" class="col-sm-12 col-form-label">Fecha de publicación</label>
-                                <div class="col-sm-12">
-                                    <input type="date" name="date_publication" class="form-control"  required>
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label for="file_document" class="col-sm-12 col-form-label">Archivo</label>
-                                <div class="col-sm-12">
-                                    <div class="custom-file">
-                                        <input type="file" name="file_document" accept="application/pdf" class="form-control custom-file-input validation-pdf" required>
-                                        <label class="custom-file-label" for="file_document">Escoge un archivo</label>
-                                    </div>
-                                </div>  
-                            </div>
-                            
-                        </div>
-                    </div>
-                    
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                    <input type="submit" class="btn btn-success" value="Guardar">
-                </div>
-                </div>
-            </form>
-        </div>
-        
-    </div>
-
-    <div class="modal fade" id="modalDocumentEdit" tabindex="-1" role="dialog" aria-labelledby="modalDocumentEdit" data-backdrop="static" data-keyboard="false" aria-hidden="true">
-        
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalScrollableTitle">Editar Documento</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <form id="formDocumentEdit" class="needs-validation" enctype="multipart/form-data" novalidate>
-            @csrf
-                <div class="modal-body">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="form-group row">
-                                <label for="type_document" class="col-sm-12 col-form-label">Tipo de Documento</label>
-                                <div class="col-sm-12">
-                                    <input type="text" name="type_document_text" class="form-control" value="" disabled>
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label for="date_publication" class="col-sm-12 col-form-label">Fecha de publicación</label>
-                                <div class="col-sm-12">
-                                    <input type="date" name="date_publication" class="form-control"  required>
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label for="file_document" class="col-sm-12 col-form-label">Archivo</label>
-                                <div class="col-sm-12">
-                                    <div class="custom-file">
-                                        <input type="file" name="file_document" accept="application/pdf" class="form-control custom-file-input validation-pdf">
-                                        <label class="custom-file-label" for="file_document">Escoge un archivo</label>
-                                    </div>
-                                </div>  
-                            </div>
-                            
-                        </div>
-                    </div>
-                    
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                    <input type="submit" class="btn btn-success" value="Guardar">
-                </div>
-                </div>
-            </form>
-        </div>
-        
-    </div>
-
-    <div class="modal fade" id="modalSuccess" aria-hidden="true" data-backdrop="static" data-keyboard="false" aria-labelledby="exampleModalToggleLabel1" tabindex="-1">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-            <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">¡Exito!</h5>
+    <form id="formDocumentNew" class="needs-validation" enctype="multipart/form-data" novalidate>
+        @csrf
+        <div class="modal fade" id="modalDocumentNew" tabindex="-1" role="dialog" aria-labelledby="modalDocumentNew" data-backdrop="static" data-keyboard="false" aria-hidden="true">
+            
+            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalScrollableTitle">Publicar Documento</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body"> 
-
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-primary" data-dismiss="modal" data-mdb-target="#exampleModalToggle22" data-mdb-toggle="modal" data-mdb-dismiss="modal" >
-                    OK
+                    <div class="modal-body">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="form-group row">
+                                    <label for="type_document" class="col-sm-12 col-form-label">Tipo de Documento</label>
+                                    <div class="col-sm-12">
+                                        <select name="type_document" id="type_document" class="form-control" required>
+                                            @foreach($types as $item)
+                                                
+                                                @if($item->multiple == 0)
+                                                    @if(!isset($item->file))
+                                                        <option value="{{$item->id}}">{{$item->name}}</option>
+                                                    @endif
+                                                @else
+                                                    <option value="{{$item->id}}">{{$item->name}}</option>
+                                                @endif
+                                                
+                                            
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="date_publication" class="col-sm-12 col-form-label">Fecha de publicación</label>
+                                    <div class="col-sm-12">
+                                        <input type="date" name="date_publication" class="form-control"  required>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="file_document" class="col-sm-12 col-form-label">Archivo</label>
+                                    <div class="col-sm-12">
+                                        <div class="custom-file">
+                                            <input type="file" name="file_document" accept="application/pdf" class="form-control custom-file-input validation-pdf" required>
+                                            <label class="custom-file-label" for="file_document">Escoge un archivo</label>
+                                        </div>
+                                    </div>  
+                                </div>
+                                
+                            </div>
+                        </div>
+                        
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                        <input type="submit" class="btn btn-success" value="Guardar">
+                    </div>
+                    </div>
+            </div>
+        </div>
+    </form>
+    <form id="formDocumentEdit" class="needs-validation" enctype="multipart/form-data" novalidate>
+        @csrf
+        <div class="modal fade" id="modalDocumentEdit" tabindex="-1" role="dialog" aria-labelledby="modalDocumentEdit" data-backdrop="static" data-keyboard="false" aria-hidden="true">
+            
+            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalScrollableTitle">Editar Documento</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-            </div>
-        </div>
-    </div>
-    <div class="modal fade w-100 h-100" id="modal-loading" data-backdrop="false" >
-        <div class="modal-dialog modal-dialog-centered">
-          <div class="modal-content" style="height: 100px !important;">
-            <div class="overlay">
-                <i class="fas fa-2x fa-sync fa-spin"></i>
+                    <div class="modal-body">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="form-group row">
+                                    <label for="type_document" class="col-sm-12 col-form-label">Tipo de Documento</label>
+                                    <div class="col-sm-12">
+                                        <input type="text" name="type_document_text" class="form-control" value="" disabled>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="date_publication" class="col-sm-12 col-form-label">Fecha de publicación</label>
+                                    <div class="col-sm-12">
+                                        <input type="date" name="date_publication" class="form-control"  required>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="file_document" class="col-sm-12 col-form-label">Archivo</label>
+                                    <div class="col-sm-12">
+                                        <div class="custom-file">
+                                            <input type="file" name="file_document" accept="application/pdf" class="form-control custom-file-input validation-pdf">
+                                            <label class="custom-file-label" for="file_document">Escoge un archivo</label>
+                                        </div>
+                                    </div>  
+                                </div>
+                                
+                            </div>
+                        </div>
+                        
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                        <input type="submit" class="btn btn-success" value="Guardar">
+                    </div>
+                    </div>
+                
             </div>
             
-          </div>
-          <!-- /.modal-content -->
         </div>
-        <!-- /.modal-dialog -->
-    </div>
+    </form>
 @endsection
 
 @section('after-scripts')
-<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
+<script src="{{asset('plugins/sweetalert2/sweetalert2.min.js')}}"></script>
+<link rel="stylesheet" href="{{asset('plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css')}}">
 <script src="{{asset('plugins/bs-custom-file-input/bs-custom-file-input.min.js')}}"></script>
 <script src="{{asset('plugins/toastr/toastr.min.js')}}"></script>
 <link rel="stylesheet" href="{{asset('plugins/toastr/toastr.min.css')}}">

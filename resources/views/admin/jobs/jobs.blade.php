@@ -32,7 +32,7 @@
                   <thead>
                     <tr>
                         <th>Codigo</th>
-                        <th>Modalidad</th>
+                        <th>Año</th>
                         <th>Nombre</th>
                         <th>Proceso</th>
                         <th>Fecha de publicacion</th>
@@ -42,13 +42,11 @@
                   </thead>
                   <tbody>
                         
-                        </tr>
-                  
                   </tbody>
                   <tfoot>
                     <tr>
                         <th>Codigo</th>
-                        <th>Modalidad</th>
+                        <th>Año</th>
                         <th>Nombre</th>
                         <th>Proceso</th>
                         <th>Fecha de publicacion</th>
@@ -222,7 +220,16 @@
                                     <input type="text" name="inputName" class="form-control" placeholder="Titulo" required>
                                 </div>
                             </div>
-                            
+                            <div class="form-group row">
+                                <label for="inputOficine" class="col-sm-12 col-form-label">Oficina responsable</label>
+                                <div class="col-sm-12">
+                                    <select name="inputOficine" required class="form-control">
+                                        @foreach($oficines as $item)
+                                            <option value="{{$item->id}}">{{$item->name}}</option>
+                                        @endforeach
+                                    </select> 
+                                </div>
+                            </div>
                             <div class="form-group row">
                                 <label for="inputDatePublication" class="col-sm-6 col-form-label">Fecha de publicación</label>
                                 <label for="inputDatePostulation" class="col-sm-6 col-form-label">Fecha de postulación</label>

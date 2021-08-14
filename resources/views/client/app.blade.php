@@ -10,7 +10,7 @@
 
 </head>
 
-<body class="">
+<body class="transparent-header">
 
 	<!-- Wrapper -->
 	<div id="wrapper">

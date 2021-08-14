@@ -17,13 +17,14 @@
   <!-- Font Awesome -->
   <!-- Ekko Lightbox -->
   <link rel="stylesheet" href="{{asset('plugins/ekko-lightbox/ekko-lightbox.css')}}">
-
+  <meta name="csrf-token" content="{{ csrf_token() }}" />
 </head>
 <body class="hold-transition sidebar-mini">
+
     <div class="wrapper">
 
         @include('admin.layouts.header')
-
+        
         @include('admin.layouts.sidebar')
 
         @yield('content')

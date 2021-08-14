@@ -72,6 +72,7 @@
 
         <!-- /.content -->
     </div>
+    <!--FORMULARO DE REGISTRAR-->
     <form id="formJob" class="needs-validation" enctype="multipart/form-data" novalidate>
         @csrf
         <div class="modal fade" id="modalJob" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" aria-labelledby="modalNewJob" aria-hidden="true">
@@ -100,7 +101,6 @@
                                         @foreach($oficines as $item)
                                             <option value="{{$item->id}}">{{$item->name}}</option>
                                         @endforeach
-                                        
                                     </select> 
                                 </div>
                             </div>
@@ -116,25 +116,16 @@
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label for="inputModality" class="col-sm-4 col-form-label">Modalidad</label>
-                                <label for="inputState" class="col-sm-4 col-form-label">Estado</label>
-                                <label for="inputNumber" class="col-sm-4 col-form-label">Número de convocatoria</label>
-                                <div class="col-sm-4">
-                                    <select name="inputModality" class="form-control" required>
-                                        @foreach($modalitys as $item)
-                                            <option value="{{$item->id}}">{{$item->name}}</option>
-                                        @endforeach
-                                        
-                                    </select>      
-                                </div>   
-                                <div class="col-sm-4">
+                                <label for="inputState" class="col-sm-6 col-form-label">Estado</label>
+                                <label for="inputNumber" class="col-sm-6 col-form-label">Número de convocatoria</label>
+                                <div class="col-sm-6">
                                     <select name="inputState" class="form-control" required>
                                         @foreach($states as $item)
                                             <option value="{{$item->id}}">{{$item->name}}</option>
                                         @endforeach
                                     </select>      
                                 </div>                     
-                                <div class="col-sm-4">
+                                <div class="col-sm-6">
                                     <input type="number" name="inputNumber" class="form-control" placeholder="Número" required>
                                 </div>
                             </div>
@@ -199,6 +190,7 @@
             </div>
         </div>
     </form>
+    <!--FORMULARO DE EDITAR-->
     <form id="formEditJob" class="needs-validation" enctype="multipart/form-data" novalidate>
         @csrf
         <div class="modal fade" id="modalEditJob" tabindex="-1" role="dialog" aria-labelledby="modalNewJob" data-backdrop="static" data-keyboard="false" aria-hidden="true">
@@ -221,6 +213,12 @@
                                 </div>
                             </div>
                             
+                            <div class="media">
+                                <div class="media-body">
+                                    <h5 class="mb-0"></h5>
+                                </div>
+                                <img class="align-self-start" src="" alt="">
+                            </div>
                             <div class="form-group row">
                                 <label for="inputDatePublication" class="col-sm-6 col-form-label">Fecha de publicación</label>
                                 <label for="inputDatePostulation" class="col-sm-6 col-form-label">Fecha de postulación</label>
@@ -233,25 +231,16 @@
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label for="inputModality" class="col-sm-4 col-form-label">Modalidad</label>
-                                <label for="inputState" class="col-sm-4 col-form-label">Estado</label>
-                                <label for="inputNumber" class="col-sm-4 col-form-label">Número de convocatoria</label>
-                                <div class="col-sm-4">
-                                    <select name="inputModality" class="form-control" required>
-                                        @foreach($modalitys as $item)
-                                            <option value="{{$item->id}}">{{$item->name}}</option>
-                                        @endforeach
-                                        
-                                    </select>      
-                                </div>   
-                                <div class="col-sm-4">
+                                <label for="inputState" class="col-sm-6 col-form-label">Estado</label>
+                                <label for="inputNumber" class="col-sm-6 col-form-label">Número de convocatoria</label>
+                                <div class="col-sm-6">
                                     <select name="inputState" class="form-control" required>
                                         @foreach($states as $item)
                                             <option value="{{$item->id}}">{{$item->name}}</option>
                                         @endforeach
                                     </select>      
                                 </div>                     
-                                <div class="col-sm-4">
+                                <div class="col-sm-6">
                                     <input type="number" name="inputNumber" class="form-control" placeholder="Número" required>
                                 </div>
                             </div>
@@ -316,6 +305,65 @@
             </div>
         </div>
     </form>
+    <div class="modal fade" id="modalOficine" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" aria-labelledby="modalNewJob" aria-hidden="true">
+            
+            <div class="modal-dialog modal-dialog-scrollable modal-lg modal-dialog-centered" role="document">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalScrollableTitle">OFICINAS RESPONSABLES DE LA CONVOCATORIA</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="card">
+                        <div class="card-body">
+                            
+                            
+                            <div class="form-group row">
+                                <div class="container-fluid">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="card">
+                                            
+                                            <!-- /.card-header -->
+                                            <div class="card-body">
+                                                <table id="datable_oficine" class="table table-bordered table-striped">
+                                                <thead>
+                                                    <tr>
+                                                        
+                                                        <th>Nombre</th>
+                                                        <th>Accion</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+
+                                                </tbody>
+                                                <tfoot>
+                                                    <tr>
+                                                        <th>Nombre</th>
+                                                        <th>Accion</th>
+                                                    </tr>
+                                                </tfoot>
+                                                </table>
+                                            </div>
+                                            <!-- /.card-body -->
+                                            </div>
+                                            <!-- /.card -->
+                                        </div>
+                                
+                                    </div>
+                                    <!-- /.row -->
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    
+                </div>
+                </div>
+            </div>
+        </div>
 @endsection
 
 @section('after-scripts')
@@ -408,6 +456,16 @@
         vertical-align: middle;
     }
     #datable tr {
+    cursor: pointer !important;
+    }
+    #datable_oficine td, th{
+        text-align: center; 
+        vertical-align: middle;
+    }
+    #datable_oficine thead th {
+        vertical-align: middle;
+    }
+    #datable_oficine tr {
     cursor: pointer !important;
     }
     .btn-primary {

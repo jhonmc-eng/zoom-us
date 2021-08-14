@@ -12,7 +12,12 @@ $(document).ready(function() {
         },
         columns: [
             //{ "data": "id"},
-            { data: "number_jobs" },
+            {
+                data: "number_jobs",
+                render: function(data) {
+                    return pad(data, 3)
+                }
+            },
             {
                 data: "modality",
                 render: function(data) {
@@ -46,26 +51,10 @@ $(document).ready(function() {
             },
             { data: "date_publication" },
             { data: "date_postulation" },
-            /*{ 
-                data: "bases",
-                render: function (data) {
-                    return `<a target="_blank" href="${data}" type="button" class="btn btn-info">BASES</a>`
-                }
-            },
-            { 
-                data: "schedule",
-                render: function (data) {
-                    return `<a target="_blank" href="${data}" type="button" class="btn btn-info">ESQUEMA</a>`                }
-            },
-            { 
-                data: "profile",
-                render: function (data) {
-                    return `<a target="_blank" href="${data}" type="button" class="btn btn-info">PERFIL</a>`                }
-            },*/
             {
                 data: "state_delete",
                 render: function(data) {
-                    return data ? `INACTIVO` : `ACTIVO`
+                    return `<a target="_blank" href="#"" type="button" class="btn btn-primary"><i class="fas fa-user-tie"></i></a>`
                 }
             }
         ],
@@ -131,6 +120,10 @@ $(document).ready(function() {
     `
     $('#datable_wrapper .col-md-6:eq(0)').append(buttons)
 
+    function pad(str, max) {
+        str = str.toString();
+        return str.length < max ? pad("0" + str, max) : str;
+    }
     $('#formJob').on('submit', function(e) {
         e.preventDefault()
         e.stopPropagation()
@@ -152,18 +145,18 @@ $(document).ready(function() {
                 processData: false,
                 contentType: false,
                 success: function(data) {
-                    if(data.success){
+                    if (data.success) {
                         Swal.close()
                         $('#modalJob').modal('hide')
                         success(data.message)
                         form[0].reset()
                         form[0].classList.remove('was-validated')
                         table.ajax.reload();
-                    }else{
+                    } else {
                         Swal.close()
                         error(data.error)
                     }
-                    
+
                 },
                 error: function(e) {
                     Swal.close()
@@ -182,20 +175,20 @@ $(document).ready(function() {
         $('#formJob .txtarea_profile').summernote('reset');
         $('#modalJob').modal('show')
     });
-    $('#pruebita').on('change', function(e){
-        console.log($(this).val())
-    })
+
     $('#button-edit').on('click', function(e) {
         e.preventDefault()
         e.stopPropagation()
         let data = table.row({ selected: true }).data();
         if (data !== undefined) {
+            console.log(data)
             $('#formEditJob input[name="inputName"]').val(data.title)
             $('#formEditJob input[name="inputDatePublication"]').val(data.date_publication)
             $('#formEditJob input[name="inputDatePostulation"]').val(data.date_postulation)
             $('#formEditJob select[name="inputModality"]').val(data.modality_id)
             $('#formEditJob select[name="inputState"]').val(data.state_job_id)
             $('#formEditJob input[name="inputNumber"]').val(data.number_jobs)
+            $('#formEditJob select[name="inputOficine"]').val(data.oficine_cas.oficine_id)
             $('#formEditJob .txtarea_description').summernote("code", data.description);
             $('#formEditJob .txt_function').summernote("code", data.functions);
             $('#formEditJob .txtarea_profile').summernote("code", data.requirements);
@@ -276,16 +269,17 @@ $(document).ready(function() {
         }
     })
     $('#button-view').on('click', function(e) {
-            e.preventDefault()
-            e.stopPropagation()
-            let data = table.row({ selected: true }).data()
-            if (data !== undefined) {
-                $(location).attr('href', `/admin/jobs/view-job?job_id=${data.token}`)
-            } else {
-                errorSelect()
-            }
+        e.preventDefault()
+        e.stopPropagation()
+        let data = table.row({ selected: true }).data()
+        if (data !== undefined) {
+            $(location).attr('href', `/admin/jobs/view-job?job_id=${data.token}`)
+        } else {
+            error('Debe seleccionar un registro')
+        }
 
-        })
+    })
+
     function errorSelect() {
         $('#modalSuccess .modal-header').empty().append('Error')
         $('#modalSuccess .modal-body').empty().append('¡Debe seleccionar un registro!')
@@ -297,6 +291,7 @@ $(document).ready(function() {
         $('#modalSuccess .modal-body').empty().append(e.responseJSON.message)
         $('#modalSuccess').modal('show')
     }
+
     function showLoading() {
         Swal.fire({
             title: '¡Subiendo archivos!',

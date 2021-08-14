@@ -2,13 +2,6 @@
 
 @section('content')
 
-
-
-<!-- Content
-================================================== -->
-
-
-<!-- Container -->
 <div class="container">
 
 		<div class="row">

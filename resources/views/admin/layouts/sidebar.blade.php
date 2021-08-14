@@ -185,16 +185,31 @@
               </a>
             </li>
             <li class="nav-item">
-              <a href="#" class="nav-link">
-                <i class="nav-icon fas fa-bookmark"></i>
-                <p>
-                  Convocatorias
-                </p>
-              </a>
-            </li>
+                <a href="#" class="nav-link">
+                  <i class="nav-icon fas fa-briefcase"></i>
+                  <p>
+                    Convocatorias
+                    <i class="right fas fa-angle-left"></i>
+                  </p>
+                </a>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="/candidate/jobs" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>CAS</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="/candidate/practices" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Practicas</p>
+                    </a>
+                  </li>
+                </ul>
+              </li>
             
             <li class="nav-item">
-              <a href="#" class="nav-link">
+              <a href="/candidate/postulations" class="nav-link">
                 <i class="nav-icon fas fa-bookmark"></i>
                 <p>
                   Postulaciones
