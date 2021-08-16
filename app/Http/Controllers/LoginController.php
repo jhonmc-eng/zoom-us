@@ -25,7 +25,7 @@ class LoginController extends Controller
                         $request->session()->forget('candidate');
                         $request->session()->flush();
                         session(['admin' => $user]);
-                        return redirect('/admin/users');
+                        return redirect('/admin');
                     } else {
                         //$errors->password = 'La contraseña es invalida';
                         return response()->json([

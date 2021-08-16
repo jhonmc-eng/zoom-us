@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Http\Request;
 use App\Http\Traits\SysLog as TraitsSysLog;
 use App\Models\Job;
+use App\Models\JobOficine;
 use App\Models\Modality;
 use App\Models\StateJob;
 use Illuminate\Support\Facades\Crypt;
@@ -12,7 +13,7 @@ use App\Models\JobResult;
 use App\Models\Oficine;
 use App\Models\TypeResult;
 use Carbon\Carbon;
-use Illuminate\Contracts\Encryption\DecryptException;
+use Illuminate\Support\Facades\DB;
 
 class ConvocatoriaController extends Controller
 {
@@ -34,7 +35,6 @@ class ConvocatoriaController extends Controller
     }
     public function viewPractices(){
         try {
-            $modalitys = Modality::where('state_delete', 0)->get();
             $states = StateJob::where('state_delete', 0)->get();
             $oficines = Oficine::where('state_delete', 0)->get();
         } catch (\Exception $e) {
@@ -43,11 +43,86 @@ class ConvocatoriaController extends Controller
                 'error' => $e->getMessage()
             ],500);
         }
-        return view('admin.practices.practices')->with(compact('modalitys', 'states', 'oficines'));
+        return view('admin.practices.practices')->with(compact('states', 'oficines'));
+    }
+
+    public function viewJobsCandidate(){
+        try {
+            return view('admin.jobs.jobsCandidate');
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'error' => $e->getMessage()
+            ]);
+        }
+    }
+
+    public function viewPracticesCandidate(){
+        try {
+            return view('admin.practices.practicesCandidate');
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'error' => $e->getMessage()
+            ]);
+        }
+    }
+
+    public function listJobsCandidate(){
+        try {
+            $data = Job::with(['stateJob','oficineCas'])
+            ->leftJoin(
+                DB::raw('(SELECT * FROM `postulations` WHERE `candidate_id` = '.session('candidate')->id.' AND `state_delete` = 0) `postulation_candidate`'),
+                'postulation_candidate.job_id', 
+                'jobs.id')->whereNull('postulation_candidate.id')
+                ->where([
+                    ['jobs.state_delete', 0],
+                    ['jobs.date_publication', '<', Carbon::now()],
+                    ['jobs.modality_id', '<>', 2]
+                ])->select('jobs.*')->get()->each(function($item){
+                    $item->oficineCas->oficine = $item->oficine($item->oficineCas->oficine_id);
+                    $item->token = Crypt::encrypt($item->id);
+                });
+            return response()->json([
+                'success' => true,
+                'data' => $data
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'error' => $e->getMessage()
+            ]);
+        }
+    }
+    public function listPracticesCandidate(){
+        try {
+            $data = Job::with(['stateJob'])
+            ->leftJoin(
+                DB::raw('(SELECT * FROM `postulations` WHERE `candidate_id` = '.session('candidate')->id.' AND `state_delete` = 0) `postulation_candidate`'),
+                'postulation_candidate.job_id', 
+                'jobs.id')->whereNull('postulation_candidate.id')
+                ->where([
+                    ['jobs.state_delete', 0],
+                    ['jobs.date_publication', '<', Carbon::now()],
+                    ['jobs.modality_id', '=', 2]
+                ])->select('jobs.*')->get()->each(function($item){
+                    //$item->oficineCas->oficine = $item->oficine($item->oficineCas->oficine_id);
+                    $item->token = Crypt::encrypt($item->id);
+                });
+            return response()->json([
+                'success' => true,
+                'data' => $data
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'error' => $e->getMessage()
+            ]);
+        }
     }
     public function listJobs(){
         try {
-            $data = Job::with(['modality', 'stateJob'])
+            $data = Job::with(['modality', 'stateJob','oficineCas'])
             ->where('state_delete', 0)
             ->where('modality_id', '!=', 2)
             ->orderBy('id', 'DESC')
@@ -69,7 +144,7 @@ class ConvocatoriaController extends Controller
     }
     public function listPractices(){
         try {
-            $data = Job::with(['modality', 'stateJob'])
+            $data = Job::with(['modality', 'stateJob', 'oficinePractices'])
             ->where('state_delete', 0)
             ->where('modality_id', '=', 2)
             ->orderBy('id', 'DESC')
@@ -89,6 +164,45 @@ class ConvocatoriaController extends Controller
             ]);
         }
     }
+
+    public function listOficines(Request $request){
+        try {
+            $request->validate([
+                'id' => 'required'
+            ]);
+            $data = JobOficine::with(['name'])->where('job_id', $request->id)->where('state_delete', 0)->orderBy('id', 'DESC')->get();
+            $oficinas_restantes = DB::select('SELECT a.id, a.name FROM oficines a LEFT JOIN (SELECT * from job_oficines where state_delete = 0 and job_id = :job_id) b on a.id = b.oficine_id where b.id is null', ['job_id' => $request->id]);
+            return response()->json([
+                'success' => true,
+                'data' => $data,
+                'oficinas' => $oficinas_restantes
+            ]);
+        } catch (\Exception $e) {
+            return response([
+                'success' => false,
+                'message' => 'Ocurrio un error',
+                'error' => $e->getMessage()
+            ]);
+        }
+    }
+
+    public function listOficineCandidate(Request $request){
+        try {
+            $request->validate([
+                'job_id' => 'required'
+            ]);
+            $data = JobOficine::with(['name'])->where('job_id', Crypt::decrypt($request->job_id))->where('state_delete', 0)->orderBy('id', 'DESC')->get();
+            return response()->json([
+                'success' => true,
+                'data' => $data
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'error' => $e->getMessage()
+            ]);
+        }
+    }
     public function registerJob(Request $request){
         $request->validate([
             'inputName' => 'required',
@@ -102,7 +216,8 @@ class ConvocatoriaController extends Controller
             'inputProfileFile' => 'required|mimes:pdf|max:10485760',
             'inputDescription' => 'required',
             'inputFunction' => 'required',
-            'inputProfile' => 'required'
+            'inputProfile' => 'required',
+            'inputOficine' => 'required'
         ]);
         try {
             $year = Carbon::createFromFormat('Y-m-d', $request->inputDatePublication)->year;
@@ -139,6 +254,22 @@ class ConvocatoriaController extends Controller
                     $job->profile = $this->uploadArchive($request->file('inputProfileFile'), $job->id, 'profile');
                 }
                 $job->save();
+                if($request->inputModality == '2'){
+                    $array = json_decode($request->inputOficine);
+                    foreach($array as $item){
+                        $oficine_job = New JobOficine();
+                        $oficine_job->job_id = $job->id;
+                        $oficine_job->oficine_id = $item->id;
+                        $oficine_job->syslog = $this->syslog_admin(1, $request);
+                        $oficine_job->save();
+                    }
+                }else{
+                    $oficine = New JobOficine();
+                    $oficine->job_id = $job->id;
+                    $oficine->oficine_id = $request->inputOficine;
+                    $oficine->syslog = $this->syslog_admin(1, $request);
+                    $oficine->save();
+                }
                 return response()->json([
                     'success' => true,
                     'message' => 'Convocatoria creada exitosamente'
@@ -163,12 +294,13 @@ class ConvocatoriaController extends Controller
             'inputNumber' => 'required',
             'inputDatePublication' => 'required',
             'inputDatePostulation' => 'required',
-            'inputBaseFile' => 'nullable|mimes:pdf|max:10485760',
-            'inputScheduleFile' => 'nullable|mimes:pdf|max:10485760',
-            'inputProfileFile' => 'nullable|mimes:pdfmax:10485760',
+            'inputBaseFile' => 'exclude_if:inputBaseFile,undefined|nullable|mimes:pdf|max:10485760',
+            'inputScheduleFile' => 'exclude_if:inputScheduleFile,undefined|nullable|mimes:pdf|max:10485760',
+            'inputProfileFile' => 'exclude_if:inputProfileFile,undefined|nullable|mimes:pdf|max:10485760',
             'inputDescription' => 'required',
             'inputFunction' => 'required',
-            'inputProfile' => 'required'
+            'inputProfile' => 'required',
+            'inputOficine' => 'exclude_if:inputModality,2|required'
         ]);
         try {
             $job = Job::where('id', $id)->first();
@@ -196,6 +328,12 @@ class ConvocatoriaController extends Controller
             $job->requirements = $request->inputProfile;
             $job->syslog = $job->syslog . ' | ' . $this->syslog_admin(2, $request);
             $job->save();
+            if($request->inputModality != 2){
+                $oficine = JobOficine::where('job_id', $id)->first();
+                $oficine->oficine_id = $request->inputOficine;
+                $oficine->syslog = $this->syslog_admin(2, $request);
+                $oficine->save();
+            }
             return response()->json([
                 'success' => TRUE,
                 'message' => 'Convocatoria actualizada exitosamente'
@@ -210,6 +348,64 @@ class ConvocatoriaController extends Controller
 
     public function viewCandidates(Request $request, $id){
         
+    }
+    public function addOficine(Request $request){
+        try {
+            $request->validate([
+                'oficine_id' => 'required',
+                'job_id' => 'required'
+            ]);
+            if(JobOficine::where('job_id', $request->job_id)->where('oficine_id', $request->oficine_id)->where('state_delete', 0)->first()){
+                return response()->json([
+                    'success' => false,
+                    'error' => 'La oficina ya se encuentra agregada'
+                ]);
+            }else{
+                $job_oficine = New JobOficine();
+                $job_oficine->job_id = $request->job_id;
+                $job_oficine->oficine_id = $request->oficine_id;
+                $job_oficine->syslog = $this->syslog_admin(1, $request);
+                $job_oficine->save();
+                $data_new = JobOficine::with(['name'])->where('job_id', $request->job_id)->where('state_delete', 0)->orderBy('id', 'DESC')->get();
+                $oficinas_restantes = DB::select('SELECT a.id, a.name FROM oficines a LEFT JOIN (SELECT * from job_oficines where state_delete = 0 and job_id = :job_id) b on a.id = b.oficine_id where b.id is null', ['job_id' => $request->job_id]);
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Oficina agregada exitosamente',
+                    'new' => $data_new,
+                    'oficinas' => $oficinas_restantes
+                ]);
+            }
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'error' => $e->getMessage()
+            ]);
+        }
+    }
+    public function deleteOficine(Request $request){
+        try {
+            $request->validate([
+                'job_oficine_id' => 'required'
+            ]);
+            $job_oficine = JobOficine::where('id', $request->job_oficine_id)->first();
+            $job_oficine->state_delete = 1;
+            $job_oficine->syslog = $this->syslog_admin(3, $request);
+            $job_oficine->save();
+
+            $data_new = JobOficine::with(['name'])->where('job_id', $job_oficine->job_id)->where('state_delete', 0)->orderBy('id', 'DESC')->get();
+            $oficinas_restantes = DB::select('SELECT a.id, a.name FROM oficines a LEFT JOIN (SELECT * from job_oficines where state_delete = 0 and job_id = :job_id) b on a.id = b.oficine_id where b.id is null', ['job_id' => $job_oficine->job_id]);
+            return response()->json([
+                'success' => true,
+                'message' => 'Oficina removida exitosamente',
+                'new' => $data_new,
+                'oficinas' => $oficinas_restantes
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'error' => $e->getMessage()
+            ]);
+        }
     }
 
     public function viewJob(Request $request){
@@ -248,25 +444,57 @@ class ConvocatoriaController extends Controller
         }
         
     }
-
+    public function viewJobCandidate(Request $request){
+        try {
+            $id = Crypt::decrypt($request->job_id);
+            
+            $job = Job::with(['modality','stateJob','results'])->where('id', $id)->where('state_delete', 0)->first();
+            $type_select = TypeResult::where('state_delete', 0)->orderBy('id', 'ASC')->get();
+            $types = TypeResult::where('state_delete', 0)->orderBy('id', 'ASC')->get();
+            //dd($types);
+            foreach($types as $case){
+                if($case->multiple == 0){
+                    $data = JobResult::with(['typeResult'])->where([
+                        ['state_delete','=',0],
+                        ['job_id', '=', $id],
+                        ['type_result_id', '=', $case->id],
+                        ['date_publication', '<', Carbon::now()]
+                    ])->first();
+                    if($data){
+                        $case->file = $data;
+                    }
+                }else{
+                    $data = JobResult::with(['typeResult'])->where([
+                        ['state_delete','=',0],
+                        ['job_id', '=', $id],
+                        ['type_result_id', '=', $case->id],
+                        ['date_publication', '<', Carbon::now()]
+                    ])->get();
+                    if($data){
+                        $case->file = $data;
+                    }
+                }
+            }
+            //Postulation::where([['job_id', $id],['state_delete', 0],['candidate_id', session('candidate')->id]])->first() ? $flag = true : $flag = false;
+            return view('admin.jobs.viewJobCandidate')->with(compact('job', 'types','type_select'));
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'error' => $e->getMessage()
+            ]);
+        }
+    }
     public function uploadDocuments(Request $request, $job_id){
         
         $request->validate([
             'type_document' => 'required',
-            'file_document' => 'required|file|max:10485760',
+            'file_document' => 'required|mimes:pdf|max:10485760',
             'date_publication' => 'required|date',
         ]); 
 
         try {
             $id = Crypt::decrypt($job_id);
             if(!JobResult::where([['type_result_id','=', $request->type_document],['job_id', '=', $id]])->first()){
-                if($request->file('file_document')->getClientOriginalExtension() != 'pdf'){
-                    return response() ->json([
-                        'success' => false,
-                        'message' => 'Ocurrio un error',
-                        'error' => 'El archivo no es un PDF'
-                    ]);
-                }   
                 $job_result = New JobResult();
                 $job_result->type_result_id = $request->type_document;
                 $job_result->job_id = $id;
@@ -300,8 +528,8 @@ class ConvocatoriaController extends Controller
         
         $request->validate([
             'type_document' => 'required',
-            'file_document' => 'nullable|max:10485760',
-            'date_publication' => 'nullable|date'
+            'file_document' => 'exclude_if:file_document,undefined|nullable|mimes:pdf|max:10485760',
+            'date_publication' => 'required|date'
         ]); 
         
         try {
@@ -362,6 +590,7 @@ class ConvocatoriaController extends Controller
     }
     public function viewBase(Request $request){
         $url = Crypt::decrypt($request->job_base);
+        
         return response()->file(public_path().$url);
     }
 
@@ -377,6 +606,7 @@ class ConvocatoriaController extends Controller
 
     public function viewResult(Request $request){
         $url = Crypt::decrypt($request->result);
+        //dd($url);
         return response()->file(public_path().$url);
     }
 
@@ -402,5 +632,7 @@ class ConvocatoriaController extends Controller
         File::makeDirectory($candidates, $mode = 0777, true, true);
         File::makeDirectory($results, $mode = 0777, true);
     }
+    
+    
 
 }

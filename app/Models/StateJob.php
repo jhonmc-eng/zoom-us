@@ -20,4 +20,9 @@ class StateJob extends Model
         'state_delete',
         'syslog'
     ];
+    protected $hidden = [
+        'syslog',
+        'updated_at',
+        'created_at'
+    ];
 }

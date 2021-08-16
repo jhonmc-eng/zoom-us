@@ -67,11 +67,13 @@ Route::post('/login-verification-candidate', 'LoginController@loginCandidate');
 Route::get('/register', 'CandidateController@viewRegister');
 Route::get('/get-data-dni/{dni}', 'UserController@getApiDni');
 Route::post('/validate-register-candidate', 'CandidateController@registerCandidate');
+Route::get('/getDataUser', 'AdminController@getDataUser');
 
 Route::group(['prefix' => 'admin', 'middleware' => 'auth_admin', 'as' => 'admin.'], function(){
     /*LOGUEARSE DEL ADMIN */
     Route::get('/', 'AdminController@dashboard');
     Route::get('/logout','LoginController@logoutAdmin');
+    Route::get('/dashboard','AdminController@dashboard');
     /*MODULO DE USUARIOS*/
     Route::group(['prefix' => 'users', 'middleware' => 'admin'], function(){
         Route::get('/', 'UserController@view');
@@ -101,8 +103,10 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth_admin', 'as' => 'admin.
         Route::get('/list-practices', 'ConvocatoriaController@listPractices');
         Route::post('/register-practice', 'ConvocatoriaController@registerPractice');
         Route::post('/update-practice/{id}', 'ConvocatoriaController@editPractice');
-
-        Route::get('/view-job', 'ConvocatoriaController@viewJob');
+        Route::post('/add-oficine', 'ConvocatoriaController@addOficine');
+        Route::post('/delete-oficine', 'ConvocatoriaController@deleteOficine');
+        Route::get('/list-oficine', 'ConvocatoriaController@listOficines');
+        Route::get('/view-practice', 'ConvocatoriaController@viewJob');
         Route::get('/view-base', 'ConvocatoriaController@viewBase');
         Route::get('/view-schedule','ConvocatoriaController@viewSchedule');
         Route::get('/view-profile', 'ConvocatoriaController@viewProfile');
@@ -182,16 +186,31 @@ Route::group(['prefix' => 'candidate', 'middleware' => 'auth_candidate', 'as' =>
         Route::get('/view-document', 'ExperienciesController@viewDocument');
         Route::post('/delete-experiencie', 'ExperienciesController@deleteExperiencie');
     });
-    //Route::group)
 
-/*
-    Route::group(['prefix' => 'academic'], function(){
-
+    Route::group(['prefix' => 'jobs'], function(){
+        Route::get('/', 'ConvocatoriaController@viewJobsCandidate');
+        Route::get('/list-jobs', 'ConvocatoriaController@listJobsCandidate');
+        Route::get('/view-job', 'ConvocatoriaController@viewJobCandidate');
+        Route::post('/postulation-job', 'ConvocatoriaController@postulationJob');
+        Route::get('/view-schedule','ConvocatoriaController@viewSchedule');
+        Route::get('/view-profile', 'ConvocatoriaController@viewProfile');
+        Route::get('/view-result', 'ConvocatoriaController@viewResult');
+        Route::get('/view-base', 'ConvocatoriaController@viewBase');
+        Route::post('/postulate/{job_id}', 'PostulationController@registerPostulationCandidate');
     });
 
-    Route::group(['prefix' => 'qualification'], function(){
+    Route::group(['prefix' => 'practices'], function(){
+        Route::get('/', 'ConvocatoriaController@viewPracticesCandidate');
+        Route::get('/list-practices', 'ConvocatoriaController@listPracticesCandidate');
+        Route::get('/view-practice', 'ConvocatoriaController@viewJobCandidate');
+        Route::post('/postulation-practice', 'ConvocatoriaController@postulationPractice');
+        Route::get('/list-oficine', 'ConvocatoriaController@listOficineCandidate');
+    });
 
-    });*/
+    Route::group(['prefix' => 'postulations'], function(){
+        Route::get('/', 'PostulationController@viewPostulationCandidate');
+        Route::get('/get-data-postulations', 'PostulationController@getDataPostulationCandidate');
+    });
 });
 
 

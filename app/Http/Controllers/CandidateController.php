@@ -21,7 +21,6 @@ class CandidateController extends Controller
     //
     use TraitsSysLog;
     public function registerCandidate(Request $request){
-        //dd($request);
         try {
             $request->validate([
                 'type_document' => 'required',
@@ -51,7 +50,7 @@ class CandidateController extends Controller
                 }else{
                     if($request->password == $request->password_confirmation){
                         $candidate = New Candidate();
-                        $candidate->document = $request->type_document;
+                        $candidate->document = $request->document;
                         $candidate->type_document = $request->type_document;
                         $candidate->names = $request->name;
                         $candidate->lastname_patern = $request->lastname_patern;
@@ -60,6 +59,7 @@ class CandidateController extends Controller
                         $candidate->password = bcrypt($request->password);
                         $candidate->syslog = $this->syslog_candidate(1, $request);
                         $candidate->save();
+                        $this->createDirectory($candidate->id);
                         return response()->json([
                             'success' => true,
                             'message' => 'Usuario Creado Exitosamente'
@@ -282,5 +282,20 @@ class CandidateController extends Controller
     public function viewDocument(Request $request){
         $url = Crypt::decrypt($request->id);
         return response()->file(public_path().$url);
+    }
+    
+    public function createDirectory($id){
+        $path = public_path().'/files/users/user_'.$id;
+        $academic = public_path().'/files/users/job_'.$id.'/academic';
+        $experiencie = public_path().'/files/users/job_'.$id.'/experiencie';
+        $others = public_path().'/files/users/job_'.$id.'/others';
+        $profile = public_path().'/files/users/job_'.$id.'/profile';
+        $qualifications = public_path().'/files/users/job_'.$id.'/qualifications';
+        File::makeDirectory($path, $mode = 0777, true, true);
+        File::makeDirectory($academic, $mode = 0777, true, true);
+        File::makeDirectory($experiencie, $mode = 0777, true);
+        File::makeDirectory($others, $mode = 0777, true, true);
+        File::makeDirectory($profile, $mode = 0777, true, true);
+        File::makeDirectory($qualifications, $mode = 0777, true);
     }
 }

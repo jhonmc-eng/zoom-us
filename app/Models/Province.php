@@ -16,4 +16,9 @@ class Province extends Model
         'name',
         'departament_id'
     ];
+    protected $hidden = [
+        'syslog',
+        'updated_at',
+        'created_at'
+    ];
 }

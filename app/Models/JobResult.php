@@ -23,9 +23,10 @@ class JobResult extends Model
     ];
     
     protected $hidden = [
-        'syslog'
+        'syslog',
+        'updated_at',
+        'created_at'
     ];
-
     public function typeResult(){
         return $this->hasOne('App\Models\TypeResult', 'id', 'type_result_id');
     }

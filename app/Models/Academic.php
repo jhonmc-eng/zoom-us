@@ -29,6 +29,12 @@ class Academic extends Model
         'syslog'
     ];
 
+    protected $hidden = [
+        'syslog',
+        'updated_at',
+        'created_at'
+    ];
+
     public function education_level(){
         return $this->hasOne('App\Models\EducationLevel', 'id', 'education_level_id');
     }

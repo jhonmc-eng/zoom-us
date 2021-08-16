@@ -15,4 +15,10 @@ class TypePension extends Model
         'pension_id',
         'state_delete'
     ];
+
+    protected $hidden = [
+        'syslog',
+        'updated_at',
+        'created_at'
+    ];
 }

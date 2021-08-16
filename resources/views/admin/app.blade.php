@@ -17,13 +17,15 @@
   <!-- Font Awesome -->
   <!-- Ekko Lightbox -->
   <link rel="stylesheet" href="{{asset('plugins/ekko-lightbox/ekko-lightbox.css')}}">
-
+  <meta name="csrf-token" content="{{ csrf_token() }}" />
 </head>
-<body class="hold-transition sidebar-mini">
+
+<body class="sidebar-mini control-sidebar-slide-open layout-footer-fixed layout-navbar-fixed layout-fixed">
+
     <div class="wrapper">
 
         @include('admin.layouts.header')
-
+        
         @include('admin.layouts.sidebar')
 
         @yield('content')
@@ -41,26 +43,11 @@
     <!-- Filterizr-->
     <script src="{{asset('plugins/filterizr/jquery.filterizr.min.js')}}"></script>
     <script src="{{asset('plugins/select2/js/select2.full.min.js')}}"></script>
-    
+    <script src="{{asset('js/admin/pages/dashboard.js')}}"></script>
     <script src="{{asset('plugins/bs-custom-file-input/bs-custom-file-input.min.js')}}"></script>
     <!-- AdminLTE for demo purposes -->
     <script src="{{asset('js/admin/demo.js')}}"></script>
-    <script>
-    $(function () {
-        $(document).on('click', '[data-toggle="lightbox"]', function(event) {
-        event.preventDefault();
-        $(this).ekkoLightbox({
-            alwaysShowClose: true
-        });
-        });
-
-        $('.filter-container').filterizr({gutterPixels: 3});
-        $('.btn[data-filter]').on('click', function() {
-        $('.btn[data-filter]').removeClass('active');
-        $(this).addClass('active');
-        });
-    })
-    </script>
+    
     @yield('after-scripts')
 </body>
 

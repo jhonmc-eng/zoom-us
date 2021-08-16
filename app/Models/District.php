@@ -16,4 +16,10 @@ class District extends Model
         'province_id'
     ];
 
+    protected $hidden = [
+        'syslog',
+        'updated_at',
+        'created_at'
+    ];
+
 }

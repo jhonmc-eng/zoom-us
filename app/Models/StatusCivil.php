@@ -15,4 +15,9 @@ class StatusCivil extends Model
         'name',
         'state_delete'
     ];
+    protected $hidden = [
+        'syslog',
+        'updated_at',
+        'created_at'
+    ];
 }

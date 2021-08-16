@@ -13,4 +13,9 @@ class Departament extends Model
         'id',
         'name'
     ];
+    protected $hidden = [
+        'syslog',
+        'updated_at',
+        'created_at'
+    ];
 }
