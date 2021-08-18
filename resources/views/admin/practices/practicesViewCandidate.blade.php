@@ -198,17 +198,29 @@
                             <div class="card">
                                 <div class="card-body">
                                     <div class="form-group row">
-                                        <span class="badge badge-info col-sm-2 badge-required"><u>FORMATO Nº 01 :</u></span>
-                                        <div class="col-sm-10">
-                                            <label class="col-form-label"><u>FICHA DE RESUMEN DE FICHA CURRICULAR</u></label>
+                                        <div class="col-sm-12">
+                                            <label class="col-form-label d-flex justify-content-center title-modal"><u>FORMATOS DE POSTULACION</u></label>
                                         </div>
                                     </div>
                                     <div class="form-group row">
+                                        <span class="badge badge-info col-sm-2 badge-required"><u>FORMATO Nº 01 :</u></span>
                                         <div class="col-sm-10">
-                                            <input type="text" class="form-control" id="chargue_postulation" placeholder="Ingrese el cargo a postular">
+                                            <label class="col-form-label"><u>FICHA DE INSCRIPCION A MODALIDAD FORMATIVA DE SERVICIO.</u></label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-sm-12">
+                                            <p class="col-form-label">Seleccione la oficina a la cual desea postular</p>
+                                        </div>
+                                        <div class="col-sm-10">
+                                            <select name="chargue_postulation" class="form-control" id="chargue_postulation">
+                                            @foreach($oficines as $item)
+                                                <option value="{{$item->name->id}}">{{$item->name->name}}</option>
+                                            @endforeach
+                                            </select>
                                         </div>
                                         <div class="col-sm-2">
-                                            <button type="button" class="btn btn-danger form-control">Generar</button>
+                                            <button type="button" class="btn btn-danger form-control" id="generate-format">Generar</button>
                                         </div>
                                     </div>
                                     <div class="form-group row">
@@ -231,6 +243,23 @@
                                     <div class="form-group row">
                                         <div class="col-sm-12">
                                             <p class="col-form-label">Llene las declaraciones juradas respectivas con su firma y huella. <span><a  href="#" class="text-primary text-decoration-none" style="color: #2991A2 !important;font-weight: 600;">Descargar</a></span></p>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-sm-12">
+                                            <label class="col-form-label d-flex justify-content-center title-modal"><u>REQUISITOS PARA POSTULAR</u></label>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group row">
+                                        <span class="badge badge-info col-sm-2 badge-required"><u>Certificado :</u></span>
+                                        <div class="col-sm-10">
+                                            <label class="col-form-label"><u>CERTIFICADO DE EGRESADO Ó CONSTANCIA DE ESTUDIOS</u></label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-sm-12">
+                                            <p class="col-form-label">Adjuntar Certificado de Egresado (Profesionales) ó Constancia de Estudios (Pre-Profesionales).</p>
                                         </div>
                                     </div>
                                     <div class="form-group row">
@@ -281,6 +310,18 @@
                                         <p class="mb-0">El tamaño máximo para los formatos requeridos es de 10MB (.pdf)</p>
                                     </div>
                                     <div class="form-group row">
+                                        <div class="col-sm-12">
+                                            <label class="col-form-label">Seleccione la oficina a la cual desea postular</label>
+                                        </div>
+                                        <div class="col-sm-12">
+                                            <select name="oficine_postulation" class="form-control" id="oficine_postulation" required>
+                                            @foreach($oficines as $item)
+                                                <option value="{{$item->name->id}}">{{$item->name->name}}</option>
+                                            @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
                                         <label for="file_format_1" class="col-sm-12 col-form-label">Formato N° 01:</label>
                                         <div class="col-sm-12">
                                             <div class="custom-file">
@@ -308,6 +349,15 @@
                                         </div>  
                                     </div>
                                     <div class="form-group row">
+                                        <label for="file_certificate" class="col-sm-12 col-form-label">Certificado de Egresado o Constancia de Estudios:</label>
+                                        <div class="col-sm-12">
+                                            <div class="custom-file">
+                                                <input type="file" name="file_certificate" accept="application/pdf" class="form-control custom-file-input validation-pdf" required>
+                                                <label class="custom-file-label" for="file_certificate">Escoge un archivo</label>
+                                            </div>
+                                        </div>  
+                                    </div>
+                                    <div class="form-group row">
                                         <label for="file_rnscc" class="col-sm-12 col-form-label">RNSCC:</label>
                                         <div class="col-sm-12">
                                             <div class="custom-file">
@@ -329,6 +379,102 @@
                 </div>
             </div>
         </form>
+
+        <div class="modal fade" id="information" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" data-backdrop="static" data-keyboard="false" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered modal-lg modal-costumable modal-dialog-scrollable" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalScrollableTitle">COMPLETAR LA SIGUIENTE INFORMACIÓN</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                            </button>
+                    </div>
+                    <div class="modal-body">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="form-group row">
+                                        <div class="col-sm-9">
+                                            <p class="col-form-label">1. Cuento con Antecedentes Policiales.(*)</p>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <input type="checkbox" name="my-checkbox" checked data-bootstrap-switch data-off-color="danger" data-on-color="success" data-on-text="SI" data-off-text="NO">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-sm-9">
+                                            <p class="col-form-label">2. Cuento con Antecedentes Penales.(*)</p>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <input type="checkbox" name="my-checkbox" checked data-bootstrap-switch data-off-color="danger" data-on-color="success" data-on-text="SI" data-off-text="NO">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-sm-9">
+                                            <p class="col-form-label">3. Cuento con Antecedentes Judiciales.(*)</p>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <input type="checkbox" name="my-checkbox" checked data-bootstrap-switch data-off-color="danger" data-on-color="success" data-on-text="SI" data-off-text="NO">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-sm-9">
+                                            <p class="col-form-label">4. Cuento con sentencia condenatoria consentida y/o ejecutoriada por delito doloso.(*)</p>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <input type="checkbox" name="my-checkbox" checked data-bootstrap-switch data-off-color="danger" data-on-color="success" data-on-text="SI" data-off-text="NO">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-sm-9">
+                                            <p class="col-form-label">5. Me encuentro inscrito en el registro Nacional de Sanciones contra Servidores Civiles.(*)</p>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <input type="checkbox" name="my-checkbox" checked data-bootstrap-switch data-off-color="danger" data-on-color="success" data-on-text="SI" data-off-text="NO">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-sm-9">
+                                            <p class="col-form-label">6. Me encuentro inscrito en el Registro de Deudores Alimentarios Morosos REDAM.(*)</p>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <input type="checkbox" name="my-checkbox" checked data-bootstrap-switch data-off-color="danger" data-on-color="success" data-on-text="SI" data-off-text="NO">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-sm-9">
+                                            <p class="col-form-label">7. Tengo familiares directos de cuarto grado de consenguinidad y segundo de afinidad efectuando labores en la actualidad en el Gobierno Regional de Tacna.(*)</p>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <input type="checkbox" name="my-checkbox" checked data-bootstrap-switch data-off-color="danger" data-on-color="success" data-on-text="SI" data-off-text="NO">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-sm-9">
+                                            <p class="col-form-label">8. Tengo vinculo laboral, contractual, de servicios o de cualquier índole con alguna entidad del Sector Público.(*)</p>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <input type="checkbox" name="my-checkbox" checked data-bootstrap-switch data-off-color="danger" data-on-color="success" data-on-text="SI" data-off-text="NO">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-sm-9">
+                                            <p class="col-form-label">9. No haber alcanzado el tiempo máximo establecido por la ley para las prácticas Pre Profesionales (02 años) ó prácticas Profesionales (01 año).(*)</p>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <input type="checkbox" name="my-checkbox" checked data-bootstrap-switch data-off-color="danger" data-on-color="success" data-on-text="SI" data-off-text="NO">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                        <input type="submit" class="btn btn-success" value="Generar">
+                    </div>
+                </div>
+            </div>
+        </div>
     @endif
     
 @endsection
@@ -338,8 +484,9 @@
 <link rel="stylesheet" href="{{asset('plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css')}}">
 <script src="{{asset('plugins/bs-custom-file-input/bs-custom-file-input.min.js')}}"></script>
 <script src="{{asset('plugins/toastr/toastr.min.js')}}"></script>
+<script src="{{asset('plugins/bootstrap-switch/js/bootstrap-switch.min.js')}}"></script>
 @if($job->date_postulation == \Carbon\Carbon::now()->format('Y-m-d') && !App\Models\Postulation::where([['state_delete', 0],['candidate_id', session('candidate')->id],['job_id', $job->id]])->first())
-    <script src="{{asset('js/admin/convoc/convoc-postulante.js')}}"></script>
+    <script src="{{asset('js/admin/practices/practiceCandidatePostulate.js')}}"></script>
 @endif
 <link rel="stylesheet" href="{{asset('plugins/toastr/toastr.min.css')}}">
 <!-- Page specific script -->
@@ -361,9 +508,10 @@
         form.classList.add('was-validated')
       }, false)
     })
-
+    $("input[data-bootstrap-switch]").each(function() {
+        $(this).bootstrapSwitch('state', $(this).prop('checked'));
+    })
   })
-  
 </script>
 <style>
     #datable thead th {
@@ -393,6 +541,9 @@
     }
     #next-modal, #cancel{
         animation-iteration-count:infinite !important;
+    }
+    .title-modal{
+        font-size: 25px !important;
     }
     @keyframes button{
         0%{

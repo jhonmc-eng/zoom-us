@@ -95,17 +95,17 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="type_academic" class="col-sm-6 col-form-label">Tipo de Estudios</label>
-                            <label for="education_level" class="col-sm-6 col-form-label">Nivel de Estudios</label>
                             <div class="col-sm-6">
-                                <select name="type_academic" class="form-control" id="type_academic" required>
+                                <label for="type_academic" class="col-sm-12 col-form-label">Tipo de Estudios</label>
+                                <select name="type_academic" class="form-control col-sm-12" id="type_academic" required>
                                 @foreach($typeAcademic as $item)
                                     <option value="{{$item->id}}">{{$item->name}}</option>
                                 @endforeach
                                 </select>
                             </div>
                             <div class="col-sm-6">
-                                <select name="education_level" class="form-control" id="education_level" required>
+                                <label for="education_level" class="col-sm-12 col-form-label">Nivel de Estudios</label>
+                                <select name="education_level" class="form-control col-sm-12" id="education_level" required>
                                 @foreach($educationLevel as $item)
                                     <option value="{{$item->id}}">{{$item->name}}</option>
                                 @endforeach
@@ -119,43 +119,45 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="" class="col-sm-4 col-form-label">Colegiatura</label>
-                            <label for="tuition_number" class="col-sm-4 col-form-label">N° de Colegiatura</label>
-                            <label for="inputProfileFile" class="col-sm-4 col-form-label">Adjuntar Archivo</label>
-                            
+
                             <div class="col-sm-4">
-                                <div class="form-group row">
-                                    <div class="form-check col-md-6 radio-css">
+                                <label for="" class="col-sm-12 col-form-label">Colegiatura</label>
+                                <div class="col-sm-12">
+                                    <div class="form-check col-sm-6 d-inline radio-css">
                                         <input class="form-check-input" type="radio" name="tuition_state" id="tuition_state_true" value="true" checked>
                                         <label class="form-check-label margin-porcen" for="tuition_state_true">SI</label>
                                     </div>
-                                    <div class="form-check col-md-6 radio-css">
+                                    <div class="form-check col-sm-6 d-inline radio-css">
                                         <input class="form-check-input" type="radio" name="tuition_state" id="tuition_state_false" value="false">
                                         <label class="form-check-label margin-porcen" for="tuition_state_false">NO</label>
                                     </div>
                                 </div>
-                                
-                            </div>    
+                            </div>
                             <div class="col-sm-4">
-                                <input type="text" name="tuition_number" class="form-control" id="tuition_number" placeholder="Ingrese nombre de la carrera" required>
-                            </div>                     
+                                <label for="tuition_number" class="col-sm-12 col-form-label">N° de Colegiatura</label>
+                                <input type="text" name="tuition_number" class="form-control col-sm-12" id="tuition_number" placeholder="Ingrese nombre de la carrera" required>
+
+                            </div>
                             <div class="col-sm-4">
-                                <div class="custom-file">
+                                <label for="inputProfileFile" class="col-sm-12 col-form-label">Adjuntar Archivo</label>
+                                <div class="custom-file col-sm-12">
                                     <input type="file" name="tuition_file" accept="application/pdf" id="tuition_file" class="form-control custom-file-input validation-pdf" required>
                                     <label class="custom-file-label" for="tuition_file">Escoge un archivo</label>
                                 </div>
                             </div>
+                            
                         </div>
                         <div class="form-group row">
-                            <label for="date_start" class="col-sm-6 col-form-label">Fecha de inicio</label>
-                            <label for="date_end" class="col-sm-6 col-form-label">Fecha de fin</label>
-                              
                             <div class="col-sm-6">
+                                <label for="date_start" class="col-form-label">Fecha de inicio</label>
                                 <input type="date" name="date_start" class="form-control" required>
-                            </div>                     
+                            </div>
                             <div class="col-sm-6">
+                                <label for="date_end" class="col-form-label">Fecha de fin</label>
                                 <input type="date" name="date_end" class="form-control" required>
                             </div>
+                            
+                        
                         </div>
                         <div class="form-group row">
                             <label for="certificate" class="col-sm-12 col-form-label">Adjuntar certificado</label>
@@ -180,6 +182,8 @@
         </div>
         </form>
     </div>
+
+
     <div class="modal fade" id="modalEditAcademic" tabindex="-1" role="dialog" aria-labelledby="modalNewJob" data-backdrop="static" data-keyboard="false" aria-hidden="true">
         <form id="formEditAcademic" class="needs-validation" enctype="multipart/form-data" novalidate>
         @csrf
@@ -207,17 +211,17 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="type_academic" class="col-sm-6 col-form-label">Tipo de Estudios</label>
-                            <label for="education_level" class="col-sm-6 col-form-label">Nivel de Estudios</label>
                             <div class="col-sm-6">
-                                <select name="type_academic" class="form-control" required>
+                                <label for="type_academic" class="col-sm-12 col-form-label">Tipo de Estudios</label>
+                                <select name="type_academic" class="col-sm-12 form-control" required>
                                 @foreach($typeAcademic as $item)
                                     <option value="{{$item->id}}">{{$item->name}}</option>
                                 @endforeach
                                 </select>
                             </div>
                             <div class="col-sm-6">
-                                <select name="education_level" class="form-control" required>
+                                <label for="education_level" class="col-sm-12 col-form-label">Nivel de Estudios</label>
+                                <select name="education_level" class="col-sm-12 form-control" required>
                                 @foreach($educationLevel as $item)
                                     <option value="{{$item->id}}">{{$item->name}}</option>
                                 @endforeach
@@ -231,33 +235,32 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="" class="col-sm-4 col-form-label">Colegiatura</label>
-                            <label for="tuition_number" class="col-sm-4 col-form-label">N° de Colegiatura</label>
-                            <label for="inputProfileFile" class="col-sm-4 col-form-label">
-                                Adjuntar Archivo
-                                <div id="button-file" class="d-inline">
-                                    <a type="button" id="file_license_fa_path" class="btn btn-danger view-file"><i class="fas fa-eye-slash"></i></a>                                               
-                                    <br>
-                                </div>
-                            </label>
-                            
                             <div class="col-sm-4">
-                                <div class="form-group row">
-                                    <div class="form-check col-md-6 radio-css">
-                                        <input class="form-check-input" type="radio" name="tuition_state" id="tuition_state_edit_true" value="true" checked>
-                                        <label class="form-check-label margin-porcen" for="tuition_state_edit_true">SI</label>
+                                <label class="col-form-label">Colegiatura</label>
+                                    <div class="form-group">
+                                        <div class="form-check col-md-6 radio-css">
+                                            <input class="form-check-input" type="radio" name="tuition_state" id="tuition_state_edit_true" value="true" checked>
+                                            <label class="form-check-label margin-porcen" for="tuition_state_edit_true">SI</label>
+                                        </div>
+                                        <div class="form-check col-md-6 radio-css">
+                                            <input class="form-check-input" type="radio" name="tuition_state" id="tuition_state_edit_false" value="false">
+                                            <label class="form-check-label margin-porcen" for="tuition_state_edit_false">NO</label>
+                                        </div>
                                     </div>
-                                    <div class="form-check col-md-6 radio-css">
-                                        <input class="form-check-input" type="radio" name="tuition_state" id="tuition_state_edit_false" value="false">
-                                        <label class="form-check-label margin-porcen" for="tuition_state_edit_false">NO</label>
-                                    </div>
-                                </div>
-                                
-                            </div>    
+                            </div>
                             <div class="col-sm-4">
+                                <label for="tuition_number" class="col-form-label">N° de Colegiatura</label>
                                 <input type="text" name="tuition_number" class="form-control" placeholder="Ingrese nombre de la carrera" required>
-                            </div>                     
+
+                            </div>
                             <div class="col-sm-4">
+                                <label for="inputProfileFile" class="col-form-label">
+                                    Adjuntar Archivo
+                                    <div id="button-file" class="d-inline">
+                                        <a type="button" id="file_license_fa_path" class="btn btn-danger view-file"><i class="fas fa-eye-slash"></i></a>                                               
+                                        <br>
+                                    </div>
+                                </label>
                                 <div class="custom-file">
                                     <input type="file" name="tuition_file" accept="application/pdf" class="form-control custom-file-input validation-pdf">
                                     <label class="custom-file-label" for="tuition_file">Escoge un archivo</label>
@@ -265,15 +268,15 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="date_start" class="col-sm-6 col-form-label">Fecha de inicio</label>
-                            <label for="date_end" class="col-sm-6 col-form-label">Fecha de fin</label>
-                              
                             <div class="col-sm-6">
+                                <label for="date_start" class="col-form-label">Fecha de inicio</label>
                                 <input type="date" name="date_start" class="form-control" required>
-                            </div>                     
+                            </div>
                             <div class="col-sm-6">
+                                <label for="date_end" class="col-form-label">Fecha de fin</label>
                                 <input type="date" name="date_end" class="form-control" required>
                             </div>
+                            
                         </div>
                         <div class="form-group row">
                             <label for="certificate" class="col-sm-12 col-form-label">

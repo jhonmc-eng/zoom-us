@@ -12,8 +12,8 @@
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
-                <li class="breadcrumb-item"><a href="/">Inicio</a></li>
-                <li class="breadcrumb-item active">Otros documentos</li>
+                <li class="breadcrumb-item"><a href="/candidate/profile">Inicio</a></li>
+                <li class="breadcrumb-item active">Experiencia Laboral</li>
                 </ol>
             </div>
             </div>

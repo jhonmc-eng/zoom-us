@@ -40,7 +40,7 @@
                                         @case('CANCELADA')
                                             <span class="badge badge-info">{{$job->stateJob->name}}</span>
                                             @break
-                                        @case('EN PROCESO')
+                                        @case('PROCESO')
                                             <span class="badge badge-primary">{{$job->stateJob->name}}</span>
                                             @break
                                         @case('CERRADA')
@@ -198,6 +198,11 @@
                             <div class="card">
                                 <div class="card-body">
                                     <div class="form-group row">
+                                        <div class="col-sm-12">
+                                            <label class="col-form-label display-1 d-flex justify-content-center title-modal"><u>FORMATOS DE POSTULACION</u></label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
                                         <span class="badge badge-info col-sm-2 badge-required"><u>FORMATO Nº 01 :</u></span>
                                         <div class="col-sm-10">
                                             <label class="col-form-label"><u>FICHA DE RESUMEN DE FICHA CURRICULAR</u></label>
@@ -231,6 +236,11 @@
                                     <div class="form-group row">
                                         <div class="col-sm-12">
                                             <p class="col-form-label">Llene las declaraciones juradas respectivas con su firma y huella. <span><a  href="#" class="text-primary text-decoration-none" style="color: #2991A2 !important;font-weight: 600;">Descargar</a></span></p>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-sm-12">
+                                            <label class="col-form-label d-flex justify-content-center title-modal"><u>REQUISITOS PARA POSTULAR</u></label>
                                         </div>
                                     </div>
                                     <div class="form-group row">
@@ -402,7 +412,9 @@
             transform:scale(1);
         }
     }
-
+    .title-modal{
+        font-size: 25px !important;
+    }
     /*#next-modal, #cancel{
         transform:scale(1.1);
     }*/

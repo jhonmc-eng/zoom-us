@@ -94,8 +94,7 @@ $(document).ready(function() {
                 }
             }
         },
-        order: [
-        ],
+        order: [],
         bFilter: true,
         order: []
 
@@ -165,7 +164,7 @@ $(document).ready(function() {
         bFilter: true,
 
     })
-    
+
     $("#datable_wrapper").on('click', '.btn-oficine-state', function() {
 
         showLoading('Agregando registro');

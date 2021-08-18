@@ -29,13 +29,13 @@ $(document).ready(function() {
                     if (data.success) {
                         Swal.close()
                         form[0].classList.remove('was-validated')
-                        data.data.file_dni_path != '' ? $('#file_dni_path').removeClass('btn-danger').addClass('btn-success').prop('href', `/candidate/profile/view-document?id=${data.data.file_dni_path}`).empty().append('<i class="fas fa-eye"></i>').prop('target', '_blank')  : $('#file_dni_path').removeClass('btn-success').addClass('btn-danger').removeAttr("href").empty().append('<i class="fas fa-eye-slash"></i>').removeAttr("target");
+                        data.data.file_dni_path != '' ? $('#file_dni_path').removeClass('btn-danger').addClass('btn-success').prop('href', `/candidate/profile/view-document?id=${data.data.file_dni_path}`).empty().append('<i class="fas fa-eye"></i>').prop('target', '_blank') : $('#file_dni_path').removeClass('btn-success').addClass('btn-danger').removeAttr("href").empty().append('<i class="fas fa-eye-slash"></i>').removeAttr("target");
                         data.data.discapacity_file_path != '' ? $('#file_discapacity_path').removeClass('btn-danger').addClass('btn-success').prop('href', `/candidate/profile/view-document?id=${data.data.discapacity_file_path}`).empty().append('<i class="fas fa-eye"></i>').prop('target', '_blank') : $('#file_discapacity_path').removeClass('btn-success').addClass('btn-danger').removeAttr("href").empty().append('<i class="fas fa-eye-slash"></i>').removeAttr("target")
                         data.data.license_driver_path != '' ? $('#file_license_driver_path').removeClass('btn-danger').addClass('btn-success').prop('href', `/candidate/profile/view-document?id=${data.data.license_driver_path}`).empty().append('<i class="fas fa-eye"></i>').prop('target', '_blank') : $('#file_license_driver_path').removeClass('btn-success').addClass('btn-danger').removeAttr("href").empty().append('<i class="fas fa-eye-slash"></i>').removeAttr("target")
                         data.data.license_path != '' ? $('#file_license_fa_path').removeClass('btn-danger').addClass('btn-success').prop('href', `/candidate/profile/view-document?id=${data.data.license_path}`).empty().append('<i class="fas fa-eye"></i>').prop('target', '_blank') : $('#file_license_fa_path').removeClass('btn-success').addClass('btn-danger').removeAttr("href").empty().append('<i class="fas fa-eye-slash"></i>').removeAttr("target")
                         data.data.photo_perfil_path != '' ? $('#file_perfil_path').removeClass('btn-danger').addClass('btn-success').prop('href', `/candidate/profile/view-document?id=${data.data.photo_perfil_path}`).empty().append('<i class="fas fa-eye"></i>').prop('target', '_blank') : $('#file_perfil_path').removeClass('btn-success').addClass('btn-danger').removeAttr("href").empty().append('<i class="fas fa-eye-slash"></i>').removeAttr("target")
 
-                       success(data.message)
+                        success(data.message)
                     } else {
                         error(data.error)
                     }
@@ -196,6 +196,7 @@ $(document).ready(function() {
             })
         }
     })
+
     function showLoading() {
         Swal.fire({
             title: '¡Subiendo archivos!',
@@ -222,7 +223,7 @@ $(document).ready(function() {
             icon: 'success',
             title: 'Exito',
             text: `¡${message}!`,
-            confirmButtonColor: "#D40E1E"
+            confirmButtonColor: "#28a745"
         })
     }
 })

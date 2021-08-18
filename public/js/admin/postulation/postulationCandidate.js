@@ -77,7 +77,7 @@ $(document).ready(function() {
                 data: "job",
                 render: function(data) {
                     if (data.modality_id == 2) {
-                        return `<a target="_blank" href="#" type="button" class="btn btn-primary"><i class="fas fa-eye"></i></a>`
+                        return `<a target="_blank" href="/candidate/practices/view-practice?practice_id=${data.token}" type="button" class="btn btn-primary"><i class="fas fa-eye"></i></a>`
                     } else {
                         return `<a target="_blank" href="/candidate/jobs/view-job?job_id=${data.token}" type="button" class="btn btn-primary"><i class="fas fa-eye"></i></a>`
                     }

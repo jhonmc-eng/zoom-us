@@ -233,7 +233,7 @@ class CandidateController extends Controller
                 'message' => 'Datos Actualizados Exitosamente',
                 'data' => $candidate
             ]);
-        
+            
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
@@ -286,11 +286,11 @@ class CandidateController extends Controller
     
     public function createDirectory($id){
         $path = public_path().'/files/users/user_'.$id;
-        $academic = public_path().'/files/users/job_'.$id.'/academic';
-        $experiencie = public_path().'/files/users/job_'.$id.'/experiencie';
-        $others = public_path().'/files/users/job_'.$id.'/others';
-        $profile = public_path().'/files/users/job_'.$id.'/profile';
-        $qualifications = public_path().'/files/users/job_'.$id.'/qualifications';
+        $academic = public_path().'/files/users/user_'.$id.'/academic';
+        $experiencie = public_path().'/files/users/user_'.$id.'/experiencie';
+        $others = public_path().'/files/users/user_'.$id.'/others';
+        $profile = public_path().'/files/users/user_'.$id.'/profile';
+        $qualifications = public_path().'/files/users/user_'.$id.'/qualifications';
         File::makeDirectory($path, $mode = 0777, true, true);
         File::makeDirectory($academic, $mode = 0777, true, true);
         File::makeDirectory($experiencie, $mode = 0777, true);

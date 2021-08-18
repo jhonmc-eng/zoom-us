@@ -202,7 +202,7 @@ Route::group(['prefix' => 'candidate', 'middleware' => 'auth_candidate', 'as' =>
     Route::group(['prefix' => 'practices'], function(){
         Route::get('/', 'ConvocatoriaController@viewPracticesCandidate');
         Route::get('/list-practices', 'ConvocatoriaController@listPracticesCandidate');
-        Route::get('/view-practice', 'ConvocatoriaController@viewJobCandidate');
+        Route::get('/view-practice', 'ConvocatoriaController@viewPracticeCandidate');
         Route::post('/postulation-practice', 'ConvocatoriaController@postulationPractice');
         Route::get('/list-oficine', 'ConvocatoriaController@listOficineCandidate');
     });

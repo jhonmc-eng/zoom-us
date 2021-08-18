@@ -24,6 +24,7 @@ $(document).ready(function() {
             data_.append('file_cv', $("#formPostulation input[name=file_cv]")[0].files[0])
             data_.append('file_format_2', $("#formPostulation input[name=file_format_2]")[0].files[0])
             data_.append('file_rnscc', $("#formPostulation input[name=file_rnscc]")[0].files[0])
+            data_.append('modality', 'CAS')
             $.ajax({
                 url: `/candidate/jobs/postulate/${params.get('job_id')}`,
                 type: 'POST',

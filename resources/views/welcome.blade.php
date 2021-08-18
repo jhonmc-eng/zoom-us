@@ -1,4 +1,4 @@
-@extends('client.app')
+@extends('client.app', [$transparent = true])
 
 @section('content')
 <!-- Banner

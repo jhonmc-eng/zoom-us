@@ -9,8 +9,11 @@
     <link rel="stylesheet" href="{{asset('css/client/main-color.css')}}" id="colors">
 
 </head>
-
+@if($transparent)
 <body class="transparent-header">
+@else
+<body >
+@endif
 
 	<!-- Wrapper -->
 	<div id="wrapper">

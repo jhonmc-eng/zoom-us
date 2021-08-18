@@ -446,8 +446,8 @@ class ConvocatoriaController extends Controller
     }
     public function viewJobCandidate(Request $request){
         try {
+            //dd($request);
             $id = Crypt::decrypt($request->job_id);
-            
             $job = Job::with(['modality','stateJob','results'])->where('id', $id)->where('state_delete', 0)->first();
             $type_select = TypeResult::where('state_delete', 0)->orderBy('id', 'ASC')->get();
             $types = TypeResult::where('state_delete', 0)->orderBy('id', 'ASC')->get();
@@ -458,7 +458,7 @@ class ConvocatoriaController extends Controller
                         ['state_delete','=',0],
                         ['job_id', '=', $id],
                         ['type_result_id', '=', $case->id],
-                        ['date_publication', '<', Carbon::now()]
+                        ['date_publication', '<=', Carbon::now()->format('Y-m-d')]
                     ])->first();
                     if($data){
                         $case->file = $data;
@@ -468,7 +468,7 @@ class ConvocatoriaController extends Controller
                         ['state_delete','=',0],
                         ['job_id', '=', $id],
                         ['type_result_id', '=', $case->id],
-                        ['date_publication', '<', Carbon::now()]
+                        ['date_publication', '<=', Carbon::now()->format('Y-m-d')]
                     ])->get();
                     if($data){
                         $case->file = $data;
@@ -484,6 +484,49 @@ class ConvocatoriaController extends Controller
             ]);
         }
     }
+
+    public function viewPracticeCandidate(Request $request){
+        try {
+            //dd($request);
+            $id = Crypt::decrypt($request->practice_id);
+            //dd($id);
+            $job = Job::with(['modality','stateJob','results'])->where('id', $id)->where('state_delete', 0)->first();
+            $type_select = TypeResult::where('state_delete', 0)->orderBy('id', 'ASC')->get();
+            $types = TypeResult::where('state_delete', 0)->orderBy('id', 'ASC')->get();
+            foreach($types as $case){
+                if($case->multiple == 0){
+                    $data = JobResult::with(['typeResult'])->where([
+                        ['state_delete','=',0],
+                        ['job_id', '=', $id],
+                        ['type_result_id', '=', $case->id],
+                        ['date_publication', '<=', Carbon::now()->format('Y-m-d')]
+                    ])->first();
+                    if($data){
+                        $case->file = $data;
+                    }
+                }else{
+                    $data = JobResult::with(['typeResult'])->where([
+                        ['state_delete','=',0],
+                        ['job_id', '=', $id],
+                        ['type_result_id', '=', $case->id],
+                        ['date_publication', '<=', Carbon::now()->format('Y-m-d')]
+                    ])->get();
+                    if($data){
+                        $case->file = $data;
+                    }
+                }
+            }
+            $oficines = JobOficine::with(['name'])->where([['id', $id],['state_delete', 0]])->get();
+            //Postulation::where([['job_id', $id],['state_delete', 0],['candidate_id', session('candidate')->id]])->first() ? $flag = true : $flag = false;
+            return view('admin.practices.practicesViewCandidate')->with(compact('job', 'types','type_select', 'oficines'));
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'error' => $e->getMessage()
+            ]);
+        }
+    }
+
     public function uploadDocuments(Request $request, $job_id){
         
         $request->validate([

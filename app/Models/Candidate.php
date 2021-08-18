@@ -56,6 +56,7 @@ class Candidate extends Model
     protected $hidden = [
         'syslog',
         'updated_at',
-        'created_at'
+        'created_at',
+        'password'
     ];
 }

@@ -11,7 +11,7 @@
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
-                <li class="breadcrumb-item"><a href="/candidate">Inicio</a></li>
+                <li class="breadcrumb-item"><a href="/candidate/profile">Inicio</a></li>
                 <li class="breadcrumb-item active">Datos Personales</li>
                 </ol>
             </div>
@@ -520,8 +520,8 @@
                                 
                                 <!-- /.card-body -->
 
-                                <div class="card-footer">
-                                    <input type="submit" class="btn btn-danger" value="GUARDAR">
+                                <div class="card-footer d-flex justify-content-end">
+                                    <input type="submit" class="btn btn-success" value="GUARDAR">
                                 </div>
                             </form>
                         </div>

@@ -94,9 +94,8 @@
                                 <p class="mb-0">El tamaño máximo para los documentos adjuntos (.pdf) es de 10MB</p>
                             </div>
                             <div class="form-group row">
-                                <label for="type_academic" class="col-sm-6 col-form-label">Tipo de Estudios</label>
-                                <label for="cant_hours" class="col-sm-6 col-form-label">Cantidad de Horas</label>
                                 <div class="col-sm-6">
+                                    <label for="type_academic" class="col-form-label">Tipo de Estudios</label>
                                     <select name="type_academic" class="form-control" id="type_academic" required>
                                     @foreach($type_qualification as $item)
                                         <option value="{{$item->id}}">{{$item->name}}</option>
@@ -104,7 +103,9 @@
                                     </select>
                                 </div>
                                 <div class="col-sm-6">
+                                    <label for="cant_hours" class="col-form-label">Cantidad de Horas</label>
                                     <input type="number" name="cant_hours" class="form-control" placeholder="Ingrese cantidad de horas" required>
+
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -120,15 +121,16 @@
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label for="date_start" class="col-sm-6 col-form-label">Fecha de inicio</label>
-                                <label for="date_end" class="col-sm-6 col-form-label">Fecha de fin</label>
-                                
                                 <div class="col-sm-6">
+                                    <label for="date_start" class="col-form-label">Fecha de inicio</label>
                                     <input type="date" name="date_start" class="form-control" required>
-                                </div>                     
+
+                                </div>
                                 <div class="col-sm-6">
+                                    <label for="date_end" class="col-sm-6 col-form-label">Fecha de fin</label>
                                     <input type="date" name="date_end" class="form-control" required>
                                 </div>
+                                
                             </div>
                             <div class="form-group row">
                                 <label for="certificate" class="col-sm-12 col-form-label">Adjuntar certificado</label>
@@ -175,9 +177,8 @@
                                     <p class="mb-0">El tamaño máximo para los documentos adjuntos (.pdf) es de 10MB</p>
                                 </div>
                                 <div class="form-group row">
-                                    <label for="type_academic" class="col-sm-6 col-form-label">Tipo de Estudios</label>
-                                    <label for="cant_hours" class="col-sm-6 col-form-label">Cantidad de Horas</label>
                                     <div class="col-sm-6">
+                                        <label for="type_academic" class="col-form-label">Tipo de Estudios</label>
                                         <select name="type_academic" class="form-control" id="type_academic" required>
                                         @foreach($type_qualification as $item)
                                             <option value="{{$item->id}}">{{$item->name}}</option>
@@ -185,7 +186,9 @@
                                         </select>
                                     </div>
                                     <div class="col-sm-6">
+                                        <label for="cant_hours" class="col-form-label">Cantidad de Horas</label>
                                         <input type="number" name="cant_hours" class="form-control" placeholder="Ingrese cantidad de horas" required>
+
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -201,15 +204,16 @@
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label for="date_start" class="col-sm-6 col-form-label">Fecha de inicio</label>
-                                    <label for="date_end" class="col-sm-6 col-form-label">Fecha de fin</label>
-                                    
                                     <div class="col-sm-6">
+                                        <label for="date_start" class="col-form-label">Fecha de inicio</label>
                                         <input type="date" name="date_start" class="form-control" required>
-                                    </div>                     
+
+                                    </div>
                                     <div class="col-sm-6">
+                                        <label for="date_end" class="col-sm-6 col-form-label">Fecha de fin</label>
                                         <input type="date" name="date_end" class="form-control" required>
                                     </div>
+                                    
                                 </div>
                                 <div class="form-group row">
                                     <label for="certificate" class="col-sm-12 col-form-label">
