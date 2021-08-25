@@ -39,7 +39,7 @@ class Postulation extends Model
                     ->select('id', 'title','number_jobs','date_postulation','date_publication','modality_id', 'state_job_id');
     }
     public function candidate(){
-        return $this->hasOne('App\Models\Candidate', 'id', 'candidate_id');
+        return $this->hasOne('App\Models\Candidate', 'id', 'candidate_id')->select('id', 'photo_perfil_path', 'names', 'lastname_matern', 'lastname_patern', 'document', 'phone', 'email');
     }
     public function oficine(){
         return $this->hasOne('App\Models\Oficine', 'id', 'oficine_id')->select('id','name','siglas');
@@ -50,4 +50,5 @@ class Postulation extends Model
     public function state_job($id){
         return StateJob::where('id', $id)->select('name')->first();
     }
+
 }

@@ -12,7 +12,7 @@
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
-                <li class="breadcrumb-item"><a href="/">Inicio</a></li>
+                <li class="breadcrumb-item"><a href="/candidate/profile">Inicio</a></li>                
                 <li class="breadcrumb-item active">Referencias Laborales</li>
                 </ol>
             </div>
@@ -86,22 +86,22 @@
                         <div class="card">
                             <div class="card-body">
                                 <div class="form-group row">
-                                    <label for="type_academic" class="col-sm-6 col-form-label">Nombres y Apellidos</label>
-                                    <label for="type_academic" class="col-sm-6 col-form-label">Correo Electrónico</label>
                                     <div class="col-sm-6">
+                                        <label for="type_academic" class="col-form-label">Nombres y Apellidos</label>
                                         <input type="text" name="names" class="form-control" placeholder="Ingrese nombres y apellidos" required>
                                     </div>
                                     <div class="col-sm-6">
+                                        <label for="type_academic" class="col-form-label">Correo Electrónico</label>
                                         <input type="email" name="email" class="form-control" placeholder="Ingrese su correo electrónico" required>
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label for="type_academic" class="col-sm-6 col-form-label">Cargo</label>
-                                    <label for="type_academic" class="col-sm-6 col-form-label">Teléfono / Celular</label>
                                     <div class="col-sm-6">
+                                        <label for="type_academic" class="col-form-label">Cargo</label>
                                         <input type="text" name="charge" class="form-control" placeholder="Ingrese el cargo" required>
                                     </div>
                                     <div class="col-sm-6">
+                                        <label for="type_academic" class="col-form-label">Teléfono / Celular</label>
                                         <input type="text" name="phone" class="form-control" placeholder="Ingrese el teléfono/celular" required>
                                     </div>
                                 </div>

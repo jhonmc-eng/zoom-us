@@ -13,10 +13,13 @@ $(document).ready(function() {
         columns: [
             //{ "data": "id"},
             {
-                data: "number_jobs",
+                data: function(row, type, set) {
+                    return { "number_jobs": row.number_jobs, "date_publication": row.date_publication }
+                },
                 render: function(data) {
-                    return pad(data, 3)
-                }
+                    //return (new Date(data)).getFullYear()
+                    return `${pad(data.number_jobs, 3)}-${(new Date(data.date_publication)).getFullYear()}`
+                },
             },
             { data: "title" },
             {
@@ -45,27 +48,19 @@ $(document).ready(function() {
             },
             { data: "date_publication" },
             { data: "date_postulation" },
-            /*{ 
-                data: "bases",
-                render: function (data) {
-                    return `<a target="_blank" href="${data}" type="button" class="btn btn-info">BASES</a>`
-                }
-            },
-            { 
-                data: "schedule",
-                render: function (data) {
-                    return `<a target="_blank" href="${data}" type="button" class="btn btn-info">ESQUEMA</a>`                }
-            },
-            { 
-                data: "profile",
-                render: function (data) {
-                    return `<a target="_blank" href="${data}" type="button" class="btn btn-info">PERFIL</a>`                }
-            },*/
+
             {
-                data: "state_delete",
+
+                data: function(row, type, set) {
+                    return { "candidates": row.candidates, "token": row.token }
+                },
                 render: function(data) {
-                    return `<a target="_blank" href="#"" type="button" class="btn btn-primary"><i class="fas fa-user-tie"></i></a>`
-                }
+                    //return `<a target="_blank" href="#"" type="button" class="btn btn-primary"><i class="fas fa-user-tie"></i></a>`
+                    return `<a href="/admin/practices/view-candidates?job_id=${data.token}" class="btn btn-app bg-info">
+                    <span class="badge bg-warning">${data.candidates}</span>
+                    <i class="fas fa-users"></i> Ver
+                  </a>`
+                },
             }
         ],
         lengthChange: false,
@@ -507,7 +502,7 @@ $(document).ready(function() {
             icon: 'success',
             title: 'Exito',
             text: `¡${message}!`,
-            confirmButtonColor: "#D40E1E"
+            confirmButtonColor: "#28a745"
         })
     }
 })

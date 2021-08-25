@@ -10,8 +10,7 @@ $(document).ready(function() {
             type: "GET"
         },
 
-        columns: [
-            {
+        columns: [{
                 data: 'institution'
             },
             {
@@ -66,7 +65,7 @@ $(document).ready(function() {
 
     let buttons = `
     <div class="dt-buttons flex-wrap">
-        <button type="button" class="btn btn-success" id="button-register" data-toggle="modal"><i class="fas fa-users"></i> Nuevo</button>
+        <button type="button" class="btn btn-success" id="button-register" data-toggle="modal"><i class="nav-icon fas fa-people-arrows"></i> Nuevo</button>
         <button type="button" class="btn btn-info" id="button-edit" data-toggle="modal"><i class="fas fa-edit"></i> Editar</button>
         <button type="button" class="btn btn-danger" id="button-delete" data-toggle="modal"><i class="fas fa-trash-alt"></i> Eliminar</button>
     </div>
@@ -146,8 +145,8 @@ $(document).ready(function() {
                 url: '/candidate/references/update-reference',
                 type: 'POST',
                 data: data,
-                processData: false,  // tell jQuery not to process the data
-                contentType: false,   // tell jQuery not to set contentType
+                processData: false, // tell jQuery not to process the data
+                contentType: false, // tell jQuery not to set contentType
                 success: function(data) {
                     if (data.success) {
                         $('#modalEditReference').modal('hide')
@@ -260,7 +259,7 @@ $(document).ready(function() {
             icon: 'success',
             title: 'Exito',
             text: `¡${message}!`,
-            confirmButtonColor: "#D40E1E"
+            confirmButtonColor: "#28a745"
         })
     }
 })

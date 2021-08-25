@@ -31,7 +31,7 @@
                 <table id="datable" class="table table-bordered table-striped">
                   <thead>
                     <tr>
-                        <th>Codigo</th>
+                        <th>Codigo (N°)</th>
                         <th>Nombre</th>
                         <th>Proceso</th>
                         <th>Fecha de publicacion</th>
@@ -46,7 +46,7 @@
                   </tbody>
                   <tfoot>
                     <tr>
-                        <th>Codigo</th>
+                        <th>Codigo (N°)</th>
                         <th>Nombre</th>
                         <th>Proceso</th>
                         <th>Fecha de publicacion</th>

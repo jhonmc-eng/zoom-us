@@ -10,8 +10,7 @@ $(document).ready(function() {
             type: "GET"
         },
 
-        columns: [
-            {
+        columns: [{
                 data: 'name'
             },
             {
@@ -23,7 +22,7 @@ $(document).ready(function() {
                     return data.name
                 }
             },
-            
+
         ],
         lengthChange: false,
         pageLength: 5,
@@ -144,8 +143,8 @@ $(document).ready(function() {
                 url: '/candidate/knowledge/update-knowledge',
                 type: 'POST',
                 data: data,
-                processData: false,  // tell jQuery not to process the data
-                contentType: false,   // tell jQuery not to set contentType
+                processData: false, // tell jQuery not to process the data
+                contentType: false, // tell jQuery not to set contentType
                 success: function(data) {
                     if (data.success) {
                         $('#modalEditKnowledge').modal('hide')
@@ -258,7 +257,7 @@ $(document).ready(function() {
             icon: 'success',
             title: 'Exito',
             text: `¡${message}!`,
-            confirmButtonColor: "#D40E1E"
+            confirmButtonColor: "#28a745"
         })
     }
 })

@@ -15,6 +15,7 @@ use App\Models\TypeResult;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
+
 class ConvocatoriaController extends Controller
 {
     //
@@ -48,6 +49,7 @@ class ConvocatoriaController extends Controller
 
     public function viewJobsCandidate(){
         try {
+
             return view('admin.jobs.jobsCandidate');
         } catch (\Exception $e) {
             return response()->json([
@@ -83,6 +85,8 @@ class ConvocatoriaController extends Controller
                     $item->oficineCas->oficine = $item->oficine($item->oficineCas->oficine_id);
                     $item->token = Crypt::encrypt($item->id);
                 });
+            $data->makeHidden(['bases','description','functions','id','modality_id','profile','requirements','schedule','state_job_id','state_delete']);
+
             return response()->json([
                 'success' => true,
                 'data' => $data
@@ -109,6 +113,7 @@ class ConvocatoriaController extends Controller
                     //$item->oficineCas->oficine = $item->oficine($item->oficineCas->oficine_id);
                     $item->token = Crypt::encrypt($item->id);
                 });
+                $data->makeHidden(['bases','description','functions','id','modality_id','profile','requirements','schedule','state_job_id','state_delete']);
             return response()->json([
                 'success' => true,
                 'data' => $data
@@ -129,6 +134,7 @@ class ConvocatoriaController extends Controller
             ->get()
             ->each(function($item){
                 $item->token = Crypt::encrypt($item->id);
+                $item->candidates = $item->candidates($item->id);
             });
             return response()->json([
                 'success' => true,
@@ -151,6 +157,7 @@ class ConvocatoriaController extends Controller
             ->get()
             ->each(function($item){
                 $item->token = Crypt::encrypt($item->id);
+                $item->candidates = $item->candidates($item->id);
             });
             return response()->json([
                 'success' => true,
@@ -346,9 +353,6 @@ class ConvocatoriaController extends Controller
         }
     }
 
-    public function viewCandidates(Request $request, $id){
-        
-    }
     public function addOficine(Request $request){
         try {
             $request->validate([
@@ -449,6 +453,7 @@ class ConvocatoriaController extends Controller
             //dd($request);
             $id = Crypt::decrypt($request->job_id);
             $job = Job::with(['modality','stateJob','results'])->where('id', $id)->where('state_delete', 0)->first();
+            $oficine = JobOficine::with(['name'])->where([['job_id', $id],['state_delete', 0]])->first();
             $type_select = TypeResult::where('state_delete', 0)->orderBy('id', 'ASC')->get();
             $types = TypeResult::where('state_delete', 0)->orderBy('id', 'ASC')->get();
             //dd($types);
@@ -476,7 +481,7 @@ class ConvocatoriaController extends Controller
                 }
             }
             //Postulation::where([['job_id', $id],['state_delete', 0],['candidate_id', session('candidate')->id]])->first() ? $flag = true : $flag = false;
-            return view('admin.jobs.viewJobCandidate')->with(compact('job', 'types','type_select'));
+            return view('admin.jobs.viewJobCandidate')->with(compact('job', 'types','type_select','oficine'));
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
@@ -675,7 +680,5 @@ class ConvocatoriaController extends Controller
         File::makeDirectory($candidates, $mode = 0777, true, true);
         File::makeDirectory($results, $mode = 0777, true);
     }
-    
-    
-
+ 
 }

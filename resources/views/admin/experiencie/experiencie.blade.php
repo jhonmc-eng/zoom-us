@@ -8,7 +8,7 @@
         <div class="container-fluid">
             <div class="row mb-2">
             <div class="col-sm-6">
-                <h1>Otros documentos</h1>
+                <h1>Experiencia Laboral</h1>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
@@ -93,32 +93,32 @@
                                 <p class="mb-0">El tamaño máximo para los documentos adjuntos (.pdf) es de 10MB</p>
                             </div>
                             <div class="form-group row">
-                                <label for="institution" class="col-sm-6 col-form-label">Nombre de la Institucion</label>
-                                <label for="boss" class="col-sm-6 col-form-label">Jefe Inmediato</label>
                                 <div class="col-sm-6">
+                                    <label for="institution" class="col-form-label">Nombre de la Institucion</label>
                                     <input type="text" name="institution" class="form-control" placeholder="Ingrese institución" required>
                                 </div>
                                 <div class="col-sm-6">
+                                    <label for="boss" class="col-form-label">Jefe Inmediato</label>
                                     <input type="text" name="boss" class="form-control" placeholder="Ingrese nombre del jefe inmediato" required>
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label for="phone" class="col-sm-6 col-form-label">Teléfono</label>
-                                <label for="charge" class="col-sm-6 col-form-label">Cargo Ocupado</label>
                                 <div class="col-sm-6">
+                                    <label for="phone" class="col-form-label">Teléfono</label>
                                     <input type="text" name="phone" class="form-control" placeholder="Telefono y/o celular" required>
                                 </div>
                                 <div class="col-sm-6">
+                                    <label for="charge" class="col-form-label">Cargo Ocupado</label>
                                     <input type="text" name="charge" class="form-control" placeholder="Ingrese cargo ocupado" required>
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label for="area" class="col-sm-6 col-form-label">Área de Labores</label>
-                                <label for="sector" class="col-sm-6 col-form-label">Sector</label>
                                 <div class="col-sm-6">
+                                    <label for="area" class="col-form-label">Área de Labores</label>
                                     <input type="text" name="area" class="form-control" placeholder="Ingrese area de labores" required>
                                 </div>
                                 <div class="col-sm-6">
+                                    <label for="sector" class="col-form-label">Sector</label>
                                     <select name="sector" class="form-control">
                                         <option value="1">Publico</option>
                                         <option value="2">Privado</option>
@@ -126,21 +126,19 @@
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label for="date_start" class="col-sm-6 col-form-label">Fecha de inicio</label>
-                                <label for="date_end" class="col-sm-6 col-form-label">Fecha de fin</label>
-                                
                                 <div class="col-sm-6">
+                                    <label for="date_start" class="col-form-label">Fecha de inicio</label>
                                     <input type="date" name="date_start" class="form-control" required>
                                 </div>                     
                                 <div class="col-sm-6">
+                                    <label for="date_end" class="col-form-label">Fecha de fin</label>
                                     <input type="date" name="date_end" class="form-control" required>
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label for="functions" class="col-sm-12 col-form-label">Funciones</label>
-                                
                                 <div class="col-sm-12">
-                                    <textarea name="functions" class="form-control"></textarea>
+                                    <textarea name="functions" class="form-control" required></textarea>
                                 </div>     
                             </div>
                             <div class="form-group row">
@@ -187,32 +185,32 @@
                                 <p class="mb-0">El tamaño máximo para los documentos adjuntos (.pdf) es de 10MB</p>
                             </div>
                             <div class="form-group row">
-                                <label for="institution" class="col-sm-6 col-form-label">Nombre de la Institucion</label>
-                                <label for="boss" class="col-sm-6 col-form-label">Jefe Inmediato</label>
                                 <div class="col-sm-6">
+                                    <label for="institution" class="col-form-label">Nombre de la Institucion</label>
                                     <input type="text" name="institution" class="form-control" placeholder="Ingrese institución" required>
                                 </div>
                                 <div class="col-sm-6">
+                                    <label for="boss" class="col-form-label">Jefe Inmediato</label>
                                     <input type="text" name="boss" class="form-control" placeholder="Ingrese nombre del jefe inmediato" required>
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label for="phone" class="col-sm-6 col-form-label">Teléfono</label>
-                                <label for="charge" class="col-sm-6 col-form-label">Cargo Ocupado</label>
                                 <div class="col-sm-6">
+                                    <label for="phone" class="col-form-label">Teléfono</label>
                                     <input type="text" name="phone" class="form-control" placeholder="Telefono y/o celular" required>
                                 </div>
                                 <div class="col-sm-6">
+                                    <label for="charge" class="col-form-label">Cargo Ocupado</label>
                                     <input type="text" name="charge" class="form-control" placeholder="Ingrese cargo ocupado" required>
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label for="area" class="col-sm-6 col-form-label">Área de Labores</label>
-                                <label for="sector" class="col-sm-6 col-form-label">Sector</label>
                                 <div class="col-sm-6">
+                                    <label for="area" class="col-form-label">Área de Labores</label>
                                     <input type="text" name="area" class="form-control" placeholder="Ingrese area de labores" required>
                                 </div>
                                 <div class="col-sm-6">
+                                    <label for="sector" class="col-form-label">Sector</label>
                                     <select name="sector" class="form-control">
                                         <option value="1">Publico</option>
                                         <option value="2">Privado</option>
@@ -220,13 +218,12 @@
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label for="date_start" class="col-sm-6 col-form-label">Fecha de inicio</label>
-                                <label for="date_end" class="col-sm-6 col-form-label">Fecha de fin</label>
-                                
                                 <div class="col-sm-6">
+                                    <label for="date_start" class="col-form-label">Fecha de inicio</label>
                                     <input type="date" name="date_start" class="form-control" required>
                                 </div>                     
                                 <div class="col-sm-6">
+                                    <label for="date_end" class="col-form-label">Fecha de fin</label>
                                     <input type="date" name="date_end" class="form-control" required>
                                 </div>
                             </div>
@@ -234,7 +231,7 @@
                                 <label for="functions" class="col-sm-12 col-form-label">Funciones</label>
                                 
                                 <div class="col-sm-12">
-                                    <textarea name="functions" class="form-control"></textarea>
+                                    <textarea name="functions" class="form-control" required></textarea>
                                 </div>     
                             </div>
                             <div class="form-group row">

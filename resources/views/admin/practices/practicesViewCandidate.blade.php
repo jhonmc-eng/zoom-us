@@ -14,7 +14,7 @@
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="/">Inicio</a></li>
                         <li class="breadcrumb-item"><a href="/candidate/jobs">Convocatorias</a></li>
-                        <li class="breadcrumb-item active">Convocatoria N°058-2020</li>
+                        <li class="breadcrumb-item active">Convocatoria N° {{substr(str_repeat(0, 3).$job->number_jobs, - 3)}} - {{ \Carbon\Carbon::createFromFormat('Y-m-d', $job->date_publication)->year}}</li>
                     </ol>
                 </div>
                 </div>
@@ -66,7 +66,7 @@
                                 <div class="col-sm-3 invoice-col">
                                     <address>
                                         <strong>Convocatoria</strong><br>
-                                        N°058-2020<br>
+                                        N° {{substr(str_repeat(0, 3).$job->number_jobs, - 3)}} - {{ \Carbon\Carbon::createFromFormat('Y-m-d', $job->date_publication)->year}}<br>
                                     </address>
                                 </div>
                                 <!-- /.col -->
@@ -107,6 +107,11 @@
                                 <div class="col-sm-3 invoice-col">
                                     <b>Perfil</b><br>
                                     <a target="_blank" href="/candidate/jobs/view-profile?job_profile={{\Crypt::encrypt($job->profile)}}" type="button" class="btn btn-danger">Descargar <i class="fas fa-download"></i></a><br>
+                                </div>
+
+                                <div class="col-sm-3 invoice-col">
+                                    <b>Detalles</b><br>
+                                    <a href="#modalDetail"  data-toggle="modal" data-target="#modalDetail" type="button" class="btn btn-warning">Detalles <i class="fas fa-eye"></i></a><br>
                                 </div>
 
                                 <div class="col-sm-12 invoice-col margin-top-30">
@@ -162,10 +167,15 @@
                             </div>
                             <!-- /.row -->
                             @if($job->date_postulation == \Carbon\Carbon::now()->format('Y-m-d') && !App\Models\Postulation::where([['state_delete', 0],['candidate_id', session('candidate')->id],['job_id', $job->id]])->first())
-                                <div class="row invoice-info" style="margin-top: 10px;">
-                                    <div class="col-12">
-                                        <button type="button" class="btn btn-success float-center" id="postulate" style="margin-right: 5px;">
-                                            <i class="fas fa-user-check"></i> POSTULAR
+                                <div class="row">
+                                    <div class="col-sm-10">
+                                        <button type="button" class="btn btn-success btn-lg float-center" id="postulation" style="margin-right: 5px;width: 100%;">
+                                            <i class="fas fa-id-card-alt flaticon-line-icon-set-pencil"></i> POSTULAR
+                                        </button>
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <button type="button" class="btn btn-info btn-lg float-center" id="postulate" style="margin-right: 5px;width: 100%;">
+                                            <i class="fas fa-user-check flaticon-line-icon-set-pencil"></i> Requisitos
                                         </button>
                                     </div>
                                 </div>
@@ -179,6 +189,69 @@
             </div><!-- /.container-fluid -->
         </section>
         
+    </div>
+
+    <div class="modal fade" id="modalDetail" aria-hidden="true" aria-labelledby="modalDetailmodalDetail" data-backdrop="static" data-keyboard="false" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalScrollableTitle">DETALLES DE LA CONVOCATORIA</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                </div>
+                <div class="modal-body">
+                        <div class="card">
+                            <div class="card-body">
+                                {{--<div class="form-group row">
+                                    <div class="col-sm-12">
+                                        <label class="col-form-label display-1 text-center title-modal"><u>{{$oficine->name->name}}</u></label>
+                                    </div>
+                                </div>--}}
+                                <div class="form-group row">
+                                    <span class="badge badge-info col-sm-1 badge-required"><i class="fas fa-hand-point-right"></i></span>
+                                    <div class="col-sm-11">
+                                        <label class="col-form-label"><u>DESCRIPCION DE CONVOCATORIA</u></label>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-sm-12">
+                                        {!!$job->description!!}
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <span class="badge badge-info col-sm-1 badge-required"><i class="fas fa-hand-point-right"></i></span>
+                                    <div class="col-sm-11">
+                                        <label class="col-form-label"><u>FUNCIONES Y RESPONSABILIDADES</u></label>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-sm-12">
+                                        {!!$job->functions!!}                                    
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <span class="badge badge-info col-sm-1 badge-required"><i class="fas fa-hand-point-right"></i></span>
+                                    <div class="col-sm-11">
+                                        <label class="col-form-label"><u>PERFIL DE CONVOCATORIA</u></label>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-sm-12">
+                                        {!!$job->requirements!!}                                    
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+                        
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" id='cancel'>Cancelar</button>
+                    <button type="button" class="btn btn-success" id="next-modal">Subir Formatos</button>
+                </div>
+            </div>
+        </div>
     </div>
 
 

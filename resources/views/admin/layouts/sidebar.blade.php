@@ -1,8 +1,8 @@
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
-    <a href="/candidate/profile" class="brand-link">
+    <a href="/" class="brand-link">
       <img src="{{ asset('img/admin/logotipo_region_tacna.png') }}" alt="Gobierno Regional de Tacna" class="brand-image img-circle elevation-3" style="opacity: .8">
-      <span class="brand-text font-weight-light">SAC - GRT</span>
+      <span class="brand-text font-weight-light">Convocatorias - GRT</span>
     </a>
 
     <!-- Sidebar -->
@@ -14,11 +14,10 @@
         </div>
         <div class="info">
           @if(Session::get('admin'))
-            <a href="#" class="d-block">{{session('admin')->names}} {{session('admin')->lastnamePatern}}</a>
-          @else
-            <a href="#" class="d-block">{{session('candidate')->names}} {{session('candidate')->lastnamePatern}}</a>
+            <a href="#" class="d-block">{{session('admin')->names}}</a>
+          @elseif(Session::get('candidate'))
+            <a href="#" class="d-block">{{session('candidate')->names}}</a>
           @endif
-          
         </div>
       </div>
 
@@ -42,6 +41,14 @@
 
           @if(Session::get('admin'))
             @if(Session::get('admin')->nivel == 'ADMINISTRADOR')
+              <li class="nav-item">
+                <a href="/admin/users" class="nav-link">
+                  <i class="nav-icon fas fa-users"></i>
+                  <p>
+                    Inicio
+                  </p>
+                </a>
+              </li>
               <li class="nav-item">
                 <a href="/admin/users" class="nav-link">
                   <i class="nav-icon fas fa-users"></i>
@@ -99,32 +106,85 @@
                 </a>
                 
               </li>
-              
+              <li class="nav-item">
+                  <a href="#Password" data-toggle="modal" data-target="#Password" class="nav-link">
+                    <i class="nav-icon fas fa-key"></i>
+                    <p>
+                      Cambiar Password
+                    </p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="/admin/logout" class="nav-link">
+                    <i class="nav-icon fas fa-sign-out-alt"></i>
+                    <p>
+                      Cerrar Sesión
+                    </p>
+                  </a>
+                </li>
+            @elseif(Session::get('admin')->nivel == 'USUARIO')
+              <li class="nav-item">
+                <a href="/admin" class="nav-link">
+                  <i class="nav-icon fas fas fa-home"></i>
+                  <p>
+                    Inicio
+                  </p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="#" class="nav-link">
+                  <i class="nav-icon fas fa-briefcase"></i>
+                  <p>
+                    Convocatorias
+                    <i class="right fas fa-angle-left"></i>
+                  </p>
+                </a>
+                <ul class="nav nav-treeview">
+                  @if(Session::get('admin')->permission_cas)
+                  <li class="nav-item">
+                    <a href="/admin/jobs" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>CAS</p>
+                    </a>
+                  </li>
+                  @endif
+                  @if(Session::get('admin')->permission_practices)
+                  <li class="nav-item">
+                    <a href="/admin/practices" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Practicas</p>
+                    </a>
+                  </li>
+                  @endif
+                  
+                </ul>
+              </li>
+              <li class="nav-item">
+                  <a href="#Password" data-toggle="modal" data-target="#Password" class="nav-link">
+                    <i class="nav-icon fas fa-user-tie"></i>
+                    <p>
+                      Candidatos
+                    </p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="#Password" data-toggle="modal" data-target="#Password" class="nav-link">
+                    <i class="nav-icon fas fa-key"></i>
+                    <p>
+                      Cambiar Password
+                    </p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="/admin/logout" class="nav-link">
+                    <i class="nav-icon fas fa-sign-out-alt"></i>
+                    <p>
+                      Cerrar Sesión
+                    </p>
+                  </a>
+                </li>
             @endif
-              <li class="nav-item">
-                <a href="#" class="nav-link">
-                  <i class="nav-icon fas fa-key"></i>
-                  <p>
-                    Cambiar Password
-                  </p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="#" class="nav-link">
-                  <i class="nav-icon fas fa-cogs"></i>
-                  <p>
-                    Configuración
-                  </p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="/admin/logout" class="nav-link">
-                  <i class="nav-icon fas fa-sign-out-alt"></i>
-                  <p>
-                    Cerrar Sesión
-                  </p>
-                </a>
-              </li>
+              
           @endif
 
           @if(Session::get('candidate'))
@@ -178,7 +238,7 @@
             </li>
             <li class="nav-item">
               <a href="/candidate/references" class="nav-link">
-                <i class="nav-icon fas fa-users"></i>
+                <i class="nav-icon fas fa-people-arrows"></i>
                 <p>
                   Referencias
                 </p>
@@ -217,7 +277,7 @@
               </a>
             </li>
             <li class="nav-item">
-              <a href="#" class="nav-link">
+              <a href="#Password" data-toggle="modal" data-target="#Password" class="nav-link">
                 <i class="nav-icon fas fa-key"></i>
                 <p>
                   Cambiar Contraseña
@@ -226,7 +286,7 @@
             </li>
             <li class="nav-item">
               <a href="/candidate/logout-candidate" class="nav-link">
-                <i class="nav-icon fas fa-people-arrows"></i>
+              <i class="nav-icon fas fa-sign-out-alt"></i>
                 <p>
                   Cerrar Sesión
                 </p>
@@ -239,5 +299,6 @@
       </nav>
       <!-- /.sidebar-menu -->
     </div>
+    
     <!-- /.sidebar -->
   </aside>

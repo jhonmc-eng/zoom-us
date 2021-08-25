@@ -11,8 +11,8 @@
               </div>
               <div class="col-sm-6">
                   <ol class="breadcrumb float-sm-right">
-                  <li class="breadcrumb-item"><a href="/">Inicio</a></li>
-                  <li class="breadcrumb-item active">Convocatorias</li>
+                  <li class="breadcrumb-item"><a href="/candidate/profile">Inicio</a></li>
+                  <li class="breadcrumb-item active">Convocatorias Publicadas</li>
                   </ol>
               </div>
               </div>
@@ -31,8 +31,7 @@
                   <table id="datable" class="table table-bordered table-striped">
                     <thead>
                       <tr>
-                          <th>Codigo</th>
-                          <th>Año</th>
+                          <th>Codigo (N°)</th>
                           <th>Nombre</th>
                           <th>Oficina</th>
                           <th>Proceso</th>
@@ -47,7 +46,6 @@
                     <tfoot>
                       <tr>
                           <th>Codigo</th>
-                          <th>Año</th>
                           <th>Nombre</th>
                           <th>Oficina</th>
                           <th>Proceso</th>

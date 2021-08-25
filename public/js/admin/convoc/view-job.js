@@ -183,7 +183,7 @@ $(document).ready(function() {
             icon: 'success',
             title: 'Exito',
             text: `¡${message}!`,
-            confirmButtonColor: "#D40E1E"
+            confirmButtonColor: "#28a745"
         })
     }
 })

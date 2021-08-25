@@ -11,8 +11,8 @@
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
-                <li class="breadcrumb-item"><a href="/">Inicio</a></li>
-                <li class="breadcrumb-item active">Practicas</li>
+                <li class="breadcrumb-item"><a href="/candidate/profile">Inicio</a></li>    
+                <li class="breadcrumb-item active">Practicas Publicadas</li>
                 </ol>
             </div>
             </div>
@@ -31,8 +31,7 @@
                 <table id="datable" class="table table-bordered table-striped">
                   <thead>
                     <tr>
-                        <th>Codigo</th>
-                        <th>Año</th>
+                        <th>Codigo (N°)</th>
                         <th>Nombre</th>
                         <th>Proceso</th>
                         <th>Fecha de publicacion</th>
@@ -48,8 +47,7 @@
                   </tbody>
                   <tfoot>
                     <tr>
-                        <th>Codigo</th>
-                        <th>Año</th>
+                        <th>Codigo (N°)</th>
                         <th>Nombre</th>
                         <th>Proceso</th>
                         <th>Fecha de publicacion</th>

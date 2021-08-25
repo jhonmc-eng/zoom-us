@@ -13,8 +13,13 @@
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="/">Inicio</a></li>
-                        <li class="breadcrumb-item"><a href="/admin/jobs">Convocatorias</a></li>
-                        <li class="breadcrumb-item active">Convocatoria N°058-2020</li>
+                        
+                        @if($job->modality->id != 2)
+                        <li class="breadcrumb-item"><a href="/admin/jobs">CAS</a></li>
+                        @else
+                        <li class="breadcrumb-item"><a href="/admin/practices">Practicas</a></li>
+                        @endif
+                        <li class="breadcrumb-item active">Convocatoria N° {{substr(str_repeat(0, 3).$job->number_jobs, - 3)}} - {{ \Carbon\Carbon::createFromFormat('Y-m-d', $job->date_publication)->year}}</li>
                     </ol>
                 </div>
                 </div>
@@ -66,7 +71,8 @@
                                 <div class="col-sm-3 invoice-col">
                                     <address>
                                         <strong>Convocatoria</strong><br>
-                                        N°058-2020<br>
+                                        N° {{substr(str_repeat(0, 3).$job->number_jobs, - 3)}} - {{ \Carbon\Carbon::createFromFormat('Y-m-d', $job->date_publication)->year}}
+                                        <br>
                                     </address>
                                 </div>
                                 <!-- /.col -->

@@ -16,9 +16,9 @@ class CheckAdministrador
      */
     public function handle(Request $request, Closure $next)
     {
-        if (session('admin')->nivel == 'USUARIO') {
-            return redirect('/admin/dashboard');
+        if (session('admin')->nivel == 'ADMINISTRADOR') {
+            return $next($request);
         }
-        return $next($request);
+        return redirect()->back();
     }
 }

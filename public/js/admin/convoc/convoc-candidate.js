@@ -12,17 +12,15 @@ $(document).ready(function() {
         },
         columns: [
             //{ "data": "id"},
+
             {
-                data: "number_jobs",
+                data: function(row, type, set) {
+                    return { "number_jobs": row.number_jobs, "date_publication": row.date_publication }
+                },
                 render: function(data) {
-                    return pad(data, 3)
-                }
-            },
-            {
-                data: "date_publication",
-                render: function(data) {
-                    return (new Date(data)).getFullYear()
-                }
+                    //return (new Date(data)).getFullYear()
+                    return `${pad(data.number_jobs, 3)}-${(new Date(data.date_publication)).getFullYear()}`
+                },
             },
             { data: "title" },
             {

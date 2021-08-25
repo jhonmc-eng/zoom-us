@@ -1,5 +1,5 @@
 $(document).ready(function() {
-
+    $('#modalMessageDate').modal('show')
     $('#postulate').on('click', function(e) {
         e.preventDefault()
         e.stopPropagation()
@@ -12,41 +12,59 @@ $(document).ready(function() {
         $('#modalMessageDate').modal('hide')
         $('#modalPostulation').modal('show')
     })
+    $('#postulation').on('click', function(e) {
+        e.preventDefault()
+        e.stopPropagation()
+        $('#modalPostulation').modal('show')
+    })
     $('#formPostulation').on('submit', function(e) {
         e.preventDefault()
         e.stopPropagation()
         let form = $(this)
         if (form[0].checkValidity()) {
-            showLoading()
-            var params = new window.URLSearchParams(window.location.search);
-            var data_ = new FormData();
-            data_.append('file_format_1', $("#formPostulation input[name=file_format_1]")[0].files[0])
-            data_.append('file_cv', $("#formPostulation input[name=file_cv]")[0].files[0])
-            data_.append('file_format_2', $("#formPostulation input[name=file_format_2]")[0].files[0])
-            data_.append('file_rnscc', $("#formPostulation input[name=file_rnscc]")[0].files[0])
-            data_.append('modality', 'CAS')
-            $.ajax({
-                url: `/candidate/jobs/postulate/${params.get('job_id')}`,
-                type: 'POST',
-                data: data_,
-                processData: false,
-                contentType: false,
-                headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
-                success: function(data) {
-                    Swal.close()
-                    if (data.success) {
-                        $('#modalPostulation').modal('hide')
-                        success(data.message)
-                        window.location = '/candidate/postulations'
-                    } else {
-                        error(data.error)
-                    }
-                },
-                error: function(e) {
-                    Swal.close()
-                    error(e.responseJson.error)
+            Swal.fire({
+                title: '¿Esta seguro que desea postular a esta convocatoria?',
+                text: "Verfique los archivos seleccionados",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#D40E1E',
+                confirmButtonText: 'Si, eliminar',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    showLoading()
+                    var params = new window.URLSearchParams(window.location.search);
+                    var data_ = new FormData();
+                    data_.append('file_format_1', $("#formPostulation input[name=file_format_1]")[0].files[0])
+                    data_.append('file_cv', $("#formPostulation input[name=file_cv]")[0].files[0])
+                    data_.append('file_format_2', $("#formPostulation input[name=file_format_2]")[0].files[0])
+                    data_.append('file_rnscc', $("#formPostulation input[name=file_rnscc]")[0].files[0])
+                    data_.append('modality', 'CAS')
+                    $.ajax({
+                        url: `/candidate/jobs/postulate/${params.get('job_id')}`,
+                        type: 'POST',
+                        data: data_,
+                        processData: false,
+                        contentType: false,
+                        headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+                        success: function(data) {
+                            Swal.close()
+                            if (data.success) {
+                                $('#modalPostulation').modal('hide')
+                                success(data.message)
+                                window.location = '/candidate/postulations'
+                            } else {
+                                error(data.error)
+                            }
+                        },
+                        error: function(e) {
+                            Swal.close()
+                            error(e.responseJson.error)
+                        }
+                    });
                 }
-            });
+            })
         }
     })
 
@@ -99,7 +117,7 @@ $(document).ready(function() {
             icon: 'success',
             title: 'Exito',
             text: `¡${message}!`,
-            confirmButtonColor: "#D40E1E"
+            confirmButtonColor: "#28a745"
         })
     }
 })

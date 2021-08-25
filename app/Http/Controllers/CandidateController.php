@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Candidate;
 use App\Models\Departament;
 use App\Models\District;
+use App\Models\Job;
 use App\Models\Nationality;
 use App\Models\Province;
 use App\Models\StatusCivil;
@@ -14,6 +15,8 @@ use App\Models\TypePension;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Crypt;
+use App\Models\Postulation;
+
 use App\Http\Traits\SysLog as TraitsSysLog;
 
 class CandidateController extends Controller
@@ -222,6 +225,7 @@ class CandidateController extends Controller
                 }
                 $candidate->file_dni_path = $this->uploadArchive($request->file('file_dni'), session('candidate')->id, 'file_dni');
             }
+            $candidate->syslog = $this->syslog_candidate(2, $request);
             $candidate->save();
             $candidate->file_dni_path == '' || is_null($candidate->file_dni_path) ? $candidate->file_dni_path = '' : $candidate->file_dni_path = Crypt::encrypt($candidate->file_dni_path);
             $candidate->license_path == '' || is_null($candidate->license_path) ? $candidate->license_path = '' : $candidate->license_path = Crypt::encrypt($candidate->license_path);
@@ -283,7 +287,6 @@ class CandidateController extends Controller
         $url = Crypt::decrypt($request->id);
         return response()->file(public_path().$url);
     }
-    
     public function createDirectory($id){
         $path = public_path().'/files/users/user_'.$id;
         $academic = public_path().'/files/users/user_'.$id.'/academic';
@@ -298,4 +301,92 @@ class CandidateController extends Controller
         File::makeDirectory($profile, $mode = 0777, true, true);
         File::makeDirectory($qualifications, $mode = 0777, true);
     }
+    public function passwordCandidate(Request $request){
+        try {
+            $request->validate([
+                'inputPasswordUpdatePassword' => 'required'
+            ]);
+
+            $password = Candidate::where('id', session('candidate')->id)->first();
+            $password->password = bcrypt($request->inputPasswordUpdatePassword);
+            $password->syslog = $password->syslog . ' | ' . $this->syslog_candidate(2, $request);
+            $password->save();
+            return response()->json([
+                'success' => true,
+                'message' => 'Password Actualizado Correctamente'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'error' => $e->getMessage()
+            ]);
+        }
+    }
+    public function viewCandidates(Request $request){
+        try {
+            $id = Crypt::decrypt($request->job_id);
+            $job = Job::where([['state_delete', 0], ['id', $id]])->first();
+            return view('admin.candidates.viewCandidates')->with(compact('job'));
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'error' => $e->getMessage()
+            ]);
+        } 
+    }
+
+    public function listCandidates(Request $request){
+        try {
+            $id = Crypt::decrypt($request->job_id);
+            $data = Postulation::with(['candidate', 'oficine'])->where([['state_delete', 0], ['job_id', $id]])->get()->each(function($item){
+                $item->token = Crypt::encrypt($item->candidate->id);
+            });
+            $data->makeHidden(['constancia_path','cv_path','format_1_path','id','format_2_path','job_id','id','oficine_id','postulation_date','rnscc_path','candidate_id','candidate.address_number']);
+            //$data = Postulation::with(['candidate', 'oficine'])->join('candidates', 'postulations.candidate_id', 'candidates.id')->where('postulations.job_id', $id)->get();
+            return response()->json([
+                'success' => true,
+                'data' => $data
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'error' => $e->getMessage()
+            ]);
+        }
+    }
+
+    public function getDataCandidate(Request $request){
+        try {
+            
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'error' => $e->getMessage()
+            ]);
+        }
+    }
+    public function viewCandidateJobOrPractice(Request $request){
+        try {
+            $candidate_id = Crypt::decrypt($request->candidate_id);
+            $candidate = Candidate::where('id', $candidate_id)->first();
+            $genders = DB::table('genders')->where('state_delete', 0)->get();
+            $status_civils = StatusCivil::where('state_delete', 0)->get();
+            $nationalitys = Nationality::get();
+            $departament = Departament::get();
+            is_null($candidate->departament_birth_id) ? $province_birth = [] : $province_birth = Province::where('departament_id', $candidate->departament_birth_id)->get();
+            is_null($candidate->province_birth_id) ? $district_birth = [] : $district_birth = District::where('province_id', $candidate->province_birth_id)->get();
+            is_null($candidate->departament_address_id) ? $province_address = [] : $province_address = Province::where('departament_id', $candidate->departament_address_id)->get();
+            is_null($candidate->province_address_id) ? $district_address = [] : $district_address = District::where('province_id', $candidate->province_address_id)->get();
+            $pension = TypePension::where('state_delete', 0)->get();
+            $type_discapacity = TypeDiscapacity::where('state_delete', 0)->get();
+            return view('admin.candidates.viewCandidateJobPractice')->with(compact('candidate', 'genders', 'status_civils', 'nationalitys', 'departament', 'province_birth', 'district_birth','province_address', 'district_address', 'pension', 'type_discapacity'));
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'error' => $e->getMessage()
+            ]);
+        }
+    }
+
 }

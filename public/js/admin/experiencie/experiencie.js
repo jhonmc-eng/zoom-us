@@ -10,8 +10,7 @@ $(document).ready(function() {
             type: "GET"
         },
 
-        columns: [
-            {
+        columns: [{
                 data: 'charge'
             },
             {
@@ -163,8 +162,8 @@ $(document).ready(function() {
                 url: '/candidate/experiencie/update-experiencie',
                 type: 'POST',
                 data: data,
-                processData: false,  // tell jQuery not to process the data
-                contentType: false,   // tell jQuery not to set contentType
+                processData: false, // tell jQuery not to process the data
+                contentType: false, // tell jQuery not to set contentType
                 success: function(data) {
                     if (data.success) {
                         $('#modalEditExperiencie').modal('hide')
@@ -277,7 +276,7 @@ $(document).ready(function() {
             icon: 'success',
             title: 'Exito',
             text: `¡${message}!`,
-            confirmButtonColor: "#D40E1E"
+            confirmButtonColor: "#28a745"
         })
     }
 })

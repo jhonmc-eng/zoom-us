@@ -73,9 +73,9 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth_admin', 'as' => 'admin.
     /*LOGUEARSE DEL ADMIN */
     Route::get('/', 'AdminController@dashboard');
     Route::get('/logout','LoginController@logoutAdmin');
-    Route::get('/dashboard','AdminController@dashboard');
+    Route::post('/password','UserController@passwordAdmin');
     /*MODULO DE USUARIOS*/
-    Route::group(['prefix' => 'users', 'middleware' => 'admin'], function(){
+    Route::group(['prefix' => 'users', 'middleware' => 'auth_admin:admin,practices'], function(){
         Route::get('/', 'UserController@view');
         Route::get('/list-users', 'UserController@listUsers');
         Route::post('/create-user', 'UserController@registerUser');
@@ -84,7 +84,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth_admin', 'as' => 'admin.
         Route::get('/get-data-dni/{dni}', 'UserController@getApiDni');
     });
     /* MODULO DE CONVOCATORIA*/
-    Route::group(['prefix' => 'jobs'], function(){
+    Route::group(['prefix' => 'jobs', 'middleware' => 'auth_admin:cas'], function(){
         Route::get('/', 'ConvocatoriaController@view');
         Route::get('/list-jobs', 'ConvocatoriaController@listJobs');
         Route::post('/register-job', 'ConvocatoriaController@registerJob');
@@ -97,8 +97,12 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth_admin', 'as' => 'admin.
         Route::post('/upload-result/{id}', 'ConvocatoriaController@uploadDocuments');
         Route::post('/change-document/{id}', 'ConvocatoriaController@changeDocument');
         Route::post('/delete-document/{id}', 'ConvocatoriaController@deleteDocument');
+
+        Route::get('/view-candidates', 'CandidateController@viewCandidates');
+        Route::get('/list-candidates', 'CandidateController@listCandidates');
+        Route::get('/view-candidates/candidate', 'CandidateController@viewCandidateJobOrPractice');
     });
-    Route::group(['prefix' => 'practices'], function(){
+    Route::group(['prefix' => 'practices', 'middleware' => 'auth_admin:practices'], function(){
         Route::get('/', 'ConvocatoriaController@viewPractices');
         Route::get('/list-practices', 'ConvocatoriaController@listPractices');
         Route::post('/register-practice', 'ConvocatoriaController@registerPractice');
@@ -114,9 +118,15 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth_admin', 'as' => 'admin.
         Route::post('/upload-result/{id}', 'ConvocatoriaController@uploadDocuments');
         Route::post('/change-document/{id}', 'ConvocatoriaController@changeDocument');
         Route::post('/delete-document/{id}', 'ConvocatoriaController@deleteDocument');
+
+        //routes para cnadidatos
+        Route::get('/view-candidates', 'CandidateController@viewCandidates');
+        Route::get('/list-candidates', 'CandidateController@listCandidates');
+        Route::get('/view-candidates/candidate', 'CandidateController@viewCandidateJobOrPractice');
+        //Route::get('/profile-candidate', 'CandidateController@getProfileCandidate');
     });
     /*MODULO DE MODALIDADES*/
-    Route::group(['prefix' => 'modalitys', 'middleware' => 'admin'], function(){
+    Route::group(['prefix' => 'modalitys', 'middleware' => 'auth_admin:admin'], function(){
         Route::get('/', 'ModalitysController@viewModalitys');
         Route::post('/register-modality','ModalitysController@registerModality');
         Route::get('/list-modalitys','ModalitysController@listModalitys');
@@ -127,6 +137,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth_admin', 'as' => 'admin.
 Route::group(['prefix' => 'candidate', 'middleware' => 'auth_candidate', 'as' => 'candidate.'], function(){
 
     Route::get('/logout-candidate','LoginController@logoutCandidate');
+    Route::post('/password','CandidateController@passwordCandidate');
 
     Route::group(['prefix' => 'profile'], function(){
         Route::get('/', 'CandidateController@viewProfile');

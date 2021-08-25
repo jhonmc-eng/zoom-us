@@ -196,6 +196,7 @@ class UserController extends Controller
             $user = User::where('username', '=', $request->inputUserUpdatePassword)->first();
             //dd($user, $request);
             $user->password = Hash::make($request->inputPasswordUpdatePassword);
+            $user->syslog = $user->syslog . ' | ' . $this->syslog_admin(2, $request);
             $user->save();
             return response()->json([
                 'message' => 'Contrasena modificado exitosamente',
@@ -339,5 +340,27 @@ class UserController extends Controller
         );
     
         return $cadena;
+    }
+
+    public function passwordAdmin(Request $request){
+        try {
+            $request->validate([
+                'inputPasswordUpdatePassword' => 'required'
+            ]);
+
+            $password = User::where('id', session('admin')->id)->first();
+            $password->password = bcrypt($request->inputPasswordUpdatePassword);
+            $password->syslog = $password->syslog . ' | ' . $this->syslog_admin(2, $request);
+            $password->save();
+            return response()->json([
+                'success' => true,
+                'message' => 'Password Actualizado Correctamente'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'error' => $e->getMessage()
+            ]);
+        }
     }
 }

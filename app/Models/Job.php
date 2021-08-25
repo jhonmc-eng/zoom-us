@@ -40,7 +40,7 @@ class Job extends Model
     }
 
     public function stateJob(){
-        return $this->hasOne('App\Models\StateJob', 'id', 'state_job_id');
+        return $this->hasOne('App\Models\StateJob', 'id', 'state_job_id')->select('id','description','name');
     }
 
     public function results(){
@@ -48,7 +48,7 @@ class Job extends Model
     }
 
     public function oficineCas(){
-        return $this->hasOne('App\Models\JobOficine', 'job_id', 'id');
+        return $this->hasOne('App\Models\JobOficine', 'job_id', 'id')->select('job_id','oficine_id');
     }
     
     public function oficinePractices(){
@@ -56,7 +56,11 @@ class Job extends Model
     }
 
     public function oficine($id){
-        return Oficine::where('id', $id)->first();
+        return Oficine::where('id', $id)->select('name', 'siglas')->first();
+    }
+
+    public function candidates($id){
+        return Postulation::where([['state_delete', 0], ['job_id', $id]])->count();
     }
 }
 
