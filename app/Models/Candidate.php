@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Candidate extends Model
 {
@@ -59,4 +60,50 @@ class Candidate extends Model
         'created_at',
         'password'
     ];
+
+    public function type_document_id(){
+        return $this->hasOne('App\Models\TypeDocument','id','type_document')->select('id', 'name', 'description');
+    }
+
+    public function gender($id){
+        return DB::table('genders')->where('id', $id)->first();
+    }
+
+    public function status_civil(){
+        return $this->hasOne('App\Models\StatusCivil','id','status_civil_id')->select('id', 'name');
+    }
+
+    public function nationality(){
+        return $this->hasOne('App\Models\Nationality','id','nationality_id')->select('id', 'name');
+    }
+
+    public function pension(){
+        return $this->hasOne('App\Models\Pension','id','pension_id')->select('id', 'name');
+    }
+
+    public function type_pension(){
+        return $this->hasOne('App\Models\TypePension','id','type_pension_id')->select('id', 'name');
+    }
+
+    public function type_discapacity(){
+        return $this->hasOne('App\Models\TypeDiscapacity', 'id', 'type_discapacity_id');
+    }
+
+    public function ubigeo($query){
+        return $query->each(function($item){
+            $item->departament_birth_id = $this->departament($item->departament_birth_id);
+        });
+    }
+
+    public function departament($id){
+        return Departament::select('name')->where('id', $id)->first();
+    }
+
+    public function province($id){
+        return Province::select('name')->where('id', $id)->first();
+    }
+
+    public function district($id){
+        return District::select('name')->where('id', $id)->first();
+    }
 }

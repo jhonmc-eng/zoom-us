@@ -339,7 +339,7 @@ class CandidateController extends Controller
         try {
             $id = Crypt::decrypt($request->job_id);
             $data = Postulation::with(['candidate', 'oficine'])->where([['state_delete', 0], ['job_id', $id]])->get()->each(function($item){
-                $item->token = Crypt::encrypt($item->candidate->id);
+                $item->token = Crypt::encrypt($item->id);
             });
             $data->makeHidden(['constancia_path','cv_path','format_1_path','id','format_2_path','job_id','id','oficine_id','postulation_date','rnscc_path','candidate_id','candidate.address_number']);
             //$data = Postulation::with(['candidate', 'oficine'])->join('candidates', 'postulations.candidate_id', 'candidates.id')->where('postulations.job_id', $id)->get();
@@ -367,9 +367,10 @@ class CandidateController extends Controller
     }
     public function viewCandidateJobOrPractice(Request $request){
         try {
-            $candidate_id = Crypt::decrypt($request->candidate_id);
-            $candidate = Candidate::where('id', $candidate_id)->first();
-            $genders = DB::table('genders')->where('state_delete', 0)->get();
+            $postulation_id = Crypt::decrypt($request->postulation_id);
+            $postulation = Postulation::where('id', $postulation_id)->first();
+            $candidate = Candidate::where('id', $postulation->candidate_id)->first();
+            /*$genders = DB::table('genders')->where('state_delete', 0)->get();
             $status_civils = StatusCivil::where('state_delete', 0)->get();
             $nationalitys = Nationality::get();
             $departament = Departament::get();
@@ -380,7 +381,7 @@ class CandidateController extends Controller
             $pension = TypePension::where('state_delete', 0)->get();
             $type_discapacity = TypeDiscapacity::where('state_delete', 0)->get();
             return view('admin.candidates.viewCandidateJobPractice')->with(compact('candidate', 'genders', 'status_civils', 'nationalitys', 'departament', 'province_birth', 'district_birth','province_address', 'district_address', 'pension', 'type_discapacity'));
-
+*/
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,

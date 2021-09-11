@@ -56,7 +56,7 @@ $(document).ready(function() {
             {
                 data: "token",
                 render: function(data) {
-                    return `<a target=_blank href="/admin/practice/view-candidates/candidate?job_id=${params.get('job_id')}&candidate_id=${data}" type="button" class="btn btn-primary"><i class="far fa-eye"></i></a>`
+                    return `<a target=_blank href="/admin/practice/view-candidates/candidate?postulation_id=${data}" type="button" class="btn btn-primary"><i class="far fa-eye"></i></a>`
                 }
             }
         ],
