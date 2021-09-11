@@ -830,5 +830,9 @@
     .table tr {
     cursor: pointer !important;
     }
+    .view-file{
+    padding: .075rem .375rem !important;
+    margin-left: 3px !important;
+}
 </style>
 @endsection
