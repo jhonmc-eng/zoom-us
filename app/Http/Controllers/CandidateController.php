@@ -18,6 +18,13 @@ use Illuminate\Support\Facades\Crypt;
 use App\Models\Postulation;
 
 use App\Http\Traits\SysLog as TraitsSysLog;
+use App\Models\Academic;
+use App\Models\Experiencie;
+use App\Models\Knowledge as ModelsKnowledge;
+use App\Models\OtherDocument;
+use App\Models\Reference;
+use App\Models\Knowledge;
+use App\Models\Qualification;
 
 class CandidateController extends Controller
 {
@@ -367,10 +374,9 @@ class CandidateController extends Controller
     }
     public function viewCandidateJobOrPractice(Request $request){
         try {
-            $postulation_id = Crypt::decrypt($request->postulation_id);
-            $postulation = Postulation::where('id', $postulation_id)->first();
+            $postulation = Crypt::decrypt($request->postulation_id);
             $candidate = Candidate::where('id', $postulation->candidate_id)->first();
-            /*$genders = DB::table('genders')->where('state_delete', 0)->get();
+            $genders = DB::table('genders')->where('state_delete', 0)->get();
             $status_civils = StatusCivil::where('state_delete', 0)->get();
             $nationalitys = Nationality::get();
             $departament = Departament::get();
@@ -381,7 +387,140 @@ class CandidateController extends Controller
             $pension = TypePension::where('state_delete', 0)->get();
             $type_discapacity = TypeDiscapacity::where('state_delete', 0)->get();
             return view('admin.candidates.viewCandidateJobPractice')->with(compact('candidate', 'genders', 'status_civils', 'nationalitys', 'departament', 'province_birth', 'district_birth','province_address', 'district_address', 'pension', 'type_discapacity'));
-*/
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'error' => $e->getMessage()
+            ]);
+        }
+    }
+
+    public function getAcademicCandidate(Request $request){
+        try {
+            $id = Crypt::decrypt($request->postulation_id);
+            
+            $data = Academic::with(['education_level', 'type_academic'])
+                    ->where('state_delete', 0)
+                    ->where('candidate_id', Postulation::select('candidate_id')->where('id', $id)->first())
+                    ->orderBy('id', 'DESC')
+                    ->get()
+                    ->each(function($item){
+                        $item->certificate_file_path = Crypt::encrypt($item->certificate_file_path);
+                        if($item->tuition_state){
+                            $item->tuition_file_path = Crypt::encrypt($item->tuition_file_path);
+                        }
+                    });
+            return response()->json([
+                'success' => true,
+                'data' => $data
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'error' => $e->getMessage()
+            ]);
+        }
+    }
+    public function getQualificationsCandidate(Request $request){
+        try {
+            $id = Crypt::decrypt($request->postulation_id);
+            
+            $data = Qualification::with(['TypeQualification'])->where('state_delete', 0)
+                    ->where('candidate_id', Postulation::select('candidate_id')->where('id', $id)->first())
+                    ->orderBy('id', 'DESC')
+                    ->get()
+                    ->each(function($item){
+                        $item->certificate_file_path = Crypt::encrypt($item->certificate_file_path);
+                        
+                    });
+            return response()->json([
+                'success' => true,
+                'data' => $data
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'error' => $e->getMessage()
+            ]);
+        } 
+    }
+
+    public function getKnowledgeCandidate(Request $request){
+        try {
+            $id = Crypt::decrypt($request->postulation_id);
+            
+            $data = Knowledge::with(['levelKnowledge'])->where('state_delete', 0)
+                    ->where('candidate_id', Postulation::select('candidate_id')->where('id', $id)->first())
+                    ->orderBy('id', 'DESC')
+                    ->get();
+            return response()->json([
+                'success' => true,
+                'data' => $data
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'error' => $e->getMessage()
+            ]);
+        }
+    }
+
+    public function getExperiencieCandidate(Request $request){
+        try {
+            $id = Crypt::decrypt($request->postulation_id);
+            $data = Experiencie::where('state_delete', 0)
+                    ->where('candidate_id', Postulation::select('candidate_id')->where('id', $id)->first())
+                    ->orderBy('id', 'DESC')
+                    ->get()
+                    ->each(function($item){
+                        $item->certificate_file_path = Crypt::encrypt($item->certificate_file_path);
+                    });
+            return response()->json([
+                'success' => true,
+                'data' => $data
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'error' => $e->getMessage()
+            ]);
+        }
+    }
+    public function getTrainingCandidate(Request $request){
+        try {
+            $id = Crypt::decrypt($request->postulation_id);
+            $data = OtherDocument::where('state_delete', 0)
+                    ->where('candidate_id', Postulation::select('candidate_id')->where('id', $id)->first())
+                    ->orderBy('id', 'DESC')
+                    ->get()
+                    ->each(function($item){
+                        $item->certificate_file_path = Crypt::encrypt($item->certificate_file_path);
+                        
+                    });
+            return response()->json([
+                'success' => true,
+                'data' => $data
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'error' => $e->getMessage()
+            ]);
+        }
+    }
+
+    public function getReferencesCandidate(Request $request){
+        try {
+            $id = Crypt::decrypt($request->postulation_id);
+            $data = Reference::where('state_delete', 0)
+                    ->where('candidate_id', Postulation::select('candidate_id')->where('id', $id)->first())
+                    ->orderBy('id', 'DESC')
+                    ->get();
+            return response()->json([
+                'success' => true,
+                'data' => $data
+            ]);
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,

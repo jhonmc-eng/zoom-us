@@ -132,6 +132,16 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth_admin', 'as' => 'admin.
         Route::get('/list-modalitys','ModalitysController@listModalitys');
         Route::post('/update-modality/{id}','ModalitysController@updateModality');
     });
+
+    Route::group(['prefix' => 'candidates', 'middleware' => 'auth_admin'], function(){
+        Route::get('/', 'CandidateController@getCandidates');
+        Route::get('/get-academic-postulate', 'CandidateController@getAcademicCandidate');
+        Route::get('/get-qualifications-postulate', 'CandidateController@getQualificationsCandidate');
+        Route::get('/get-knowledge-postulate', 'CandidateController@getKnowledgeCandidate');
+        Route::get('/get-experiencie-postulate', 'CandidateController@getExperiencieCandidate');
+        Route::get('/get-academic-postulate', 'CandidateController@getTrainingCandidate');
+        Route::get('/get-references-postulate', 'CandidateController@getReferencesCandidate');
+    });
 });
 
 Route::group(['prefix' => 'candidate', 'middleware' => 'auth_candidate', 'as' => 'candidate.'], function(){
