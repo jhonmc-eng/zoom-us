@@ -374,7 +374,8 @@ class CandidateController extends Controller
     }
     public function viewCandidateJobOrPractice(Request $request){
         try {
-            $postulation = Crypt::decrypt($request->postulation_id);
+            $postulation_id = Crypt::decrypt($request->postulation_id);
+            $postulation = Postulation::where('id', $postulation_id)->first();
             $candidate = Candidate::where('id', $postulation->candidate_id)->first();
             $genders = DB::table('genders')->where('state_delete', 0)->get();
             $status_civils = StatusCivil::where('state_delete', 0)->get();
