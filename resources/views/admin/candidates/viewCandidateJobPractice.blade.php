@@ -42,7 +42,7 @@
                         src="/files/users/user_5/profile/file_perfil_1629234849.png"
                         alt="User profile picture">
                     </div>
-                    <h3 class="profile-username text-center">Jhon Wilber Mendoza Chino</h3>
+                    <h3 class="profile-username text-center">{{ucwords(strtolower($candidate->names))}} {{ucwords(strtolower($candidate->lastname_patern))}} {{ucwords(strtolower($candidate->lastname_matern))}}</h3>
                     <p class="text-muted text-center">Analista Programador Web</p>
                 </div>
                 
@@ -62,29 +62,29 @@
                 <ul class="nav nav-pills flex-column">
                     <li class="nav-item"><a class="nav-link active" href="#profile" data-toggle="tab"><i class="fas fa-user"></i> Datos Personales</a></li>
                     <li class="nav-item"><a class="nav-link" href="#academic" data-toggle="tab"><i class="fas fa-graduation-cap"></i> Formacion Academica
-                        <span class="badge bg-warning float-right">12</span>
+                        <span class="badge bg-warning float-right">{{$count['academic']}}</span>
                         </a>
                     </li>
                     <li class="nav-item"><a href="#curses" class="nav-link" data-toggle="tab"><i class="fas fa-laptop"></i> Cursos o Programas
-                        <span class="badge bg-warning float-right">12</span>
+                        <span class="badge bg-warning float-right">{{$count['cursos']}}</span>
                         </a>
                     </li>
                     <li class="nav-item"><a href="#experiencie" class="nav-link" data-toggle="tab"><i class="fas fa-briefcase"></i> Experiencia Laboral
-                        <span class="badge bg-warning float-right">65</span>
+                        <span class="badge bg-warning float-right">{{$count['experiencia']}}</span>
                         </a>
                     </li>
                     <li class="nav-item"><a href="#conocimient" class="nav-link" data-toggle="tab"><i class="fas fa-brain"></i> Conocimientos
-                        <span class="badge bg-warning float-right">12</span>
+                        <span class="badge bg-warning float-right">{{$count['conocimientos']}}</span>
                         </a>
                     </li>
                     <li class="nav-item"><a href="#references" class="nav-link" data-toggle="tab"><i class="fas fa-people-arrows"></i> Referencias Laborales
-                        <span class="badge bg-warning float-right">12</span>
+                        <span class="badge bg-warning float-right">{{$count['referencias']}}</span>
                         </a>
                     </li>
                   <li class="nav-item">
                     <a href="#others" class="nav-link" data-toggle="tab">
                       <i class="fas fa-folder-open"></i> Otros Documentos
-                      <span class="badge bg-warning float-right">12</span>
+                      <span class="badge bg-warning float-right">{{$count['otros']}}</span>
                     </a>
                   </li>
                 </ul>
@@ -105,19 +105,19 @@
                     
                     <ul class="list-group list-group-unbordered mb-3">
                         <li class="list-group-item">
-                            <b>Formato N° 01</b> <a class="float-right btn btn-success" style="padding: 0.015rem 0.55rem;"><i class="fas fa-eye"></i></a>
+                            <b>Formato N° 01</b> <a target="_blank" href="/admin/candidates/view-document-candidate?token={{\Crypt::encrypt($postulation->format_1_path)}}"class="float-right btn btn-success" style="padding: 0.015rem 0.55rem;"><i class="fas fa-eye"></i></a>
                         </li>
                         <li class="list-group-item">
-                            <b>Formato N° 02</b> <a class="float-right btn btn-success" style="padding: 0.015rem 0.55rem;"><i class="fas fa-eye"></i></a>
+                            <b>Formato N° 02</b> <a target="_blank" href="/admin/candidates/view-document-candidate?token={{\Crypt::encrypt($postulation->format_2_path)}}" class="float-right btn btn-success" style="padding: 0.015rem 0.55rem;"><i class="fas fa-eye"></i></a>
                         </li>
                         <li class="list-group-item">
-                            <b>C.V.</b> <a class="float-right btn btn-success" style="padding: 0.015rem 0.55rem;"><i class="fas fa-eye"></i></a>
+                            <b>C.V.</b> <a target="_blank" href="/admin/candidates/view-document-candidate?token={{\Crypt::encrypt($postulation->cv_path)}}" class="float-right btn btn-success" style="padding: 0.015rem 0.55rem;"><i class="fas fa-eye"></i></a>
                         </li>
                         <li class="list-group-item">
                             <b>Constancia O Certificado</b> <a class="float-right btn btn-success" style="padding: 0.015rem 0.55rem;"><i class="fas fa-eye"></i></a>
                         </li>
                         <li class="list-group-item">
-                            <b>RNSCC</b> <a class="float-right btn btn-success" style="padding: 0.015rem 0.55rem;"><i class="fas fa-eye"></i></a>
+                            <b>RNSCC</b> <a target="_blank" href="/admin/candidates/view-document-candidate?token={{\Crypt::encrypt($postulation->rnscc_path)}}" class="float-right btn btn-success" style="padding: 0.015rem 0.55rem;"><i class="fas fa-eye"></i></a>
                         </li>
                     </ul>
                     <a href="#" class="btn btn-danger btn-block"><b>Comprimido</b></a>
@@ -220,7 +220,7 @@
                                                 @if($candidate->file_dni_path == '' || is_null($candidate->file_dni_path))
                                                 <a type="button" id="file_dni_path" class="btn btn-danger view-file"><i class="fas fa-eye-slash"></i></a>
                                                 @else
-                                                <a target="_blank" id="file_dni_path" href="/candidate/profile/view-document?id={{Crypt::encrypt($candidate->file_dni_path)}}" type="button" class="btn btn-success view-file"><i class="fas fa-eye"></i></a>
+                                                <a target="_blank" id="file_dni_path" href="/admin/candidates/view-document-candidate?token={{Crypt::encrypt($candidate->file_dni_path)}}" type="button" class="btn btn-success view-file"><i class="fas fa-eye"></i></a>
                                                 @endif
                                                 <br>
                                             </div>
@@ -423,7 +423,7 @@
                                                 @if($candidate->license_path == '' || is_null($candidate->license_path))
                                                 <a type="button" id="file_license_fa_path" class="btn btn-danger view-file"><i class="fas fa-eye-slash"></i></a>                                               
                                                 @else
-                                                <a target="_blank" id="file_license_fa_path" href="/candidate/profile/view-document?id={{Crypt::encrypt($candidate->license_path)}}" type="button" class="btn btn-success view-file"><i class="fas fa-eye"></i></a>
+                                                <a target="_blank" id="file_license_fa_path" href="/admin/candidates/view-document-candidate?token={{Crypt::encrypt($candidate->license_path)}}" type="button" class="btn btn-success view-file"><i class="fas fa-eye"></i></a>
                                                 @endif                                                
                                                 <br>
                                             </div>
@@ -499,7 +499,7 @@
                                                 @if($candidate->discapacity_file_path == '' || is_null($candidate->discapacity_file_path))
                                                 <a type="button" id="file_discapacity_path" class="btn btn-danger view-file"><i class="fas fa-eye-slash"></i></a>                                               
                                                 @else
-                                                <a target="_blank" id="file_discapacity_path" href="/candidate/profile/view-document?id={{Crypt::encrypt($candidate->discapacity_file_path)}}" type="button" class="btn btn-success view-file"><i class="fas fa-eye"></i></a>
+                                                <a target="_blank" id="file_discapacity_path" href="/admin/candidates/view-document-candidate?token={{Crypt::encrypt($candidate->discapacity_file_path)}}" type="button" class="btn btn-success view-file"><i class="fas fa-eye"></i></a>
                                                 @endif                                                
                                                 <br>
                                             </div>
@@ -547,7 +547,7 @@
                                                 @if($candidate->license_driver_path == '' || is_null($candidate->license_driver_path))
                                                 <a type="button" id="file_license_driver_path" class="btn btn-danger view-file"><i class="fas fa-eye-slash"></i></a>                                               
                                                 @else
-                                                <a target="_blank" id="file_license_driver_path" href="/candidate/profile/view-document?id={{Crypt::encrypt($candidate->license_driver_path)}}" type="button" class="btn btn-success view-file"><i class="fas fa-eye"></i></a>
+                                                <a target="_blank" id="file_license_driver_path" href="/admin/candidates/view-document-candidate?token={{Crypt::encrypt($candidate->license_driver_path)}}" type="button" class="btn btn-success view-file"><i class="fas fa-eye"></i></a>
                                                 @endif                                                 <br>
                                             </div>
                                             <div class="custom-file">
@@ -819,6 +819,42 @@
 @endsection
 
 @section('after-scripts')
+<script src="{{asset('plugins/sweetalert2/sweetalert2.min.js')}}"></script>
+<link rel="stylesheet" href="{{asset('plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css')}}">
+<link rel="stylesheet" href="{{asset('plugins/datatables-bs4/css/dataTables.bootstrap4.min.css')}}">
+<link rel="stylesheet" href="{{asset('plugins/datatables-responsive/css/responsive.bootstrap4.min.css')}}">
+<link rel="stylesheet" href="{{asset('plugins/datatables-buttons/css/buttons.bootstrap4.min.css')}}">
+<script src="{{asset('plugins/datatables/jquery.dataTables.min.js')}}"></script>
+<!-- Select2 -->
+<script src="{{asset('plugins/select2/js/select2.full.min.js')}}"></script>
+<link rel="stylesheet" href="{{asset('plugins/select2/css/select2.min.css')}}">
+<link rel="stylesheet" href="{{asset('plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css')}}">
+
+
+<link rel="stylesheet" href="{{asset('plugins/summernote/summernote-bs4.min.css')}}">
+<script src="{{asset('plugins/summernote/summernote-bs4.min.js')}}"></script>
+
+<script src="{{asset('plugins/datatables-select/js/dataTables.select.min.js')}}"></script>
+<link rel="stylesheet" href="{{asset('plugins/datatables-select/css/select.dataTables.min.css')}}">
+<script src="{{asset('plugins/datatables-bs4/js/dataTables.bootstrap4.min.js')}}"></script>
+<script src="{{asset('plugins/datatables-responsive/js/dataTables.responsive.min.js')}}"></script>
+<script src="{{asset('plugins/datatables-responsive/js/responsive.bootstrap4.min.js')}}"></script>
+
+<script src="{{asset('plugins/datatables-buttons/js/dataTables.buttons.min.js')}}"></script>
+<script src="{{asset('plugins/datatables-buttons/js/buttons.bootstrap4.min.js')}}"></script>
+<script src="{{asset('plugins/jszip/jszip.min.js')}}"></script>
+<script src="{{asset('plugins/pdfmake/pdfmake.min.js')}}"></script>
+<script src="{{asset('plugins/pdfmake/vfs_fonts.js')}}"></script>
+
+<script src="{{asset('plugins/datatables-buttons/js/buttons.html5.min.js')}}"></script>
+<script src="{{asset('plugins/datatables-buttons/js/buttons.print.min.js')}}"></script>
+<script src="{{asset('plugins/datatables-buttons/js/buttons.colVis.min.js')}}"></script>
+
+<script src="{{asset('plugins/bs-custom-file-input/bs-custom-file-input.min.js')}}"></script>
+<script src="{{asset('js/admin/candidates/viewDataCandidatePostulation.js')}}"></script>
+<script src="{{asset('plugins/toastr/toastr.min.js')}}"></script>
+<link rel="stylesheet" href="{{asset('plugins/toastr/toastr.min.css')}}">
+
 <style>
     .table td, th{
         text-align: center !important; 

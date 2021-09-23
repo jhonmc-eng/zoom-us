@@ -25,6 +25,7 @@ use App\Models\OtherDocument;
 use App\Models\Reference;
 use App\Models\Knowledge;
 use App\Models\Qualification;
+use Knowledge as GlobalKnowledge;
 
 class CandidateController extends Controller
 {
@@ -294,6 +295,10 @@ class CandidateController extends Controller
         $url = Crypt::decrypt($request->id);
         return response()->file(public_path().$url);
     }
+    public function viewDocumentCandidate(Request $request){
+        $url = Crypt::decrypt($request->token);
+        return response()->file(public_path().$url);
+    }
     public function createDirectory($id){
         $path = public_path().'/files/users/user_'.$id;
         $academic = public_path().'/files/users/user_'.$id.'/academic';
@@ -387,7 +392,17 @@ class CandidateController extends Controller
             is_null($candidate->province_address_id) ? $district_address = [] : $district_address = District::where('province_id', $candidate->province_address_id)->get();
             $pension = TypePension::where('state_delete', 0)->get();
             $type_discapacity = TypeDiscapacity::where('state_delete', 0)->get();
-            return view('admin.candidates.viewCandidateJobPractice')->with(compact('candidate', 'genders', 'status_civils', 'nationalitys', 'departament', 'province_birth', 'district_birth','province_address', 'district_address', 'pension', 'type_discapacity'));
+            $count = array(
+                'academic' => Academic::where('state_delete', 0)->where('candidate_id', $postulation->candidate_id)->count(),
+                'cursos' => Qualification::where('state_delete', 0)->where('candidate_id', $postulation->candidate_id)->count(),
+                'experiencia' => Experiencie::where('state_delete', 0)->where('candidate_id', $postulation->candidate_id)->count(),
+                'conocimientos' => Knowledge::where('state_delete', 0)->where('candidate_id', $postulation->candidate_id)->count(),
+                'referencias' => Reference::where('state_delete', 0)->where('candidate_id', $postulation->candidate_id)->count(),
+                'otros' => OtherDocument::where('state_delete', 0)->where('candidate_id', $postulation->candidate_id)->count()
+            );
+            //dd($count['academic']);
+            //$count->academic = 
+            return view('admin.candidates.viewCandidateJobPractice')->with(compact('candidate', 'genders', 'status_civils', 'nationalitys', 'departament', 'province_birth', 'district_birth','province_address', 'district_address', 'pension', 'type_discapacity', 'count', 'postulation', 'candidate'));
 
         } catch (\Exception $e) {
             return response()->json([
@@ -398,12 +413,13 @@ class CandidateController extends Controller
     }
 
     public function getAcademicCandidate(Request $request){
+        
         try {
             $id = Crypt::decrypt($request->postulation_id);
-            
+            $postulation = Postulation::select('candidate_id')->where('id', $id)->first();
             $data = Academic::with(['education_level', 'type_academic'])
                     ->where('state_delete', 0)
-                    ->where('candidate_id', Postulation::select('candidate_id')->where('id', $id)->first())
+                    ->where('candidate_id', $postulation->candidate_id)
                     ->orderBy('id', 'DESC')
                     ->get()
                     ->each(function($item){
@@ -411,10 +427,11 @@ class CandidateController extends Controller
                         if($item->tuition_state){
                             $item->tuition_file_path = Crypt::encrypt($item->tuition_file_path);
                         }
-                    });
+                    });     
             return response()->json([
                 'success' => true,
-                'data' => $data
+                'data' => $data,
+                'rpeuaba' => 'asdas'
             ]);
         } catch (\Exception $e) {
             return response()->json([
@@ -426,9 +443,9 @@ class CandidateController extends Controller
     public function getQualificationsCandidate(Request $request){
         try {
             $id = Crypt::decrypt($request->postulation_id);
-            
+            $postulation = Postulation::select('candidate_id')->where('id', $id)->first();
             $data = Qualification::with(['TypeQualification'])->where('state_delete', 0)
-                    ->where('candidate_id', Postulation::select('candidate_id')->where('id', $id)->first())
+                    ->where('candidate_id', $postulation->candidate_id)
                     ->orderBy('id', 'DESC')
                     ->get()
                     ->each(function($item){
@@ -437,7 +454,8 @@ class CandidateController extends Controller
                     });
             return response()->json([
                 'success' => true,
-                'data' => $data
+                'data' => $data,
+                'rpeuaba' => 'asdas'
             ]);
         } catch (\Exception $e) {
             return response()->json([
@@ -450,14 +468,15 @@ class CandidateController extends Controller
     public function getKnowledgeCandidate(Request $request){
         try {
             $id = Crypt::decrypt($request->postulation_id);
-            
+            $postulation = Postulation::select('candidate_id')->where('id', $id)->first();
             $data = Knowledge::with(['levelKnowledge'])->where('state_delete', 0)
-                    ->where('candidate_id', Postulation::select('candidate_id')->where('id', $id)->first())
+                    ->where('candidate_id', $postulation->candidate_id)
                     ->orderBy('id', 'DESC')
                     ->get();
             return response()->json([
                 'success' => true,
-                'data' => $data
+                'data' => $data,
+                'rpeuaba' => 'asdas'
             ]);
         } catch (\Exception $e) {
             return response()->json([
@@ -470,8 +489,9 @@ class CandidateController extends Controller
     public function getExperiencieCandidate(Request $request){
         try {
             $id = Crypt::decrypt($request->postulation_id);
+            $postulation = Postulation::select('candidate_id')->where('id', $id)->first();
             $data = Experiencie::where('state_delete', 0)
-                    ->where('candidate_id', Postulation::select('candidate_id')->where('id', $id)->first())
+                    ->where('candidate_id', $postulation->candidate_id)
                     ->orderBy('id', 'DESC')
                     ->get()
                     ->each(function($item){
@@ -491,8 +511,9 @@ class CandidateController extends Controller
     public function getTrainingCandidate(Request $request){
         try {
             $id = Crypt::decrypt($request->postulation_id);
+            $postulation = Postulation::select('candidate_id')->where('id', $id)->first();
             $data = OtherDocument::where('state_delete', 0)
-                    ->where('candidate_id', Postulation::select('candidate_id')->where('id', $id)->first())
+                    ->where('candidate_id', $postulation->candidate_id)
                     ->orderBy('id', 'DESC')
                     ->get()
                     ->each(function($item){
@@ -501,7 +522,8 @@ class CandidateController extends Controller
                     });
             return response()->json([
                 'success' => true,
-                'data' => $data
+                'data' => $data,
+                'rpeuaba' => 'asdas'
             ]);
         } catch (\Exception $e) {
             return response()->json([
@@ -514,13 +536,15 @@ class CandidateController extends Controller
     public function getReferencesCandidate(Request $request){
         try {
             $id = Crypt::decrypt($request->postulation_id);
+            $postulation = Postulation::select('candidate_id')->where('id', $id)->first();
             $data = Reference::where('state_delete', 0)
-                    ->where('candidate_id', Postulation::select('candidate_id')->where('id', $id)->first())
+                    ->where('candidate_id', $postulation->candidate_id)
                     ->orderBy('id', 'DESC')
                     ->get();
             return response()->json([
                 'success' => true,
-                'data' => $data
+                'data' => $data,
+                'rpeuaba' => 'asdas'
             ]);
         } catch (\Exception $e) {
             return response()->json([

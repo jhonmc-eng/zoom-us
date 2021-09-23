@@ -139,8 +139,9 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth_admin', 'as' => 'admin.
         Route::get('/get-qualifications-postulate', 'CandidateController@getQualificationsCandidate');
         Route::get('/get-knowledge-postulate', 'CandidateController@getKnowledgeCandidate');
         Route::get('/get-experiencie-postulate', 'CandidateController@getExperiencieCandidate');
-        Route::get('/get-academic-postulate', 'CandidateController@getTrainingCandidate');
+        Route::get('/get-training-postulate', 'CandidateController@getTrainingCandidate');
         Route::get('/get-references-postulate', 'CandidateController@getReferencesCandidate');
+        Route::get('/view-document-candidate', 'CandidateController@viewDocumentCandidate');
     });
 });
 
